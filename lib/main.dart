@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+//import the plan gen file to use those functions
+import 'plan_gen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -100,6 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            //this is text that displays
+            Text(
+              testFunc(),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],

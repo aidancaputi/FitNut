@@ -250,7 +250,8 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
 }
 
 //this is a dummy function for printing and testing
-List<Week> testFunc() {
+List<Week> generatePlan(String gender, int heightIN, int weightLBS, int age,
+    int experience, int rhr) {
   var testDay1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
   var testDay2 = RunWorkout("workout", "distance", 400, "hard", 6.0);
   var testDay3 = RunWorkout("run", "distance", 3.0, "easy", 0.0);
@@ -283,12 +284,10 @@ List<Week> testFunc() {
         testDay777),
   ];
 
-  RunPlanInput userInput = RunPlanInput("gender", 0, 0, 0, 0, 0);
-  getInput(userInput);
+  RunPlanInput userInput =
+      RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr);
 
-  List<Week> finalPlan = increasePlanVolume(initialPlan, 10.0);
-  finalPlan = decreasePlanVolume(finalPlan, 10.0);
-  finalPlan = increasePlanVolume(finalPlan, 20.0);
+  List<Week> finalPlan = customizePlan(initialPlan, userInput);
 
   return finalPlan;
 }

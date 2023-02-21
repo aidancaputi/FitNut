@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'main.dart';
 import 'dart:io';
 
-class UserInput extends State<MyHomePage> {
+class Settings extends StatelessWidget {
+  const Settings({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'User Input',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const SettingsPage(title: 'Input User Info'),
+    );
+  }
+}
+
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key, required this.title});
+  final String title;
+
+  @override
+  State<SettingsPage> createState() => UserInput();
+}
+
+class UserInput extends State<SettingsPage> {
   // local variables to store current values
   double _currentSliderValue = 0;
   String _currentMessage = '';

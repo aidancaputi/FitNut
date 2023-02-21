@@ -4,53 +4,51 @@ import 'plan_gen.dart';
 import 'dart:convert';
 
 void main() {
+
 // Giving command to runApp() to run the app.
 
 /* The purpose of the runApp() function is to attach
 the given widget to the screen. */
   runApp(const MyApp());
+=======
+  runApp(const TabBarDemo());
+  //runApp(const MyApp());
 }
 
-// Widget is used to create UI in flutter framework.
-
-/* StatelessWidget is a widget, which does not maintain
-any state of the widget. */
-
-/* MyApp extends StatelessWidget and overrides its
-build method. */
-
-List<Week> plan = testFunc(); //call test func to create the plan
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-// This widget is the root of your application.
+class TabBarDemo extends StatelessWidget {
+  const TabBarDemo({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // title of the application
-      title: 'Hello World Demo Application',
-      // theme of the widget
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      // Inner UI of the application
-      home: MyWidget(),
-    );
+        home: DefaultTabController(
+      length: 4,
+      child: Scaffold(
+          body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            const SliverAppBar(
+              title: Text('FitNut'),
+              pinned: true,
+              floating: true,
+              bottom: TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.calendar_today)),
+                  Tab(icon: Icon(Icons.card_membership_sharp)),
+                  Tab(icon: Icon(Icons.waves_rounded)),
+                  Tab(icon: Icon(Icons.settings_sharp)),
+                ],
+              ),
+            ),
+          ];
+        },
+        body: const TabBarView(
+          children: <Widget>[
+            Icon(Icons.flight, size: 437.5),
+            Icon(Icons.directions_transit, size: 437.5),
+            Icon(Icons.directions_car, size: 350),
+            MyApp(),
+          ],
+        ),
+      )),
+    ));
   }
-}
-
-/* This class is similar to MyApp instead it
-returns Scaffold Widget */
-class MyWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-          itemCount: plan.length,
-          itemBuilder: (BuildContext ctxt, int index) {
-            return Text(jsonEncode(plan[index]));
-          }),
-    );
-  }
-}

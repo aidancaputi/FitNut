@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'calendar.dart';
+import 'user_input.dart';
+
 
 void main() {
   runApp(const TabBarDemo());
-  //runApp(const MyApp());
 }
 
 class TabBarDemo extends StatelessWidget {
@@ -36,8 +37,8 @@ class TabBarDemo extends StatelessWidget {
           children: <Widget>[
             CalendarApp(),
             Icon(Icons.flight, size: 437.5),
-            Icon(Icons.directions_transit, size: 437.5),
             Icon(Icons.directions_car, size: 350),
+            Settings(),
           ],
         ),
       )),

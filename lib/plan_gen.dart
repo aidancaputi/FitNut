@@ -2,6 +2,7 @@
 
 //class to represent a workout for the running activity
 import 'dart:convert';
+import 'dart:math';
 
 class RunWorkout {
   String type; //run, workout, rest
@@ -92,7 +93,7 @@ List<Week> decreasePlanVolume(List<Week> plan, double percent) {
   //for every week in the plan
   for (var i = 0; i < plan.length; i++) {
     newPlan[i] =
-        decreaseWeekVolume(plan[i], percent); //increase the week volume
+        decreaseWeekVolume(plan[i], percent); //decrease the week volume
   }
 
   //return the new plan
@@ -165,17 +166,86 @@ RunWorkout decreaseDayVolume(RunWorkout dayToChange, double percent) {
   if (dayToChange.type == "rest") {
     return newWorkout;
   } else if (dayToChange.type == "workout") {
-    //if it was a workout, increase reps
+    //if it was a workout, decrease reps
     newWorkout.reps *= (1.0 - (percent / 100.0));
     //newWorkout.reps = newWorkout.reps.roundToDouble();
   } else if (dayToChange.type == "run") {
-    // if it was a time run, increase the time or distance
+    // if it was a time run, decrease the time or distance
     newWorkout.volume *= (1.0 - (percent / 100.0));
     //newWorkout.volume = newWorkout.volume.roundToDouble();
   }
 
   //return the new workout
   return newWorkout;
+}
+
+List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
+  List<Week> newPlan = origPlan;
+
+  //decrase volume by 10 percent if female
+  if (userIn.gender == "female") {
+    newPlan = decreasePlanVolume(newPlan, 10.0);
+  }
+
+  //height and weight conversions
+  double weight_kg = userIn.weightLbs * 0.453592;
+  double height_m = userIn.heightIn * 0.0254;
+  double bmi = weight_kg / pow(height_m, 2);
+
+  //if their bmi is over 25, decrease volume by 2 percent for every point above
+  if (bmi > 25) {
+    while (bmi > 25) {
+      newPlan = decreasePlanVolume(newPlan, 2);
+      bmi -= 1;
+    }
+  }
+
+  //adjust volume based on age
+  if (userIn.age < 18) {
+    newPlan = decreasePlanVolume(newPlan, 10);
+  } else if ((40 <= userIn.age) && (userIn.age < 50)) {
+    newPlan = decreasePlanVolume(newPlan, 5);
+  } else if ((50 <= userIn.age) && (userIn.age < 60)) {
+    newPlan = decreasePlanVolume(newPlan, 8);
+  } else if ((60 <= userIn.age) && (userIn.age < 70)) {
+    newPlan = decreasePlanVolume(newPlan, 10);
+  } else if (70 <= userIn.age) {
+    newPlan = decreasePlanVolume(newPlan, 15);
+  }
+
+  //if experience level is above 5, increase by 5% for every point above
+  //if it is below 5, decrease by 5% for every point below
+  int tempExp = userIn.experienceLevel;
+  if (userIn.experienceLevel > 5) {
+    while (tempExp > 5) {
+      newPlan = increasePlanVolume(newPlan, 5);
+      tempExp -= 1;
+    }
+  } else if (userIn.experienceLevel < 5) {
+    while (tempExp < 5) {
+      newPlan = decreasePlanVolume(newPlan, 5);
+      tempExp += 1;
+    }
+  }
+
+  //for every rhr point above 100, decrease by 1% volume
+  //for every rhr point below 60, increase by 1% volume
+  int tempRHR = userIn.rhr;
+  if (userIn.rhr != 0) {
+    if (userIn.rhr > 100) {
+      while (tempRHR > 100) {
+        newPlan = decreasePlanVolume(newPlan, 1);
+        tempRHR -= 1;
+      }
+    } else if (userIn.rhr < 100) {
+      while (tempRHR > 100) {
+        newPlan = decreasePlanVolume(newPlan, 1);
+        tempRHR -= 1;
+      }
+    }
+  }
+
+  return newPlan;
 }
 
 //this is a dummy function for printing and testing

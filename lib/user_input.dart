@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'scroll_wheel.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -26,8 +27,27 @@ class SettingsPage extends StatefulWidget {
 
 class UserInput extends State<SettingsPage> {
   // local variables to store current values
-  double _currentSliderValue = 0;
-  String _currentMessage = '';
+  // local variables to store current inputs
+  List<String> genderlist = <String>[
+    'Select',
+    'Male',
+    'Female',
+    'Prefer not to answer'
+  ];
+  late String gender = genderlist.first;
+
+  int heightIn = 0;
+  int weightLbs = 0;
+  int age = 0;
+  double experienceLevel = 0; // slider from 0-10
+  String experienceLevelMessage = ''; // feedback for experience level
+  int rhr = 0;
+
+  void _handleHeightValue(int value) {
+    setState(() {
+      heightIn = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,70 +55,78 @@ class UserInput extends State<SettingsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        // future builder for loading in saved values
-        child: FutureBuilder<double>(
-          future: readSlider(), // read saved values
-          builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-            // once the values are read build the widgets using the read values
-            if (snapshot.hasData) {
-              _currentSliderValue = snapshot.data!;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'How fit are you?',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    'Enter 1-10:',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Slider(
-                      value: _currentSliderValue,
-                      max: 10,
-                      divisions: 10,
-                      label: _currentSliderValue.round().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                          if (_currentSliderValue <= 3) {
-                            _currentMessage = 'Beginner';
-                          } else if (_currentSliderValue < 8) {
-                            _currentMessage = 'Intermediate';
-                          } else {
-                            _currentMessage = 'Expert';
-                          }
-                          writeSlider(_currentSliderValue);
-                        });
-                      }),
-                  Text(
-                    '$_currentSliderValue',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    _currentMessage,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ],
+      body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          //
+          // gender selection dropdown button
+          Text(
+            'What is your gender?',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          DropdownButton<String>(
+            value: gender,
+            icon: const Icon(Icons.arrow_downward),
+            elevation: 16,
+            style: const TextStyle(color: Colors.deepPurple),
+            underline: Container(
+              height: 2,
+              color: Colors.deepPurpleAccent,
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                gender = value!;
+              });
+            },
+            items: genderlist.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
               );
-
-              // if the values are not read, display a loading symbol
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            }
-          },
-        ),
-      ),
+            }).toList(),
+          ),
+          //
+          // height
+          Text(
+            'How tall are you?',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          ScrollingWheelInput(onChanged: _handleHeightValue),
+          Text(
+            'Enter 1-10:',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          Slider(
+              value: experienceLevel,
+              max: 10,
+              divisions: 10,
+              label: experienceLevel.round().toString(),
+              onChanged: (double value) {
+                setState(() {
+                  experienceLevel = value;
+                  if (experienceLevel <= 3) {
+                    experienceLevelMessage = 'Beginner';
+                  } else if (experienceLevel < 8) {
+                    experienceLevelMessage = 'Intermediate';
+                  } else {
+                    experienceLevelMessage = 'Expert';
+                  }
+                  writeSlider(experienceLevel);
+                });
+              }),
+          Text(
+            '$experienceLevel',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          Text(
+            experienceLevelMessage,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ],
+      ))),
     );
   }
 }

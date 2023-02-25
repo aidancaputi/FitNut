@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'input_widgets/scroll_wheel.dart';
+import 'input_widgets/number_input.dart';
+import 'plan_gen.dart';
+// file saving libraries
+// import 'package:path_provider/path_provider.dart';
+// import 'dart:io';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -25,9 +29,61 @@ class SettingsPage extends StatefulWidget {
 }
 
 class UserInput extends State<SettingsPage> {
-  // local variables to store current values
-  double _currentSliderValue = 0;
-  String _currentMessage = '';
+  // gender
+  List<String> genderlist = <String>[
+    'Select',
+    'Male',
+    'Female',
+    'Prefer not to answer'
+  ];
+  late String gender = genderlist.first;
+
+  // height
+  int heightFt = 0;
+  int heightIn = 0;
+  final List<int> heightFtValues = [3, 4, 5, 6, 7];
+  final List<int> heightInValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  int totalHeight = 0;
+  void _handleHeightFtValue(int value) {
+    setState(() {
+      totalHeight = value * 12 + totalHeight;
+    });
+  }
+
+  void _handleHeightInValue(int value) {
+    setState(() {
+      heightIn = value + totalHeight;
+    });
+  }
+
+  // weight
+  int weightLbs = 0;
+  void _onWeightValueChange(int weightValue) {
+    setState(() {
+      weightLbs = weightValue;
+    });
+  }
+
+  // age
+  int age = 0;
+  void _onAgeValueChange(int ageValue) {
+    setState(() {
+      age = ageValue;
+    });
+  }
+
+  // experience level
+  int experienceLevel = 5; // slider from 0-10
+  String experienceLevelMessage =
+      'Intermediate'; // feedback for experience level
+
+  // resting heart rate
+  int rhr = 0;
+  void _onrhrValueChange(int rhrValue) {
+    setState(() {
+      rhr = rhrValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,74 +91,217 @@ class UserInput extends State<SettingsPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        // future builder for loading in saved values
-        child: FutureBuilder<double>(
-          future: readSlider(), // read saved values
-          builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-            // once the values are read build the widgets using the read values
-            if (snapshot.hasData) {
-              _currentSliderValue = snapshot.data!;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'How fit are you?',
-                    style: Theme.of(context).textTheme.headlineMedium,
+      body: ListView(children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                //
+                // GENDER INPUT
+                Text(
+                  'What is your gender?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                DropdownButton<String>(
+                  value: gender,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
                   ),
-                  Text(
-                    'Enter 1-10:',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Slider(
-                      value: _currentSliderValue,
-                      max: 10,
-                      divisions: 10,
-                      label: _currentSliderValue.round().toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                          if (_currentSliderValue <= 3) {
-                            _currentMessage = 'Beginner';
-                          } else if (_currentSliderValue < 8) {
-                            _currentMessage = 'Intermediate';
-                          } else {
-                            _currentMessage = 'Expert';
-                          }
-                          writeSlider(_currentSliderValue);
-                        });
-                      }),
-                  Text(
-                    '$_currentSliderValue',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  Text(
-                    _currentMessage,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ],
-              );
+                  onChanged: (String? value) {
+                    setState(() {
+                      gender = value!;
+                    });
+                  },
+                  items:
+                      genderlist.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 16.0),
 
-              // if the values are not read, display a loading symbol
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
-              );
-            }
-          },
-        ),
+                //
+                // HEIGHT INPUT
+                const SizedBox(height: 16.0),
+                Text(
+                  'How tall are you?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                          child: ScrollingWheelInput(
+                              onChanged: _handleHeightFtValue,
+                              values: heightFtValues)),
+                      const SizedBox(
+                          width: 20.0,
+                          height: 100,
+                          child: Center(
+                            child:
+                                Text("ft.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                      Flexible(
+                          child: ScrollingWheelInput(
+                              onChanged: _handleHeightInValue,
+                              values: heightInValues)),
+                      const SizedBox(
+                          width: 20.0,
+                          height: 100,
+                          child: Center(
+                            child:
+                                Text("in.", style: TextStyle(fontSize: 18.0)),
+                          ))
+                    ]),
+                const SizedBox(height: 16.0),
+
+                //
+                // WEIGHT INPUT
+                const SizedBox(height: 16.0),
+                Text(
+                  'How much do you weigh?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onWeightValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("lbs.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
+                const SizedBox(height: 16.0),
+
+                //
+                // AGE INPUT
+                const SizedBox(height: 16.0),
+                Text(
+                  'How old are you?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onAgeValueChange),
+                      ),
+                      const SizedBox(
+                          width: 100.0,
+                          height: 50,
+                          child: Center(
+                            child: Text("years old",
+                                style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
+                const SizedBox(height: 16.0),
+
+                //
+                // EXPERIENCE LEVEL
+                const SizedBox(height: 16.0),
+                Text(
+                  'How much experience do you have?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Slider(
+                    value: experienceLevel.toDouble(),
+                    max: 10,
+                    divisions: 10,
+                    label: experienceLevel.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        experienceLevel = value.toInt();
+                        if (experienceLevel <= 3) {
+                          experienceLevelMessage = 'Beginner';
+                        } else if (experienceLevel < 8) {
+                          experienceLevelMessage = 'Intermediate';
+                        } else {
+                          experienceLevelMessage = 'Expert';
+                        }
+                      });
+                    }),
+                Text(
+                  '$experienceLevel: $experienceLevelMessage',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16.0),
+
+                //
+                // RHR INPUT
+                const SizedBox(height: 16.0),
+                Text(
+                  'What is your resting heart rate?',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onrhrValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("bpm", style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
+                const SizedBox(height: 16.0),
+
+                //
+                // GO TO NEXT PAGE
+                const SizedBox(height: 32.0),
+                ElevatedButton(
+                  child: const Text('Next'),
+                  onPressed: () {
+                    generatePlan(gender, totalHeight, weightLbs, age,
+                        experienceLevel, rhr);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PlanGenerationPage()),
+                    );
+                  },
+                ),
+              ],
+            ))
+      ]),
+    );
+  }
+}
+
+class PlanGenerationPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Plan Generation'),
+      ),
+      body: const Center(
+        child: Text('Generating Your Personal Workout Plan...'),
       ),
     );
   }
 }
 
+/* file saving functions
 // function for getting the current filepath
 Future<String> getFilePath(String fileName) async {
   final directory = await getApplicationDocumentsDirectory();
@@ -131,3 +330,4 @@ Future<double> readSlider() async {
     return 0;
   }
 }
+*/

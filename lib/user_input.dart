@@ -30,7 +30,12 @@ class SettingsPage extends StatefulWidget {
 
 class UserInput extends State<SettingsPage> {
   // gender
-  List<String> genderlist = <String>['Select', 'Male', 'Female', 'Prefer not to answer'];
+  List<String> genderlist = <String>[
+    'Select',
+    'Male',
+    'Female',
+    'Prefer not to answer'
+  ];
   late String gender = genderlist.first;
 
   // height
@@ -46,6 +51,18 @@ class UserInput extends State<SettingsPage> {
   }
 
   void _handleHeightInValue(int value) {
+    setState(() {
+      heightIn = value + totalHeight;
+    });
+  }
+
+  void _onHeightFtValueChange(int value) {
+    setState(() {
+      totalHeight = value * 12 + totalHeight;
+    });
+  }
+
+  void _onHeightInValueChange(int value) {
     setState(() {
       heightIn = value + totalHeight;
     });
@@ -69,7 +86,8 @@ class UserInput extends State<SettingsPage> {
 
   // experience level
   int experienceLevel = 5; // slider from 0-10
-  String experienceLevelMessage = 'Intermediate'; // feedback for experience level
+  String experienceLevelMessage =
+      'I could comfortably jog a 5K right now but I wouldn’t be very fast'; // feedback for experience level
 
   // resting heart rate
   int rhr = 0;
@@ -112,7 +130,8 @@ class UserInput extends State<SettingsPage> {
                       gender = value!;
                     });
                   },
-                  items: genderlist.map<DropdownMenuItem<String>>((String value) {
+                  items:
+                      genderlist.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -128,22 +147,55 @@ class UserInput extends State<SettingsPage> {
                   'How tall are you?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  Flexible(child: ScrollingWheelInput(onChanged: _handleHeightFtValue, values: heightFtValues)),
-                  const SizedBox(
-                      width: 20.0,
-                      height: 100,
-                      child: Center(
-                        child: Text("ft.", style: TextStyle(fontSize: 18.0)),
-                      )),
-                  Flexible(child: ScrollingWheelInput(onChanged: _handleHeightInValue, values: heightInValues)),
-                  const SizedBox(
-                      width: 20.0,
-                      height: 100,
-                      child: Center(
-                        child: Text("in.", style: TextStyle(fontSize: 18.0)),
-                      ))
-                ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onHeightFtValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("ft.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onHeightInValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("in.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                      /*
+                      Flexible(
+                          child: ScrollingWheelInput(
+                              onChanged: _handleHeightFtValue,
+                              values: heightFtValues)),
+                      const SizedBox(
+                          width: 20.0,
+                          height: 100,
+                          child: Center(
+                            child:
+                                Text("ft.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                      Flexible(
+                          child: ScrollingWheelInput(
+                              onChanged: _handleHeightInValue,
+                              values: heightInValues)),
+                      const SizedBox(
+                          width: 20.0,
+                          height: 100,
+                          child: Center(
+                            child:
+                                Text("in.", style: TextStyle(fontSize: 18.0)),
+                          )) */
+                    ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -153,17 +205,21 @@ class UserInput extends State<SettingsPage> {
                   'How much do you weigh?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  Flexible(
-                    child: NumericTextInput(onInputValueChange: _onWeightValueChange),
-                  ),
-                  const SizedBox(
-                      width: 50.0,
-                      height: 50,
-                      child: Center(
-                        child: Text("lbs.", style: TextStyle(fontSize: 18.0)),
-                      )),
-                ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onWeightValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("lbs.", style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -173,17 +229,21 @@ class UserInput extends State<SettingsPage> {
                   'How old are you?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  Flexible(
-                    child: NumericTextInput(onInputValueChange: _onAgeValueChange),
-                  ),
-                  const SizedBox(
-                      width: 100.0,
-                      height: 50,
-                      child: Center(
-                        child: Text("years old", style: TextStyle(fontSize: 18.0)),
-                      )),
-                ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onAgeValueChange),
+                      ),
+                      const SizedBox(
+                          width: 100.0,
+                          height: 50,
+                          child: Center(
+                            child: Text("years old",
+                                style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -196,17 +256,73 @@ class UserInput extends State<SettingsPage> {
                 Slider(
                     value: experienceLevel.toDouble(),
                     max: 10,
-                    divisions: 10,
+                    divisions: 9,
+                    min: 1,
                     label: experienceLevel.round().toString(),
                     onChanged: (double value) {
                       setState(() {
                         experienceLevel = value.toInt();
-                        if (experienceLevel <= 3) {
-                          experienceLevelMessage = 'Beginner';
-                        } else if (experienceLevel < 8) {
-                          experienceLevelMessage = 'Intermediate';
-                        } else {
-                          experienceLevelMessage = 'Expert';
+                        switch (experienceLevel) {
+                          case 1:
+                            {
+                              experienceLevelMessage =
+                                  'I couldn’t walk a 5K, even if my life depended on it';
+                            }
+                            break;
+                          case 2:
+                            {
+                              experienceLevelMessage =
+                                  'I could walk a 5K, but it wouldn’t be easy';
+                            }
+                            break;
+                          case 3:
+                            {
+                              experienceLevelMessage =
+                                  'I could comfortably walk a 5K and maybe even jog for a few minutes';
+                            }
+                            break;
+                          case 4:
+                            {
+                              experienceLevelMessage =
+                                  'I could jog a 5K, but I might have to stop to catch my breath a few times';
+                            }
+                            break;
+                          case 5:
+                            {
+                              experienceLevelMessage =
+                                  'I could comfortably jog a 5K right now but I wouldn’t be very fast';
+                            }
+                            break;
+                          case 6:
+                            {
+                              experienceLevelMessage =
+                                  'I could run a 5K in under 28 minutes';
+                            }
+                            break;
+                          case 7:
+                            {
+                              experienceLevelMessage =
+                                  'I could run a 5K in under 25 minutes';
+                            }
+                            break;
+                          case 8:
+                            {
+                              experienceLevelMessage =
+                                  'I could run a 5K in under 23 minutes';
+                            }
+                            break;
+                          case 9:
+                            {
+                              experienceLevelMessage =
+                                  'I could run a 5K in under 21 minutes';
+                            }
+                            break;
+                          case 10:
+                            {
+                              experienceLevelMessage =
+                                  'I could run a 5K in under 18 minutes';
+                            }
+                            break;
                         }
                       });
                     }),
@@ -223,17 +339,21 @@ class UserInput extends State<SettingsPage> {
                   'What is your resting heart rate?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  Flexible(
-                    child: NumericTextInput(onInputValueChange: _onrhrValueChange),
-                  ),
-                  const SizedBox(
-                      width: 50.0,
-                      height: 50,
-                      child: Center(
-                        child: Text("bpm", style: TextStyle(fontSize: 18.0)),
-                      )),
-                ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: NumericTextInput(
+                            onInputValueChange: _onrhrValueChange),
+                      ),
+                      const SizedBox(
+                          width: 50.0,
+                          height: 50,
+                          child: Center(
+                            child:
+                                Text("bpm", style: TextStyle(fontSize: 18.0)),
+                          )),
+                    ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -242,10 +362,13 @@ class UserInput extends State<SettingsPage> {
                 ElevatedButton(
                   child: const Text('Next'),
                   onPressed: () {
-                    generatePlan("5K", gender, totalHeight, weightLbs, age, experienceLevel, rhr);
+                    generatePlan("5K", gender, totalHeight, weightLbs, age,
+                        experienceLevel, rhr);
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PlanGenerationPage()),
+                      MaterialPageRoute(
+                          builder: (context) => PlanGenerationPage()),
                     );
                   },
                 ),

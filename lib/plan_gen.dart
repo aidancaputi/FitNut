@@ -46,16 +46,6 @@ class RunPlanInput {
   RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr);
 }
 
-//function to get user input and place the input into a RunPlanInput object
-void getInput(RunPlanInput inputObject) {
-  inputObject.gender = "male";
-  inputObject.heightIn = 6 * 12; //6 foot tall
-  inputObject.weightLbs = 180; //180 lbs
-  inputObject.age = 35;
-  inputObject.experienceLevel = 5;
-  inputObject.rhr = 80;
-}
-
 //this increases the volume of a plan by a certain percentage
 List<Week> increasePlanVolume(List<Week> plan, double percent) {
   //create new plan to return

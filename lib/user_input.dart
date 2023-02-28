@@ -30,12 +30,7 @@ class SettingsPage extends StatefulWidget {
 
 class UserInput extends State<SettingsPage> {
   // gender
-  List<String> genderlist = <String>[
-    'Select',
-    'Male',
-    'Female',
-    'Prefer not to answer'
-  ];
+  List<String> genderlist = <String>['Select', 'Male', 'Female', 'Prefer not to answer'];
   late String gender = genderlist.first;
 
   // height
@@ -74,8 +69,7 @@ class UserInput extends State<SettingsPage> {
 
   // experience level
   int experienceLevel = 5; // slider from 0-10
-  String experienceLevelMessage =
-      'Intermediate'; // feedback for experience level
+  String experienceLevelMessage = 'Intermediate'; // feedback for experience level
 
   // resting heart rate
   int rhr = 0;
@@ -118,8 +112,7 @@ class UserInput extends State<SettingsPage> {
                       gender = value!;
                     });
                   },
-                  items:
-                      genderlist.map<DropdownMenuItem<String>>((String value) {
+                  items: genderlist.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -135,32 +128,22 @@ class UserInput extends State<SettingsPage> {
                   'How tall are you?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                          child: ScrollingWheelInput(
-                              onChanged: _handleHeightFtValue,
-                              values: heightFtValues)),
-                      const SizedBox(
-                          width: 20.0,
-                          height: 100,
-                          child: Center(
-                            child:
-                                Text("ft.", style: TextStyle(fontSize: 18.0)),
-                          )),
-                      Flexible(
-                          child: ScrollingWheelInput(
-                              onChanged: _handleHeightInValue,
-                              values: heightInValues)),
-                      const SizedBox(
-                          width: 20.0,
-                          height: 100,
-                          child: Center(
-                            child:
-                                Text("in.", style: TextStyle(fontSize: 18.0)),
-                          ))
-                    ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                  Flexible(child: ScrollingWheelInput(onChanged: _handleHeightFtValue, values: heightFtValues)),
+                  const SizedBox(
+                      width: 20.0,
+                      height: 100,
+                      child: Center(
+                        child: Text("ft.", style: TextStyle(fontSize: 18.0)),
+                      )),
+                  Flexible(child: ScrollingWheelInput(onChanged: _handleHeightInValue, values: heightInValues)),
+                  const SizedBox(
+                      width: 20.0,
+                      height: 100,
+                      child: Center(
+                        child: Text("in.", style: TextStyle(fontSize: 18.0)),
+                      ))
+                ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -170,21 +153,17 @@ class UserInput extends State<SettingsPage> {
                   'How much do you weigh?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onWeightValueChange),
-                      ),
-                      const SizedBox(
-                          width: 50.0,
-                          height: 50,
-                          child: Center(
-                            child:
-                                Text("lbs.", style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                  Flexible(
+                    child: NumericTextInput(onInputValueChange: _onWeightValueChange),
+                  ),
+                  const SizedBox(
+                      width: 50.0,
+                      height: 50,
+                      child: Center(
+                        child: Text("lbs.", style: TextStyle(fontSize: 18.0)),
+                      )),
+                ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -194,21 +173,17 @@ class UserInput extends State<SettingsPage> {
                   'How old are you?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onAgeValueChange),
-                      ),
-                      const SizedBox(
-                          width: 100.0,
-                          height: 50,
-                          child: Center(
-                            child: Text("years old",
-                                style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                  Flexible(
+                    child: NumericTextInput(onInputValueChange: _onAgeValueChange),
+                  ),
+                  const SizedBox(
+                      width: 100.0,
+                      height: 50,
+                      child: Center(
+                        child: Text("years old", style: TextStyle(fontSize: 18.0)),
+                      )),
+                ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -248,21 +223,17 @@ class UserInput extends State<SettingsPage> {
                   'What is your resting heart rate?',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onrhrValueChange),
-                      ),
-                      const SizedBox(
-                          width: 50.0,
-                          height: 50,
-                          child: Center(
-                            child:
-                                Text("bpm", style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+                  Flexible(
+                    child: NumericTextInput(onInputValueChange: _onrhrValueChange),
+                  ),
+                  const SizedBox(
+                      width: 50.0,
+                      height: 50,
+                      child: Center(
+                        child: Text("bpm", style: TextStyle(fontSize: 18.0)),
+                      )),
+                ]),
                 const SizedBox(height: 16.0),
 
                 //
@@ -271,12 +242,10 @@ class UserInput extends State<SettingsPage> {
                 ElevatedButton(
                   child: const Text('Next'),
                   onPressed: () {
-                    generatePlan(gender, totalHeight, weightLbs, age,
-                        experienceLevel, rhr);
+                    generatePlan("5K", gender, totalHeight, weightLbs, age, experienceLevel, rhr);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PlanGenerationPage()),
+                      MaterialPageRoute(builder: (context) => PlanGenerationPage()),
                     );
                   },
                 ),

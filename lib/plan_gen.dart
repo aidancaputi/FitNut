@@ -3,6 +3,7 @@
 //class to represent a workout for the running activity
 import 'dart:convert';
 import 'dart:math';
+import 'base_plan_files/5K.dart';
 
 class RunWorkout {
   String type; //run, workout, rest
@@ -13,13 +14,7 @@ class RunWorkout {
   RunWorkout(this.type, this.version, this.volume, this.intensity, this.reps);
 
   //this is just so that I can dump the workouts as json..will be removed
-  Map toJson() => {
-        'type': type,
-        'version': version,
-        'volume': volume,
-        'intensity': intensity,
-        'reps': reps
-      };
+  Map toJson() => {'type': type, 'version': version, 'volume': volume, 'intensity': intensity, 'reps': reps};
 }
 
 //class to represent a week of a training plan (i.e. 7 workouts)
@@ -32,19 +27,11 @@ class Week {
   late RunWorkout day5;
   late RunWorkout day6;
   late RunWorkout day7;
-  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6,
-      this.day7);
+  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7);
 
   //this is just so that i can dump the week as json..will be removed
-  Map toJson() => {
-        'day1': jsonEncode(day1),
-        'day2': jsonEncode(day2),
-        'day3': jsonEncode(day3),
-        'day4': jsonEncode(day4),
-        'day5': jsonEncode(day5),
-        'day6': jsonEncode(day6),
-        'day7': jsonEncode(day7)
-      };
+  Map toJson() =>
+      {'day1': jsonEncode(day1), 'day2': jsonEncode(day2), 'day3': jsonEncode(day3), 'day4': jsonEncode(day4), 'day5': jsonEncode(day5), 'day6': jsonEncode(day6), 'day7': jsonEncode(day7)};
 }
 
 //class to represent a user input for a running plan
@@ -56,8 +43,7 @@ class RunPlanInput {
   late int age;
   late int experienceLevel;
   late int rhr;
-  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age,
-      this.experienceLevel, this.rhr);
+  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr);
 }
 
 //function to get user input and place the input into a RunPlanInput object
@@ -77,8 +63,7 @@ List<Week> increasePlanVolume(List<Week> plan, double percent) {
 
   //for every week in the plan
   for (var i = 0; i < plan.length; i++) {
-    newPlan[i] =
-        increaseWeekVolume(plan[i], percent); //increase the week volume
+    newPlan[i] = increaseWeekVolume(plan[i], percent); //increase the week volume
   }
 
   //return the new plan
@@ -92,8 +77,7 @@ List<Week> decreasePlanVolume(List<Week> plan, double percent) {
 
   //for every week in the plan
   for (var i = 0; i < plan.length; i++) {
-    newPlan[i] =
-        decreaseWeekVolume(plan[i], percent); //decrease the week volume
+    newPlan[i] = decreaseWeekVolume(plan[i], percent); //decrease the week volume
   }
 
   //return the new plan
@@ -249,44 +233,20 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
-//this is a dummy function for printing and testing
-List<Week> generatePlan(String gender, int heightIN, int weightLBS, int age,
-    int experience, int rhr) {
-  var testDay1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay2 = RunWorkout("workout", "distance", 400, "hard", 6.0);
-  var testDay3 = RunWorkout("run", "distance", 3.0, "easy", 0.0);
-  var testDay4 = RunWorkout("run", "time", 30.0, "tempo", 0.0);
-  var testDay5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay6 = RunWorkout("workout", "time", 90.0, "easy", 5.0);
-  var testDay7 = RunWorkout("run", "distance", 6.0, "easy", 0.0);
+//caller function for generating plan
+List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr) {
+  //gather user input
+  RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr);
 
-  var testDay11 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay22 = RunWorkout("workout", "distance", 400, "hard", 6.0);
-  var testDay33 = RunWorkout("run", "distance", 3.0, "easy", 0.0);
-  var testDay44 = RunWorkout("run", "time", 30.0, "tempo", 0.0);
-  var testDay55 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay66 = RunWorkout("workout", "time", 90.0, "easy", 5.0);
-  var testDay77 = RunWorkout("run", "distance", 6.0, "easy", 0.0);
+  //this will be set to the chosen activity base plan
+  List<Week> initialPlan = [];
 
-  var testDay111 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay222 = RunWorkout("workout", "distance", 400, "hard", 6.0);
-  var testDay333 = RunWorkout("run", "distance", 3.0, "easy", 0.0);
-  var testDay444 = RunWorkout("run", "time", 30.0, "tempo", 0.0);
-  var testDay555 = RunWorkout("rest", "rest", 0.0, "rest", 0.0);
-  var testDay666 = RunWorkout("workout", "time", 90.0, "easy", 5.0);
-  var testDay777 = RunWorkout("run", "distance", 6.0, "easy", 0.0);
+  //choose base activity based on activity chosen
+  if (activity == "5K") {
+    initialPlan = base5kPlan;
+  }
 
-  List<Week> initialPlan = [
-    Week(testDay1, testDay2, testDay3, testDay4, testDay5, testDay6, testDay7),
-    Week(testDay11, testDay22, testDay33, testDay44, testDay55, testDay66,
-        testDay77),
-    Week(testDay111, testDay222, testDay333, testDay444, testDay555, testDay666,
-        testDay777),
-  ];
-
-  RunPlanInput userInput =
-      RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr);
-
+  //pass in the initial plan and the user input to customize final plan
   List<Week> finalPlan = customizePlan(initialPlan, userInput);
 
   return finalPlan;

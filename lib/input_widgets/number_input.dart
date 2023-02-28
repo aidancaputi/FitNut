@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class NumericTextInput extends StatefulWidget {
   final ValueChanged<int> onInputValueChange;
@@ -21,6 +22,9 @@ class _NumericTextInputState extends State<NumericTextInput> {
           TextField(
             controller: _controller,
             keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))
+            ],
             decoration: const InputDecoration(
               hintText: 'Enter a number',
             ),

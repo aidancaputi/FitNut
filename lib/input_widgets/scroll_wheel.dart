@@ -1,42 +1,54 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class ScrollingWheelInput extends StatefulWidget {
+  final int minValue;
+  final int maxValue;
   final ValueChanged<int> onChanged;
-  final List<int> values;
 
-  ScrollingWheelInput({required this.onChanged, required this.values});
+  const ScrollingWheelInput({
+    Key? key,
+    required this.minValue,
+    required this.maxValue,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   _ScrollingWheelInputState createState() => _ScrollingWheelInputState();
 }
 
 class _ScrollingWheelInputState extends State<ScrollingWheelInput> {
-  int _selectedValue = 0;
+  late FixedExtentScrollController _scrollController;
+  late int _selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.minValue;
+    _scrollController = FixedExtentScrollController(
+        initialItem: _selectedValue - widget.minValue);
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100,
       width: 50,
-      child: ListWheelScrollView(
-        diameterRatio: 1.0,
-        itemExtent: 20.0,
-        children: widget.values.map((int value) {
-          return InkWell(
-            onTap: () {
-              setState(() {
-                _selectedValue = value;
-                widget.onChanged(_selectedValue);
-              });
-            },
-            child: Center(
-              child: Text(
-                '$value',
-                style: const TextStyle(fontSize: 18.0),
-              ),
-            ),
-          );
-        }).toList(),
+      child: CupertinoPicker(
+        scrollController: _scrollController,
+        itemExtent: 32,
+        onSelectedItemChanged: (index) {
+          setState(() {
+            _selectedValue = widget.minValue + index;
+          });
+          widget.onChanged(_selectedValue);
+        },
+        children: List.generate(
+          widget.maxValue - widget.minValue + 1,
+          (index) => Text(
+            '${widget.minValue + index}',
+            style: const TextStyle(fontSize: 24),
+          ),
+        ),
       ),
     );
   }

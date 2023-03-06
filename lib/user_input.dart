@@ -273,6 +273,7 @@ class UserInput extends State<SettingsPage> {
                           age,
                           experienceLevel.toInt(),
                           rhr);
+                      print(newWorkoutPlan[1].toJson());
                     } else {
                       List<Week> newWorkoutPlan = generatePlan(
                           "5K",
@@ -282,6 +283,7 @@ class UserInput extends State<SettingsPage> {
                           age,
                           experienceLevel.toInt(),
                           rhr);
+                      print(newWorkoutPlan[1].toJson());
                     }
                     Navigator.push(
                       context,

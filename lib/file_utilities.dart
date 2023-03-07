@@ -1,7 +1,6 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'plan_gen.dart';
-import 'dart:convert';
 
 // function for getting the current filepath
 Future<String> getFilePath(String fileName) async {

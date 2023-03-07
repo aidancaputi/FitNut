@@ -14,7 +14,7 @@ class _loadPlanState extends State<loadPlan> {
   Widget build(BuildContext context) {
     return SizedBox(
       child: FutureBuilder<int>(
-        future: writePlan(widget.newPlan, "workout1.txt"), // read saved values
+        future: writePlan(widget.newPlan, "workout5k.txt"), // read saved values
         builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
           // once the values are read build the widgets using the read values
           if (snapshot.hasData) {

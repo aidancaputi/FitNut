@@ -3,6 +3,8 @@ import 'input_widgets/scroll_wheel.dart';
 import 'input_widgets/number_input.dart';
 import 'plan_gen.dart';
 import 'input_widgets/experience_level_slider.dart';
+import 'file_utilities.dart';
+import 'input_widgets/plan_loading.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -262,33 +264,23 @@ class UserInput extends State<SettingsPage> {
                 ElevatedButton(
                   child: const Text('Next'),
                   onPressed: () {
+                    List<Week> newPlan;
                     // input verification
                     if (gender == 'Select' ||
                         gender == 'Prefer not to answer') {
-                      List<Week> newWorkoutPlan = generatePlan(
-                          "5K",
-                          "female",
-                          totalHeight,
-                          weightLbs,
-                          age,
-                          experienceLevel.toInt(),
-                          rhr);
-                      print(newWorkoutPlan[1].toJson());
+                      newPlan = generatePlan("5K", "female", totalHeight,
+                          weightLbs, age, experienceLevel.toInt(), rhr);
                     } else {
-                      List<Week> newWorkoutPlan = generatePlan(
-                          "5K",
-                          gender,
-                          totalHeight,
-                          weightLbs,
-                          age,
-                          experienceLevel.toInt(),
-                          rhr);
-                      print(newWorkoutPlan[1].toJson());
+                      newPlan = generatePlan("5K", gender, totalHeight,
+                          weightLbs, age, experienceLevel.toInt(), rhr);
                     }
+                    print(newPlan[1].toJson());
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PlanGenerationPage()),
+                          builder: (context) =>
+                              PlanGenerationPage(newPlan: newPlan)),
                     );
                   },
                 ),
@@ -300,14 +292,16 @@ class UserInput extends State<SettingsPage> {
 }
 
 class PlanGenerationPage extends StatelessWidget {
+  final List<Week> newPlan;
+  const PlanGenerationPage({required this.newPlan});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plan Generation'),
       ),
-      body: const Center(
-        child: Text('Generating Your Personal Workout Plan...'),
+      body: Center(
+        child: loadPlan(newPlan: newPlan),
       ),
     );
   }

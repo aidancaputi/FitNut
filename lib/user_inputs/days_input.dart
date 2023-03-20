@@ -29,11 +29,11 @@ class _DaysInputState extends State<DaysInput> {
             ),
             borderRadius: BorderRadius.circular(1.0),
           ),
-          height: 425,
+          height: 490,
           width: 500,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'Which days can you workout on? - please select at least 3',
+              'What days can you workout on? - please select at least 3',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

@@ -113,7 +113,7 @@ class _ExperienceSliderInputState extends State<ExperienceSliderInput> {
                 }),
             Text(
               '${widget.experienceLevel.toInt()}: $experienceLevelMessage',
-              style: const TextStyle(fontSize: 20.0),
+              style: const TextStyle(fontSize: 18.0),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16.0),

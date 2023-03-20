@@ -34,7 +34,7 @@ class _LengthInputState extends State<LengthInput> {
             ),
             borderRadius: BorderRadius.circular(1.0),
           ),
-          height: widget.borderProperties.borderHeight,
+          height: widget.borderProperties.borderHeight + 12,
           width: widget.borderProperties.borderWidth,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(

@@ -14,7 +14,7 @@ class DaysInput extends StatefulWidget {
 }
 
 class _DaysInputState extends State<DaysInput> {
-  final double checkboxHeight = 50;
+  final double checkboxHeight = 40;
   final double checkboxWidth = 200;
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _DaysInputState extends State<DaysInput> {
             ),
             borderRadius: BorderRadius.circular(1.0),
           ),
-          height: 500,
+          height: 425,
           width: 500,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(

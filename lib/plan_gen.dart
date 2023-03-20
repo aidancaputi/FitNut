@@ -47,7 +47,7 @@ class RunPlanInput {
   late int age;
   late int experienceLevel;
   late int rhr;
-  late List<int> schedule;
+  late List<bool> schedule;
   RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr, this.schedule);
 }
 
@@ -278,13 +278,13 @@ Week insertDayAtIndex(Week origWeek, int idx, RunWorkout dayToInsert) {
 }
 
 //takes a week and a schedule of the same length and returns a shuffled version that matches
-Week arrangeDaysOfWeek(Week origWeek, List<int> schedule) {
+Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
   Week newWeek = origWeek;
 
   //mark the days of the week we want
   List<int> indexes = [];
   for (var j = 0; j < 7; j++) {
-    if (schedule[j] == 1) {
+    if (schedule[j] == true) {
       indexes.add(j);
     }
   }
@@ -350,7 +350,7 @@ List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
   //count the users number of days per week available
   var userDaysPerWeek = 0;
   for (var j = 0; j < userIn.schedule.length; j++) {
-    if (userIn.schedule[j] == 1) {
+    if (userIn.schedule[j] == true) {
       userDaysPerWeek += 1;
     }
   }
@@ -451,7 +451,7 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
 }
 
 //caller function for generating plan
-List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<int> schedule) {
+List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule) {
   //gather user input
   RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule);
 

@@ -54,8 +54,7 @@ class _GenerateButtonState extends State<GenerateButton> {
             );
           } else if (widget.rhr == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('Please enter your resting heart rate')),
+              const SnackBar(content: Text('Please enter your resting heart rate')),
             );
           } else if (widget.weightLbs == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -63,22 +62,13 @@ class _GenerateButtonState extends State<GenerateButton> {
             );
           } else if (widget.totalDays < 3) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('Please select at least 3 days to workout on')),
+              const SnackBar(content: Text('Please select at least 3 days to workout on')),
             );
           } else {
-            newPlan = generatePlan(
-                "5K",
-                widget.gender,
-                widget.totalHeight,
-                widget.weightLbs,
-                widget.age,
-                widget.experienceLevel,
-                widget.rhr);
+            newPlan = generatePlan("5K", widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days);
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => PlanGenerationPage(newPlan: newPlan)),
+              MaterialPageRoute(builder: (context) => PlanGenerationPage(newPlan: newPlan)),
             );
           }
         },

@@ -38,7 +38,7 @@ class _CalState extends State<CalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TableCalendar Example'),
+        title: const Text('TableCalendar'),
       ),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -58,8 +58,8 @@ class _CalState extends State<CalPage> {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => TableEventsExample(
-                                  fileSourceStr: fileSourceStr)),
+                              builder: (_) =>
+                                  TableEvents(fileSourceStr: fileSourceStr)),
                         ),
                       )
                     ]);

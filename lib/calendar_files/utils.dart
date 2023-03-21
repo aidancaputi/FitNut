@@ -7,7 +7,7 @@ import 'calendarOps.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 
-/// Example event class.
+// event class.
 class Event {
   final String title;
 
@@ -17,31 +17,43 @@ class Event {
   String toString() => title;
 }
 
-/// Example events.
+// events
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
 
 LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
-  final kToday = DateTime.now();
-  final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-  final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+  //print('\n\n\ninside the event class\n\n\n\n\n');
 
-  //final fileList = jsonDecode(fileSourceStr);
-  //print(fileList);
-  print('\n\n\ninside the event class\n\n\n\n\n');
-  print(jsonDecode(fileSourceStr));
+  //decode the json from the plan file
+  List<dynamic> fileSourceList = jsonDecode(fileSourceStr);
 
-  //process the json
+  //find the number of weeks the plan lasts
+  int numWeeks = fileSourceList.length;
+  List dayArr = [];
 
-  final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
-      key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
-      value: (item) => List.generate(
-          item % 4 + 1, (index) => Event('Event $item | ${index + 1}')))
+  //declare a week json to iterate the file json
+  Map<String, dynamic> week;
+
+  for (week in fileSourceList) {
+    week.forEach((key, value) {
+      //append each day of the workout plan to an array of subsequent days
+      dayArr.add(value);
+      //print('$key : $value');
+    });
+  }
+
+  // create a map, setting each day from today onwards to correspond to the array
+  // of days, so that any utc date in the workout plan range points to the appropriate
+  // workout for that day
+  // today has to be set seperately
+
+  final _kEventSource = Map.fromIterable(
+      List.generate(numWeeks * 7, (index) => index),
+      key: (item) => DateTime.utc(
+          kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()),
+      value: (item) => List.generate(1, (index) => Event(dayArr[item])))
     ..addAll({
-      kToday: [
-        Event('Today\'s Event 1'),
-        Event('Today\'s Event 2'),
-      ],
+      kToday: [Event(dayArr[0])],
     });
 
   final kEvents = LinkedHashMap<DateTime, List<Event>>(
@@ -66,5 +78,10 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day);
+
+// assuming that the longest workout plan is 6 months
+int longestPlanMonths = 6;
+
+final kLastDay =
+    DateTime(kToday.year, kToday.month + longestPlanMonths, kToday.day);

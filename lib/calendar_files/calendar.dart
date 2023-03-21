@@ -3,14 +3,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'utils.dart';
 import 'dart:collection';
 
-class TableEventsExample extends StatefulWidget {
+class TableEvents extends StatefulWidget {
   final String fileSourceStr;
-  const TableEventsExample({required this.fileSourceStr});
+  const TableEvents({required this.fileSourceStr});
   @override
-  _TableEventsExampleState createState() => _TableEventsExampleState();
+  _TableEventsState createState() => _TableEventsState();
 }
 
-class _TableEventsExampleState extends State<TableEventsExample> {
+class _TableEventsState extends State<TableEvents> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -35,7 +35,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    // Implementation example
+    // Implementation
     LinkedHashMap<DateTime, List<Event>> kEvents =
         getkEvents(widget.fileSourceStr);
 
@@ -43,7 +43,7 @@ class _TableEventsExampleState extends State<TableEventsExample> {
   }
 
   List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    // Implementation example
+    // Implementation
     final days = daysInRange(start, end);
 
     return [

@@ -65,7 +65,7 @@ class _GenerateButtonState extends State<GenerateButton> {
               const SnackBar(content: Text('Please select at least 3 days to workout on')),
             );
           } else {
-            newPlan = generatePlan("5K", widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days);
+            newPlan = generatePlan("5K", widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days, widget.workoutLength);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => PlanGenerationPage(newPlan: newPlan)),

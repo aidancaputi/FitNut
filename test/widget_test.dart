@@ -5,7 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:FitNut/input_widgets/number_input.dart';
 import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +26,8 @@ void main() {
 
   //this test navigates to the input tab and checks that all the input messages are correct
   testWidgets('Input page has correct questions', (tester) async {
-    await tester.pumpWidget(const Settings());
+    const String workoutType = "5K";
+    await tester.pumpWidget(const Input(workoutType: workoutType));
 
     expect(find.text('What is your gender?'), findsOneWidget);
     expect(find.text('How tall are you?'), findsOneWidget);
@@ -39,11 +39,15 @@ void main() {
 
   //this tests the gender dropdown widget
   testWidgets('Gender dropdown', (tester) async {
-    await tester.pumpWidget(const Settings()); //go to settings page
+    const String workoutType = "5K";
+    await tester.pumpWidget(
+        const Input(workoutType: workoutType)); //go to settings page
 
-    expect(find.byType(DropdownButton<String>), findsOneWidget); //asser that the dropdown for gender exists
+    expect(find.byType(DropdownButton<String>),
+        findsOneWidget); //asser that the dropdown for gender exists
 
-    final gender = find.byType(DropdownButton<String>); //select the gender dropdown
+    final gender =
+        find.byType(DropdownButton<String>); //select the gender dropdown
 
     //tap the gender dropdown and select male
     await tester.tap(gender);

@@ -16,7 +16,7 @@ void main() {
   //this test makes sure that the 4 tabs exist and can be tapped between
   testWidgets('Tab bars can be navigated between', (tester) async {
     // Test code goes here.
-    await tester.pumpWidget(const TabBarDemo());
+    await tester.pumpWidget(const TabBarField());
     await tester.tap(find.byIcon(Icons.calendar_today));
     await tester.tap(find.byIcon(Icons.card_membership_sharp));
     await tester.tap(find.byIcon(Icons.waves_rounded));
@@ -41,9 +41,11 @@ void main() {
   testWidgets('Gender dropdown', (tester) async {
     await tester.pumpWidget(const Settings()); //go to settings page
 
-    expect(find.byType(DropdownButton<String>), findsOneWidget); //asser that the dropdown for gender exists
+    expect(find.byType(DropdownButton<String>),
+        findsOneWidget); //asser that the dropdown for gender exists
 
-    final gender = find.byType(DropdownButton<String>); //select the gender dropdown
+    final gender =
+        find.byType(DropdownButton<String>); //select the gender dropdown
 
     //tap the gender dropdown and select male
     await tester.tap(gender);

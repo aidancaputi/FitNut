@@ -68,16 +68,7 @@ class _GenerateButtonState extends State<GenerateButton> {
                   content: Text('Please select at least 3 days to workout on')),
             );
           } else {
-            newPlan = generatePlan(
-                widget.workoutType,
-                widget.gender,
-                widget.totalHeight,
-                widget.weightLbs,
-                widget.age,
-                widget.experienceLevel,
-                widget.rhr,
-                widget.days);
-            print(newPlan);
+            newPlan = generatePlan(widget.workoutType, widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days, widget.workoutLength);
             Navigator.push(
               context,
               MaterialPageRoute(

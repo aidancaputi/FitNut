@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:FitNut/user_input.dart';
 import 'package:FitNut/plan_gen.dart';
 import 'package:FitNut/user_inputs/plan_loading.dart';
 
 class GenerateButton extends StatefulWidget {
+  final String workoutType;
   final String gender;
   final int totalHeight;
   final int weightLbs;
@@ -14,7 +14,8 @@ class GenerateButton extends StatefulWidget {
   final List<bool> days;
   final int totalDays;
   GenerateButton(
-      {required this.gender,
+      {required this.workoutType,
+      required this.gender,
       required this.totalHeight,
       required this.weightLbs,
       required this.age,
@@ -54,7 +55,8 @@ class _GenerateButtonState extends State<GenerateButton> {
             );
           } else if (widget.rhr == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please enter your resting heart rate')),
+              const SnackBar(
+                  content: Text('Please enter your resting heart rate')),
             );
           } else if (widget.weightLbs == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -62,13 +64,24 @@ class _GenerateButtonState extends State<GenerateButton> {
             );
           } else if (widget.totalDays < 3) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please select at least 3 days to workout on')),
+              const SnackBar(
+                  content: Text('Please select at least 3 days to workout on')),
             );
           } else {
-            newPlan = generatePlan("5K", widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days);
+            newPlan = generatePlan(
+                widget.workoutType,
+                widget.gender,
+                widget.totalHeight,
+                widget.weightLbs,
+                widget.age,
+                widget.experienceLevel,
+                widget.rhr,
+                widget.days);
+            print(newPlan);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PlanGenerationPage(newPlan: newPlan)),
+              MaterialPageRoute(
+                  builder: (context) => PlanGenerationPage(newPlan: newPlan)),
             );
           }
         },

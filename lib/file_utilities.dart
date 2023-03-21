@@ -1,11 +1,14 @@
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'plan_gen.dart';
+import 'dart:convert';
 
 // function for getting the current filepath
 Future<String> getFilePath(String fileName) async {
   final directory = await getApplicationDocumentsDirectory();
   String path = directory.path;
+
+  //print('$path / $fileName');
 
   return '$path/$fileName';
 }
@@ -14,10 +17,13 @@ Future<String> getFilePath(String fileName) async {
 Future<int> writePlan(List<Week> newPlan, String fileName) async {
   File file = File(await getFilePath(fileName));
   final buffer = StringBuffer();
-  for (var i = 0; i < newPlan.length; i++) {
-    buffer.write(newPlan[i].toJson());
+  /*for (var i = 0; i < newPlan.length; i++) {
+    buffer.write(jsonEncode(newPlan[i]));
     buffer.write('\n');
-  }
+  }*/
+
+  buffer.write(jsonEncode(newPlan));
+
   file.writeAsString(buffer.toString());
 
   await Future.delayed(const Duration(seconds: 3));

@@ -9,8 +9,9 @@ import 'user_inputs/days_input.dart';
 import 'user_inputs/length_input.dart';
 import 'user_inputs/generate_button.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class Input extends StatelessWidget {
+  final String workoutType;
+  const Input({super.key, required this.workoutType});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,17 +19,17 @@ class Settings extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SettingsPage(title: 'Input User Info'),
+      home: InputPage(title: 'Input User Info', workoutType: workoutType),
     );
   }
 }
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key, required this.title});
+class InputPage extends StatefulWidget {
   final String title;
-
+  final String workoutType;
+  const InputPage({super.key, required this.title, required this.workoutType});
   @override
-  State<SettingsPage> createState() => UserInput();
+  State<InputPage> createState() => UserInput();
 }
 
 class InputBorderProperties {
@@ -40,9 +41,8 @@ class InputBorderProperties {
   final EdgeInsets borderPadding = const EdgeInsets.all(11.0);
 }
 
-class UserInput extends State<SettingsPage> {
+class UserInput extends State<InputPage> {
   // initialize default values for all inputs
-
   // gender
   late String gender = 'Select';
   void _onGenderChange(String value) {
@@ -120,9 +120,6 @@ class UserInput extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: ListView(children: <Widget>[
         Padding(
             padding: const EdgeInsets.all(16.0),
@@ -197,6 +194,7 @@ class UserInput extends State<SettingsPage> {
                   workoutLength: workoutLength,
                   days: days,
                   totalDays: totalDays,
+                  workoutType: widget.workoutType,
                 ),
               ],
             ))

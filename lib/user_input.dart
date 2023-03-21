@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'input_widgets/scroll_wheel.dart';
-import 'input_widgets/number_input.dart';
-import 'plan_gen.dart';
-import 'input_widgets/experience_level_slider.dart';
-import 'file_utilities.dart';
-import 'input_widgets/plan_loading.dart';
+import 'user_inputs/experience_input.dart';
+import 'user_inputs/gender_input.dart';
+import 'user_inputs/height_input.dart';
+import 'user_inputs/weight_input.dart';
+import 'user_inputs/age_input.dart';
+import 'user_inputs/rhr_input.dart';
+import 'user_inputs/days_input.dart';
+import 'user_inputs/length_input.dart';
+import 'user_inputs/generate_button.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class Input extends StatelessWidget {
+  final String workoutType;
+  const Input({super.key, required this.workoutType});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,51 +19,48 @@ class Settings extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SettingsPage(title: 'Input User Info'),
+      home: InputPage(title: 'Input User Info', workoutType: workoutType),
     );
   }
 }
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key, required this.title});
+class InputPage extends StatefulWidget {
   final String title;
-
+  final String workoutType;
+  const InputPage({super.key, required this.title, required this.workoutType});
   @override
-  State<SettingsPage> createState() => UserInput();
+  State<InputPage> createState() => UserInput();
 }
 
-class UserInput extends State<SettingsPage> {
-  // gender
-  List<String> genderlist = <String>[
-    'Select',
-    'Male',
-    'Female',
-    'Prefer not to answer'
-  ];
-  late String gender = genderlist.first;
+class InputBorderProperties {
+  // establish all border properties
+  final Color borderColor = Colors.grey.withOpacity(0.75);
+  final double borderLineWidth = 2.0;
+  final double borderHeight = 250;
+  final double borderWidth = 500;
+  final EdgeInsets borderPadding = const EdgeInsets.all(11.0);
+}
 
-  // height
-  int heightFt = 5;
-  int heightIn = 6;
-  final List<int> heightFtValues = [3, 4, 5, 6, 7];
-  final List<int> heightInValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  int totalHeight = 66;
-  void _onHeightFtValueChange(int value) {
+class UserInput extends State<InputPage> {
+  // initialize default values for all inputs
+  // gender
+  late String gender = 'Select';
+  void _onGenderChange(String value) {
     setState(() {
-      heightFt = value;
-      totalHeight = heightFt * 12 + heightIn;
+      gender = value;
     });
   }
 
-  void _onHeightInValueChange(int value) {
+  // height
+  int totalHeight = 0;
+  void _onTotalHeightValueChange(int value) {
     setState(() {
-      heightIn = value;
-      totalHeight = heightFt * 12 + heightIn;
+      totalHeight = value;
     });
   }
 
   // weight
-  int weightLbs = 150;
+  int weightLbs = 0;
   void _onWeightValueChange(int weightValue) {
     setState(() {
       weightLbs = weightValue;
@@ -67,7 +68,7 @@ class UserInput extends State<SettingsPage> {
   }
 
   // age
-  int age = 21;
+  int age = 0;
   void _onAgeValueChange(int ageValue) {
     setState(() {
       age = ageValue;
@@ -75,29 +76,50 @@ class UserInput extends State<SettingsPage> {
   }
 
   // experience level
-  double experienceLevel = 5; // slider from 0-10
-  String experienceLevelMessage =
-      'I could comfortably jog a 5K right now but I wouldn’t be very fast'; // feedback for experience level
+  int experienceLevel = 5; // slider from 0-10
   void _onELMValueChange(double value) {
     setState(() {
-      experienceLevel = value;
+      experienceLevel = value.toInt();
     });
   }
 
   // resting heart rate
-  int rhr = 70;
+  int rhr = 0;
   void _onrhrValueChange(int rhrValue) {
     setState(() {
       rhr = rhrValue;
     });
   }
 
+  // workout plan length
+  int workoutLength = 8;
+  void _onLengthValueChange(int lengthValue) {
+    setState(() {
+      workoutLength = lengthValue;
+    });
+  }
+
+  // days of the week
+  List<bool> days = [false, false, false, false, false, false, false];
+  int totalDays = 0;
+  void _onDaysValueChange(List<bool> daysValues) {
+    setState(() {
+      days = daysValues;
+      totalDays = 0;
+      for (int i = 0; i < 7; i++) {
+        if (days[i]) {
+          totalDays += 1;
+        }
+      }
+    });
+  }
+
+  // intialize border values
+  final InputBorderProperties borderProperties = InputBorderProperties();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: ListView(children: <Widget>[
         Padding(
             padding: const EdgeInsets.all(16.0),
@@ -105,204 +127,78 @@ class UserInput extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                //
                 // GENDER INPUT
-                Text(
-                  'What is your gender?',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                GenderInput(
+                  gender: gender,
+                  onChanged: _onGenderChange,
+                  borderProperties: borderProperties,
                 ),
-                DropdownButton<String>(
-                  value: gender,
-                  icon: const Icon(Icons.arrow_downward),
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      gender = value!;
-                    });
-                  },
-                  items:
-                      genderlist.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 16.0),
 
-                //
                 // HEIGHT INPUT
-                const SizedBox(height: 16.0),
-                Text(
-                  'How tall are you?',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                HeightInput(
+                  totalHeight: totalHeight,
+                  onChanged: _onTotalHeightValueChange,
+                  borderProperties: borderProperties,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                          child: ScrollingWheelInput(
-                        minValue: 3,
-                        maxValue: 7,
-                        onChanged: _onHeightFtValueChange,
-                      )),
-                      const SizedBox(
-                          width: 20.0,
-                          height: 100,
-                          child: Center(
-                            child:
-                                Text("ft.", style: TextStyle(fontSize: 18.0)),
-                          )),
-                      Flexible(
-                          child: ScrollingWheelInput(
-                        minValue: 0,
-                        maxValue: 11,
-                        onChanged: _onHeightInValueChange,
-                      )),
-                      const SizedBox(
-                          width: 20.0,
-                          height: 100,
-                          child: Center(
-                            child:
-                                Text("in.", style: TextStyle(fontSize: 18.0)),
-                          ))
-                    ]),
-                const SizedBox(height: 16.0),
 
-                //
                 // WEIGHT INPUT
-                const SizedBox(height: 16.0),
-                Text(
-                  'How much do you weigh?',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                WeightInput(
+                  weight: weightLbs,
+                  onChanged: _onWeightValueChange,
+                  borderProperties: borderProperties,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onWeightValueChange),
-                      ),
-                      const SizedBox(
-                          width: 50.0,
-                          height: 50,
-                          child: Center(
-                            child:
-                                Text("lbs.", style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
-                const SizedBox(height: 16.0),
 
-                //
                 // AGE INPUT
-                const SizedBox(height: 16.0),
-                Text(
-                  'How old are you?',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                AgeInput(
+                  age: age,
+                  onChanged: _onAgeValueChange,
+                  borderProperties: borderProperties,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onAgeValueChange),
-                      ),
-                      const SizedBox(
-                          width: 100.0,
-                          height: 50,
-                          child: Center(
-                            child: Text("years old",
-                                style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
-                const SizedBox(height: 16.0),
 
-                //
                 // EXPERIENCE LEVEL
                 ExperienceSliderInput(
                   experienceLevel: experienceLevel,
                   onChanged: _onELMValueChange,
+                  borderProperties: borderProperties,
                 ),
 
-                //
                 // RHR INPUT
-                const SizedBox(height: 16.0),
-                Text(
-                  'What is your resting heart rate?',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
+                RHRInput(
+                  rhr: rhr,
+                  onChanged: _onrhrValueChange,
+                  borderProperties: borderProperties,
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: NumericTextInput(
-                            onInputValueChange: _onrhrValueChange),
-                      ),
-                      const SizedBox(
-                          width: 50.0,
-                          height: 50,
-                          child: Center(
-                            child:
-                                Text("bpm", style: TextStyle(fontSize: 18.0)),
-                          )),
-                    ]),
-                const SizedBox(height: 16.0),
 
-                //
+                // LENGTH INPUT
+                LengthInput(
+                  length: workoutLength,
+                  onChanged: _onLengthValueChange,
+                  borderProperties: borderProperties,
+                ),
+
+                // DAYS INPUT
+                DaysInput(
+                  days: days,
+                  onChanged: _onDaysValueChange,
+                  borderProperties: borderProperties,
+                ),
+
                 // GO TO NEXT PAGE
-                const SizedBox(height: 32.0),
-                ElevatedButton(
-                  child: const Text('Next'),
-                  onPressed: () {
-                    List<Week> newPlan;
-                    // input verification
-                    if (gender == 'Select' ||
-                        gender == 'Prefer not to answer') {
-                      newPlan = generatePlan("5K", "female", totalHeight,
-                          weightLbs, age, experienceLevel.toInt(), rhr);
-                    } else {
-                      newPlan = generatePlan("5K", gender, totalHeight,
-                          weightLbs, age, experienceLevel.toInt(), rhr);
-                    }
-                    print(newPlan[1].toJson());
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              PlanGenerationPage(newPlan: newPlan)),
-                    );
-                  },
+                GenerateButton(
+                  gender: gender,
+                  totalHeight: totalHeight,
+                  weightLbs: weightLbs,
+                  age: age,
+                  experienceLevel: experienceLevel,
+                  rhr: rhr,
+                  workoutLength: workoutLength,
+                  days: days,
+                  totalDays: totalDays,
+                  workoutType: widget.workoutType,
                 ),
               ],
             ))
       ]),
-    );
-  }
-}
-
-class PlanGenerationPage extends StatelessWidget {
-  final List<Week> newPlan;
-  const PlanGenerationPage({required this.newPlan});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Plan Generation'),
-      ),
-      body: Center(
-        child: loadPlan(newPlan: newPlan),
-      ),
     );
   }
 }

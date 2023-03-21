@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'calendar_files/calendar.dart';
 import 'user_input.dart';
 import 'calendar_files/calendarOps.dart';
+import 'select_workout.dart';
+
 
 void main() {
   runApp(const TabBarField());
@@ -38,7 +40,7 @@ class TabBarField extends StatelessWidget {
             CalendarApp(),
             Icon(Icons.flight, size: 437.5),
             Icon(Icons.directions_car, size: 350),
-            Settings(),
+            SelectWorkout(),
           ],
         ),
       )),

@@ -31,7 +31,8 @@ class Week {
   late RunWorkout day5;
   late RunWorkout day6;
   late RunWorkout day7;
-  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7);
+  late int importance;
+  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7, this.importance);
 
   //this is just so that i can dump the week as json..will be removed
   Map toJson() =>
@@ -48,7 +49,8 @@ class RunPlanInput {
   late int experienceLevel;
   late int rhr;
   late List<bool> schedule;
-  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr, this.schedule);
+  late int weeks;
+  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr, this.schedule, this.weeks);
 }
 
 //this increases the volume of a plan by a certain percentage
@@ -186,7 +188,7 @@ int getDaysInWeek(Week weekToCount) {
 }
 
 //deletes the day of lowest importance from a single week
-Week deleteLowestImportance(Week origWeek) {
+Week deleteLowestImportanceDay(Week origWeek) {
   Week newWeek = origWeek;
 
   List<int> importances = [
@@ -242,7 +244,7 @@ List<Week> deleteADay(List<Week> origPlan, int desired) {
   for (var i = 0; i < origPlan.length; i++) {
     if (getDaysInWeek(origPlan[i]) > desired) {
       print("deleting a day from a week");
-      newPlan[i] = deleteLowestImportance(newPlan[i]);
+      newPlan[i] = deleteLowestImportanceDay(newPlan[i]);
     }
   }
 
@@ -378,10 +380,76 @@ List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
+//this function takes a plan in and removes the lowest priority week
+List<Week> deleteLowestImportanceWeek(origPlan) {
+  List<Week> newPlan = origPlan;
+
+  //go through list and find the week with the least importance
+  int curMinImportance = origPlan[0].importance;
+  int curMinIdx = 0;
+  for (var i = 1; i < origPlan.length; i++) {
+    if (origPlan[i].importance < curMinImportance) {
+      curMinIdx = i;
+      curMinImportance = origPlan[i].importance;
+    }
+  }
+
+  //delete the week found with the lowest importance
+  newPlan.removeAt(curMinIdx);
+
+  return newPlan;
+}
+
+//this takes a plan and a week and adds the week to the front of the plan
+List<Week> addWeekToFrontOfPlan(origPlan, weekToAdd) {
+  List<Week> newPlan = origPlan;
+
+  //insert the week
+  newPlan.insert(0, weekToAdd);
+
+  return newPlan;
+}
+
+//this function takes a plan and adjusts its length in weeks to match the user input
+List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
+  List<Week> newPlan = origPlan;
+
+  //get length of original plan in weeks
+  int origLength = origPlan.length;
+  int inputLen = userIn.weeks;
+
+  //if the user wants a shorter plan
+  if (userIn.weeks < origLength) {
+    //for every week below the original plan, add 10% volume and remove lowest priority
+    while (inputLen < origLength) {
+      newPlan = deleteLowestImportanceWeek(newPlan);
+      newPlan = increasePlanVolume(newPlan, 10);
+      inputLen += 1;
+    }
+  }
+
+  //if the user wants a longer plan
+  if (userIn.weeks > origLength) {
+    //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
+    late Week temp;
+    while (inputLen > origLength) {
+      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 5% volume and save in temp
+      newPlan = addWeekToFrontOfPlan(newPlan, temp); //add this new week to the front of the plan
+      inputLen -= 1;
+    }
+  }
+
+  return newPlan;
+}
+
 List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   List<Week> newPlan = origPlan;
 
+  //using the schedule, customize the days per week
   newPlan = customizeSchedule(origPlan, userIn);
+
+  //using the length, customize the length of the plan in weeks
+  newPlan = customizeLength(newPlan, userIn);
 
   //decrase volume by 10 percent if female
   if (userIn.gender == "female") {
@@ -451,9 +519,9 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
 }
 
 //caller function for generating plan
-List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule) {
+List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule, int weeks) {
   //gather user input
-  RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule);
+  RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule, weeks);
 
   //this will be set to the chosen activity base plan
   List<Week> initialPlan = [];
@@ -465,6 +533,9 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
 
   //pass in the initial plan and the user input to customize final plan
   List<Week> finalPlan = customizePlan(initialPlan, userInput);
+
+  print(finalPlan.length);
+  print(jsonEncode(finalPlan));
 
   return finalPlan;
 }

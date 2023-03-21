@@ -6,10 +6,7 @@ class LengthInput extends StatefulWidget {
   int length;
   final InputBorderProperties borderProperties;
   final ValueChanged<int> onChanged;
-  LengthInput(
-      {required this.length,
-      required this.onChanged,
-      required this.borderProperties});
+  LengthInput({required this.length, required this.onChanged, required this.borderProperties});
   @override
   _LengthInputState createState() => _LengthInputState();
 }
@@ -17,6 +14,7 @@ class LengthInput extends StatefulWidget {
 class _LengthInputState extends State<LengthInput> {
   void _onLengthValueChange(int value) {
     setState(() {
+      widget.length = value;
       widget.onChanged(widget.length);
     });
   }

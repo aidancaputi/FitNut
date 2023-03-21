@@ -15,7 +15,7 @@ void main() {
   //this test makes sure that the 4 tabs exist and can be tapped between
   testWidgets('Tab bars can be navigated between', (tester) async {
     // Test code goes here.
-    await tester.pumpWidget(const TabBarDemo());
+    await tester.pumpWidget(const TabBarField());
     await tester.tap(find.byIcon(Icons.calendar_today));
     await tester.tap(find.byIcon(Icons.card_membership_sharp));
     await tester.tap(find.byIcon(Icons.waves_rounded));

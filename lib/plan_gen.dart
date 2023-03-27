@@ -7,6 +7,7 @@ import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
 
 import 'base_plan_files/5K.dart';
+import 'base_plan_files/marathon.dart';
 
 class RunWorkout {
   String type; //run, workout, rest
@@ -442,11 +443,38 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
+//take in user input and return how many days per week they are available
+int getDaysAvailable(RunPlanInput userIn) {
+  int days = 0;
+  for (var x = 0; x < userIn.schedule.length; x++) {
+    if (userIn.schedule[x] == true) {
+      days++;
+    }
+  }
+  return days;
+}
+
+//find the longest week in the plan
+int getLongestPlanWeek(List<Week> plan) {
+  int curMax = 0;
+  int temp = 0;
+  for (var x = 0; x < plan.length; x++) {
+    temp = getDaysInWeek(plan[x]);
+    if (temp > curMax) {
+      curMax = temp;
+    }
+  }
+  return curMax;
+}
+
 List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   List<Week> newPlan = origPlan;
 
-  //using the schedule, customize the days per week
-  newPlan = customizeSchedule(origPlan, userIn);
+  //if they werent available every day, customize the weekly schedule
+  if (getDaysAvailable(userIn) != 7) {
+    //using the schedule, customize the days per week
+    newPlan = customizeSchedule(origPlan, userIn);
+  }
 
   //using the length, customize the length of the plan in weeks
   newPlan = customizeLength(newPlan, userIn);
@@ -529,6 +557,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   //choose base activity based on activity chosen
   if (activity == "5K") {
     initialPlan = base5kPlan;
+  } else if (activity == "Marathon") {
+    initialPlan = baseMarathonPlan;
   }
 
   //pass in the initial plan and the user input to customize final plan

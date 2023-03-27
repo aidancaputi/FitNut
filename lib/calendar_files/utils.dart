@@ -78,10 +78,12 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day);
+final dayofWeek = kToday.weekday;
+final offsetDay = 8 - dayofWeek;
+final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day + offsetDay);
 
 // assuming that the longest workout plan is 6 months
-int longestPlanMonths = 6;
+int longestPlanMonths = 8;
 
 final kLastDay =
     DateTime(kToday.year, kToday.month + longestPlanMonths, kToday.day);

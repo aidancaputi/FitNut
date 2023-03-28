@@ -17,6 +17,70 @@ class Event {
   String toString() => title;
 }
 
+List removeQuotes(List raw) {
+  for (int i = 0; i < raw.length; i++) {
+    if (raw[i] is String && raw[i].contains('\"')) {
+      raw[i] = (raw[i].split('"'))[1];
+    }
+  }
+
+  return raw;
+}
+
+String prettifyWorkout(String dayWorkout) {
+  List<String> str =
+      dayWorkout.replaceAll("{", "").replaceAll("}", "").split(",");
+  Map<String, dynamic> result = {};
+  for (int i = 0; i < str.length; i++) {
+    List<String> s = str[i].split(":");
+    result.putIfAbsent(s[0].trim(), () => s[1].trim());
+  }
+
+  // day is an array containing a field with info for each workout
+  List wkt = [];
+
+  result.forEach((key, value) {
+    wkt.add(value);
+  });
+
+  String finalStr = '';
+  wkt = removeQuotes(wkt);
+
+  if (wkt[0] == 'run') {
+    finalStr += 'Run Day:\n';
+
+    if (wkt[1] == 'time') {
+      finalStr += wkt[2].toString() + ' minutes';
+    } else if (wkt[1] == 'distance') {
+      finalStr += wkt[2].toString() + ' miles';
+    }
+
+    if (wkt[3] == 'race') {
+      finalStr = '5k Race Day - Your training WILL pay off!';
+    } else {
+      finalStr += ' at ' + wkt[3].toString() + ' pace';
+    }
+  } else if (wkt[0] == 'workout') {
+    finalStr += 'Workout Day:\n';
+
+    if (wkt[1] == 'time') {
+      finalStr += wkt[2].toString() + ' seconds';
+    } else if (wkt[1] == 'distance') {
+      finalStr += wkt[2].toString() + ' meters';
+    }
+
+    finalStr += ' for ' + wkt[4].toString() + ' reps';
+  } else if (wkt[0] == 'rest') {
+    finalStr = 'Rest Day!';
+  } else if (wkt[0] == 'cross') {
+    finalStr = 'Cross Day:\nTry a workout besides \nrunning for today';
+  } else {
+    finalStr = 'workout not read properly- ' + wkt.toString();
+  }
+
+  return finalStr;
+}
+
 // events
 ///
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
@@ -51,7 +115,8 @@ LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
       List.generate(numWeeks * 7, (index) => index),
       key: (item) => DateTime.utc(
           kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()),
-      value: (item) => List.generate(1, (index) => Event(dayArr[item])))
+      value: (item) =>
+          List.generate(1, (index) => Event(prettifyWorkout(dayArr[item]))))
     ..addAll({
       kToday: [Event(dayArr[0])],
     });
@@ -78,8 +143,8 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final kToday = DateTime.now();
-final dayofWeek = kToday.weekday;
-final offsetDay = 8 - dayofWeek;
+final offsetDay = extractOffsetDay();
+
 final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day + offsetDay);
 
 // assuming that the longest workout plan is 6 months
@@ -87,3 +152,15 @@ int longestPlanMonths = 8;
 
 final kLastDay =
     DateTime(kToday.year, kToday.month + longestPlanMonths, kToday.day);
+
+int extractOffsetDay() {
+  var dayofWeek = kToday.weekday;
+
+  if (dayofWeek == 0) {
+    dayofWeek = 7;
+  }
+
+  final offset = 8 - kToday.weekday;
+
+  return offset;
+}

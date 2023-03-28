@@ -546,6 +546,48 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
+//round a double to a certain amount of places
+double roundDouble(double value, int places) {
+  return double.parse((value).toStringAsFixed(places));
+}
+
+//takes a workout and rounds its values appropriately
+RunWorkout roundRunWorkout(RunWorkout origWorkout) {
+  RunWorkout newWorkout = origWorkout;
+
+  //distance run = round volume to nearest tenth
+  if ((origWorkout.type == "run") && (origWorkout.version == "distance")) {
+    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, roundDouble(origWorkout.volume, 1), origWorkout.intensity, origWorkout.reps, origWorkout.importance);
+  }
+  //any other thing = round volume to whole number and reps to whole number
+  else {
+    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, origWorkout.volume.roundToDouble(), origWorkout.intensity, origWorkout.reps.roundToDouble(), origWorkout.importance);
+  }
+  return newWorkout;
+}
+
+//takes a week and rounds all the days
+Week roundWeek(Week origWeek) {
+  Week newWeek = origWeek;
+  newWeek.day1 = roundRunWorkout(origWeek.day1);
+  newWeek.day2 = roundRunWorkout(origWeek.day2);
+  newWeek.day3 = roundRunWorkout(origWeek.day3);
+  newWeek.day4 = roundRunWorkout(origWeek.day4);
+  newWeek.day5 = roundRunWorkout(origWeek.day5);
+  newWeek.day6 = roundRunWorkout(origWeek.day6);
+  newWeek.day7 = roundRunWorkout(origWeek.day7);
+  return newWeek;
+}
+
+//rounds a whole list of weeks (plan)
+List<Week> roundPlan(List<Week> origPlan) {
+  List<Week> newPlan = origPlan;
+  for (var i = 0; i < origPlan.length; i++) {
+    newPlan[i] = roundWeek(origPlan[i]);
+  }
+  return newPlan;
+}
+
 //caller function for generating plan
 List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule, int weeks) {
   //gather user input
@@ -563,6 +605,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
 
   //pass in the initial plan and the user input to customize final plan
   List<Week> finalPlan = customizePlan(initialPlan, userInput);
+
+  finalPlan = roundPlan(finalPlan);
 
   print(finalPlan.length);
   print(jsonEncode(finalPlan));

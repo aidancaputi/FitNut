@@ -421,10 +421,10 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
 
   //if the user wants a shorter plan
   if (userIn.weeks < origLength) {
-    //for every week below the original plan, add 10% volume and remove lowest priority
+    //for every week below the original plan, add 8% volume and remove lowest priority
     while (inputLen < origLength) {
       newPlan = deleteLowestImportanceWeek(newPlan);
-      newPlan = increasePlanVolume(newPlan, 10);
+      newPlan = increasePlanVolume(newPlan, 8);
       inputLen += 1;
     }
   }
@@ -434,7 +434,7 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
     late Week temp;
     while (inputLen > origLength) {
-      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 5% volume and save in temp
+      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 3% volume and save in temp
       newPlan = addWeekToFrontOfPlan(newPlan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
@@ -492,7 +492,7 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   //if their bmi is over 25, decrease volume by 2 percent for every point above
   if (bmi > 25) {
     while (bmi > 25) {
-      newPlan = decreasePlanVolume(newPlan, 2);
+      newPlan = decreasePlanVolume(newPlan, 1);
       bmi -= 1;
     }
   }
@@ -515,12 +515,12 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   int tempExp = userIn.experienceLevel;
   if (userIn.experienceLevel > 5) {
     while (tempExp > 5) {
-      newPlan = increasePlanVolume(newPlan, 5);
+      newPlan = increasePlanVolume(newPlan, 3);
       tempExp -= 1;
     }
   } else if (userIn.experienceLevel < 5) {
     while (tempExp < 5) {
-      newPlan = decreasePlanVolume(newPlan, 5);
+      newPlan = decreasePlanVolume(newPlan, 7);
       tempExp += 1;
     }
   }

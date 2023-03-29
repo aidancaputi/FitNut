@@ -1,9 +1,9 @@
+import 'package:FitNut/user_inputs/workout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:FitNut/plan_gen.dart';
 import 'package:FitNut/user_inputs/plan_loading.dart';
 
 class GenerateButton extends StatefulWidget {
-  final String workoutType;
   final String gender;
   final int totalHeight;
   final int weightLbs;
@@ -13,9 +13,9 @@ class GenerateButton extends StatefulWidget {
   final int workoutLength;
   final List<bool> days;
   final int totalDays;
+  final WorkoutProperties workoutProperties;
   GenerateButton(
-      {required this.workoutType,
-      required this.gender,
+      {required this.gender,
       required this.totalHeight,
       required this.weightLbs,
       required this.age,
@@ -23,7 +23,8 @@ class GenerateButton extends StatefulWidget {
       required this.rhr,
       required this.workoutLength,
       required this.days,
-      required this.totalDays});
+      required this.totalDays,
+      required this.workoutProperties});
   @override
   _GenerateButtonState createState() => _GenerateButtonState();
 }
@@ -41,10 +42,6 @@ class _GenerateButtonState extends State<GenerateButton> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Please select a gender')),
             );
-          } else if (widget.totalHeight == 0) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please enter your height')),
-            );
           } else if (widget.weightLbs == 0) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Please enter your weight')),
@@ -58,27 +55,34 @@ class _GenerateButtonState extends State<GenerateButton> {
               const SnackBar(
                   content: Text('Please enter your resting heart rate')),
             );
-          } else if (widget.weightLbs == 0) {
+          } else if (widget.totalDays < widget.workoutProperties.daysLength) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Please enter your weight')),
-            );
-          } else if (widget.totalDays < 3) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('Please select at least 3 days to workout on')),
+              SnackBar(
+                  content: Text(
+                      'Please select at least ${widget.workoutProperties.daysLength} days to workout on')),
             );
           } else {
-            newPlan = generatePlan(widget.workoutType, widget.gender, widget.totalHeight, widget.weightLbs, widget.age, widget.experienceLevel, widget.rhr, widget.days, widget.workoutLength);
+            newPlan = generatePlan(
+                widget.workoutProperties.workoutType,
+                widget.gender,
+                widget.totalHeight,
+                widget.weightLbs,
+                widget.age,
+                widget.experienceLevel,
+                widget.rhr,
+                widget.days,
+                widget.workoutLength);
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => PlanGenerationPage(newPlan: newPlan)),
+                  builder: (context) =>
+                      InputPlanGenerationPage(newPlan: newPlan)),
             );
           }
         },
-        child: const Text(
-          'Generate 5K Workout',
-          style: TextStyle(fontSize: 30),
+        child: Text(
+          'Generate ${widget.workoutProperties.workoutType} Workout',
+          style: const TextStyle(fontSize: 30),
         ),
       ),
       const SizedBox(height: 32.0),
@@ -87,14 +91,14 @@ class _GenerateButtonState extends State<GenerateButton> {
 }
 
 // when the user pushes the generate workout button it takes them to this page
-class PlanGenerationPage extends StatelessWidget {
+class InputPlanGenerationPage extends StatelessWidget {
   final List<Week> newPlan;
-  const PlanGenerationPage({required this.newPlan});
+  const InputPlanGenerationPage({required this.newPlan});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plan Generation'),
+        title: const Text('Workout Generation'),
       ),
       body: Center(
         child: loadPlan(newPlan: newPlan),

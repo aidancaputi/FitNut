@@ -8,26 +8,11 @@ import 'user_inputs/rhr_input.dart';
 import 'user_inputs/days_input.dart';
 import 'user_inputs/length_input.dart';
 import 'user_inputs/generate_button.dart';
-
-class Input extends StatelessWidget {
-  final String workoutType;
-  const Input({super.key, required this.workoutType});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Input',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: InputPage(title: 'Input User Info', workoutType: workoutType),
-    );
-  }
-}
+import 'user_inputs/workout_button.dart';
 
 class InputPage extends StatefulWidget {
-  final String title;
-  final String workoutType;
-  const InputPage({super.key, required this.title, required this.workoutType});
+  final WorkoutProperties workoutProperties;
+  const InputPage({super.key, required this.workoutProperties});
   @override
   State<InputPage> createState() => UserInput();
 }
@@ -52,7 +37,7 @@ class UserInput extends State<InputPage> {
   }
 
   // height
-  int totalHeight = 0;
+  int totalHeight = 36;
   void _onTotalHeightValueChange(int value) {
     setState(() {
       totalHeight = value;
@@ -119,86 +104,87 @@ class UserInput extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                // GENDER INPUT
-                GenderInput(
-                  gender: gender,
-                  onChanged: _onGenderChange,
-                  borderProperties: borderProperties,
-                ),
+    return ListView(children: <Widget>[
+      Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              // GENDER INPUT
+              GenderInput(
+                gender: gender,
+                onChanged: _onGenderChange,
+                borderProperties: borderProperties,
+              ),
 
-                // HEIGHT INPUT
-                HeightInput(
-                  totalHeight: totalHeight,
-                  onChanged: _onTotalHeightValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // HEIGHT INPUT
+              HeightInput(
+                totalHeight: totalHeight,
+                onChanged: _onTotalHeightValueChange,
+                borderProperties: borderProperties,
+              ),
 
-                // WEIGHT INPUT
-                WeightInput(
-                  weight: weightLbs,
-                  onChanged: _onWeightValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // WEIGHT INPUT
+              WeightInput(
+                weight: weightLbs,
+                onChanged: _onWeightValueChange,
+                borderProperties: borderProperties,
+              ),
 
-                // AGE INPUT
-                AgeInput(
-                  age: age,
-                  onChanged: _onAgeValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // AGE INPUT
+              AgeInput(
+                age: age,
+                onChanged: _onAgeValueChange,
+                borderProperties: borderProperties,
+              ),
 
-                // EXPERIENCE LEVEL
-                ExperienceSliderInput(
-                  experienceLevel: experienceLevel,
-                  onChanged: _onELMValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // EXPERIENCE LEVEL
+              ExperienceSliderInput(
+                experienceLevel: experienceLevel,
+                onChanged: _onELMValueChange,
+                borderProperties: borderProperties,
+                workoutProperties: widget.workoutProperties,
+              ),
 
-                // RHR INPUT
-                RHRInput(
-                  rhr: rhr,
-                  onChanged: _onrhrValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // RHR INPUT
+              RHRInput(
+                rhr: rhr,
+                onChanged: _onrhrValueChange,
+                borderProperties: borderProperties,
+              ),
 
-                // LENGTH INPUT
-                LengthInput(
-                  length: workoutLength,
-                  onChanged: _onLengthValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // LENGTH INPUT
+              LengthInput(
+                length: workoutLength,
+                onChanged: _onLengthValueChange,
+                borderProperties: borderProperties,
+                workoutProperties: widget.workoutProperties,
+              ),
 
-                // DAYS INPUT
-                DaysInput(
-                  days: days,
-                  onChanged: _onDaysValueChange,
-                  borderProperties: borderProperties,
-                ),
+              // DAYS INPUT
+              DaysInput(
+                days: days,
+                onChanged: _onDaysValueChange,
+                borderProperties: borderProperties,
+                workoutProperties: widget.workoutProperties,
+              ),
 
-                // GO TO NEXT PAGE
-                GenerateButton(
-                  gender: gender,
-                  totalHeight: totalHeight,
-                  weightLbs: weightLbs,
-                  age: age,
-                  experienceLevel: experienceLevel,
-                  rhr: rhr,
-                  workoutLength: workoutLength,
-                  days: days,
-                  totalDays: totalDays,
-                  workoutType: widget.workoutType,
-                ),
-              ],
-            ))
-      ]),
-    );
+              // GO TO NEXT PAGE
+              GenerateButton(
+                gender: gender,
+                totalHeight: totalHeight,
+                weightLbs: weightLbs,
+                age: age,
+                experienceLevel: experienceLevel,
+                rhr: rhr,
+                workoutLength: workoutLength,
+                days: days,
+                totalDays: totalDays,
+                workoutProperties: widget.workoutProperties,
+              ),
+            ],
+          ))
+    ]);
   }
 }

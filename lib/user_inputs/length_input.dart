@@ -1,3 +1,4 @@
+import 'package:FitNut/user_inputs/workout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:FitNut/user_input.dart';
 import 'package:FitNut/user_inputs/input_widgets/scroll_wheel.dart';
@@ -6,7 +7,12 @@ class LengthInput extends StatefulWidget {
   int length;
   final InputBorderProperties borderProperties;
   final ValueChanged<int> onChanged;
-  LengthInput({required this.length, required this.onChanged, required this.borderProperties});
+  final WorkoutProperties workoutProperties;
+  LengthInput(
+      {required this.length,
+      required this.onChanged,
+      required this.borderProperties,
+      required this.workoutProperties});
   @override
   _LengthInputState createState() => _LengthInputState();
 }
@@ -14,8 +20,7 @@ class LengthInput extends StatefulWidget {
 class _LengthInputState extends State<LengthInput> {
   void _onLengthValueChange(int value) {
     setState(() {
-      widget.length = value;
-      widget.onChanged(widget.length);
+      widget.onChanged(value);
     });
   }
 
@@ -43,8 +48,8 @@ class _LengthInputState extends State<LengthInput> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Flexible(
                   child: ScrollingWheelInput(
-                minValue: 4,
-                maxValue: 12,
+                minValue: widget.workoutProperties.minLength,
+                maxValue: widget.workoutProperties.maxLength,
                 onChanged: _onLengthValueChange,
               )),
               const SizedBox(

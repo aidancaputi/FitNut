@@ -17,6 +17,7 @@ class _WorkoutInputState extends State<WorkoutInput> {
   List<String> workoutlist = <String>[
     'Select',
     '5K',
+    'Half Marathon',
     'Marathon',
   ];
 

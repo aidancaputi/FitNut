@@ -12,14 +12,13 @@ class SelectWorkout extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SelectWorkoutPage(title: 'Select A Workout'),
+      home: const SelectWorkoutPage(),
     );
   }
 }
 
 class SelectWorkoutPage extends StatefulWidget {
-  const SelectWorkoutPage({super.key, required this.title});
-  final String title;
+  const SelectWorkoutPage({super.key});
 
   @override
   State<SelectWorkoutPage> createState() => Select();
@@ -41,7 +40,7 @@ class Select extends State<SelectWorkoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: const Text('Select A Workout'),
         ),
         body: ListView(children: <Widget>[
           Padding(
@@ -56,7 +55,9 @@ class Select extends State<SelectWorkoutPage> {
                       onChanged: _onWorkoutChange,
                       borderProperties: borderProperties,
                     ),
-                    WorkoutButton(workout: workout),
+                    WorkoutButton(
+                      workout: workout,
+                    ),
                   ]))
         ]));
   }

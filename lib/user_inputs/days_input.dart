@@ -1,3 +1,4 @@
+import 'package:FitNut/user_inputs/workout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:FitNut/user_input.dart';
 
@@ -5,10 +6,11 @@ class DaysInput extends StatefulWidget {
   List<bool> days;
   final InputBorderProperties borderProperties;
   final ValueChanged<List<bool>> onChanged;
+  final WorkoutProperties workoutProperties;
   DaysInput(
       {required this.days,
       required this.onChanged,
-      required this.borderProperties});
+      required this.borderProperties, required this.workoutProperties});
   @override
   _DaysInputState createState() => _DaysInputState();
 }
@@ -33,7 +35,7 @@ class _DaysInputState extends State<DaysInput> {
           width: 500,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'What days can you workout on? - please select at least 3',
+              'What days can you workout on? - please select at least ${widget.workoutProperties.daysLength}',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

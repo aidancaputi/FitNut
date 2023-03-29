@@ -56,7 +56,7 @@ String prettifyWorkout(String dayWorkout) {
     }
 
     if (wkt[3] == 'race') {
-      finalStr = '5k Race Day - Your training WILL pay off!';
+      finalStr = 'Race Day - go out and do it';
     } else {
       finalStr += ' at ' + wkt[3].toString() + ' pace';
     }
@@ -74,6 +74,8 @@ String prettifyWorkout(String dayWorkout) {
     finalStr = 'Rest Day!';
   } else if (wkt[0] == 'cross') {
     finalStr = 'Cross Day:\nTry a workout besides \nrunning for today';
+  } else if (wkt[0] == 'race') {
+    finalStr = 'Race Day - your training WILL pay off!';
   } else {
     finalStr = 'workout not read properly- ' + wkt.toString();
   }

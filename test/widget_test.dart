@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:FitNut/user_input.dart';
+import 'package:FitNut/user_inputs/workout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,8 +27,8 @@ void main() {
 
   //this test navigates to the input tab and checks that all the input messages are correct
   testWidgets('Input page has correct questions', (tester) async {
-    const String workoutType = "5K";
-    await tester.pumpWidget(const Input(workoutType: workoutType));
+    WorkoutProperties workoutProperties = WorkoutProperties();
+    await tester.pumpWidget(InputPage(workoutProperties: workoutProperties));
 
     expect(find.text('What is your gender?'), findsOneWidget);
     expect(find.text('How tall are you?'), findsOneWidget);
@@ -39,9 +40,9 @@ void main() {
 
   //this tests the gender dropdown widget
   testWidgets('Gender dropdown', (tester) async {
-    const String workoutType = "5K";
+    WorkoutProperties workoutProperties = WorkoutProperties();
     await tester.pumpWidget(
-        const Input(workoutType: workoutType)); //go to settings page
+        InputPage(workoutProperties: workoutProperties)); //go to settings page
 
     expect(find.byType(DropdownButton<String>),
         findsOneWidget); //asser that the dropdown for gender exists

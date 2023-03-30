@@ -28,7 +28,10 @@ void main() {
   //this test navigates to the input tab and checks that all the input messages are correct
   testWidgets('Input page has correct questions', (tester) async {
     WorkoutProperties workoutProperties = WorkoutProperties();
-    await tester.pumpWidget(InputPage(workoutProperties: workoutProperties));
+    await tester
+        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
+      return InputPage(workoutProperties: workoutProperties);
+    })));
 
     expect(find.text('What is your gender?'), findsOneWidget);
     expect(find.text('How tall are you?'), findsOneWidget);
@@ -41,8 +44,10 @@ void main() {
   //this tests the gender dropdown widget
   testWidgets('Gender dropdown', (tester) async {
     WorkoutProperties workoutProperties = WorkoutProperties();
-    await tester.pumpWidget(
-        InputPage(workoutProperties: workoutProperties)); //go to settings page
+    await tester
+        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
+      return InputPage(workoutProperties: workoutProperties);
+    }))); //go to settings page
 
     expect(find.byType(DropdownButton<String>),
         findsOneWidget); //asser that the dropdown for gender exists

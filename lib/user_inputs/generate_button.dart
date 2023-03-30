@@ -75,8 +75,7 @@ class _GenerateButtonState extends State<GenerateButton> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      InputPlanGenerationPage(newPlan: newPlan)),
+                  builder: (context) => loadPlan(newPlan: newPlan)),
             );
           }
         },
@@ -87,22 +86,5 @@ class _GenerateButtonState extends State<GenerateButton> {
       ),
       const SizedBox(height: 32.0),
     ]);
-  }
-}
-
-// when the user pushes the generate workout button it takes them to this page
-class InputPlanGenerationPage extends StatelessWidget {
-  final List<Week> newPlan;
-  const InputPlanGenerationPage({required this.newPlan});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Workout Generation'),
-      ),
-      body: Center(
-        child: loadPlan(newPlan: newPlan),
-      ),
-    );
   }
 }

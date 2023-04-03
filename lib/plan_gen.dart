@@ -7,6 +7,7 @@ import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
 
 import 'base_plan_files/5K.dart';
+import 'base_plan_files/marathon.dart';
 
 class RunWorkout {
   String type; //run, workout, rest
@@ -420,10 +421,10 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
 
   //if the user wants a shorter plan
   if (userIn.weeks < origLength) {
-    //for every week below the original plan, add 10% volume and remove lowest priority
+    //for every week below the original plan, add 8% volume and remove lowest priority
     while (inputLen < origLength) {
       newPlan = deleteLowestImportanceWeek(newPlan);
-      newPlan = increasePlanVolume(newPlan, 10);
+      newPlan = increasePlanVolume(newPlan, 8);
       inputLen += 1;
     }
   }
@@ -433,7 +434,7 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
     late Week temp;
     while (inputLen > origLength) {
-      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 5% volume and save in temp
+      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 3% volume and save in temp
       newPlan = addWeekToFrontOfPlan(newPlan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
@@ -442,11 +443,38 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
+//take in user input and return how many days per week they are available
+int getDaysAvailable(RunPlanInput userIn) {
+  int days = 0;
+  for (var x = 0; x < userIn.schedule.length; x++) {
+    if (userIn.schedule[x] == true) {
+      days++;
+    }
+  }
+  return days;
+}
+
+//find the longest week in the plan
+int getLongestPlanWeek(List<Week> plan) {
+  int curMax = 0;
+  int temp = 0;
+  for (var x = 0; x < plan.length; x++) {
+    temp = getDaysInWeek(plan[x]);
+    if (temp > curMax) {
+      curMax = temp;
+    }
+  }
+  return curMax;
+}
+
 List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   List<Week> newPlan = origPlan;
 
-  //using the schedule, customize the days per week
-  newPlan = customizeSchedule(origPlan, userIn);
+  //if they werent available every day, customize the weekly schedule
+  if (getDaysAvailable(userIn) != 7) {
+    //using the schedule, customize the days per week
+    newPlan = customizeSchedule(origPlan, userIn);
+  }
 
   //using the length, customize the length of the plan in weeks
   newPlan = customizeLength(newPlan, userIn);
@@ -464,7 +492,7 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   //if their bmi is over 25, decrease volume by 2 percent for every point above
   if (bmi > 25) {
     while (bmi > 25) {
-      newPlan = decreasePlanVolume(newPlan, 2);
+      newPlan = decreasePlanVolume(newPlan, 1);
       bmi -= 1;
     }
   }
@@ -487,12 +515,12 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   int tempExp = userIn.experienceLevel;
   if (userIn.experienceLevel > 5) {
     while (tempExp > 5) {
-      newPlan = increasePlanVolume(newPlan, 5);
+      newPlan = increasePlanVolume(newPlan, 3);
       tempExp -= 1;
     }
   } else if (userIn.experienceLevel < 5) {
     while (tempExp < 5) {
-      newPlan = decreasePlanVolume(newPlan, 5);
+      newPlan = decreasePlanVolume(newPlan, 7);
       tempExp += 1;
     }
   }
@@ -518,6 +546,48 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   return newPlan;
 }
 
+//round a double to a certain amount of places
+double roundDouble(double value, int places) {
+  return double.parse((value).toStringAsFixed(places));
+}
+
+//takes a workout and rounds its values appropriately
+RunWorkout roundRunWorkout(RunWorkout origWorkout) {
+  RunWorkout newWorkout = origWorkout;
+
+  //distance run = round volume to nearest tenth
+  if ((origWorkout.type == "run") && (origWorkout.version == "distance")) {
+    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, roundDouble(origWorkout.volume, 1), origWorkout.intensity, origWorkout.reps, origWorkout.importance);
+  }
+  //any other thing = round volume to whole number and reps to whole number
+  else {
+    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, origWorkout.volume.roundToDouble(), origWorkout.intensity, origWorkout.reps.roundToDouble(), origWorkout.importance);
+  }
+  return newWorkout;
+}
+
+//takes a week and rounds all the days
+Week roundWeek(Week origWeek) {
+  Week newWeek = origWeek;
+  newWeek.day1 = roundRunWorkout(origWeek.day1);
+  newWeek.day2 = roundRunWorkout(origWeek.day2);
+  newWeek.day3 = roundRunWorkout(origWeek.day3);
+  newWeek.day4 = roundRunWorkout(origWeek.day4);
+  newWeek.day5 = roundRunWorkout(origWeek.day5);
+  newWeek.day6 = roundRunWorkout(origWeek.day6);
+  newWeek.day7 = roundRunWorkout(origWeek.day7);
+  return newWeek;
+}
+
+//rounds a whole list of weeks (plan)
+List<Week> roundPlan(List<Week> origPlan) {
+  List<Week> newPlan = origPlan;
+  for (var i = 0; i < origPlan.length; i++) {
+    newPlan[i] = roundWeek(origPlan[i]);
+  }
+  return newPlan;
+}
+
 //caller function for generating plan
 List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule, int weeks) {
   //gather user input
@@ -529,10 +599,14 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   //choose base activity based on activity chosen
   if (activity == "5K") {
     initialPlan = base5kPlan;
+  } else if (activity == "Marathon") {
+    initialPlan = baseMarathonPlan;
   }
 
   //pass in the initial plan and the user input to customize final plan
   List<Week> finalPlan = customizePlan(initialPlan, userInput);
+
+  finalPlan = roundPlan(finalPlan);
 
   print(finalPlan.length);
   print(jsonEncode(finalPlan));

@@ -1,16 +1,10 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:FitNut/user_input.dart';
 import 'package:FitNut/user_inputs/workout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:FitNut/select_workout.dart';
 import 'package:FitNut/main.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   //this test makes sure that the 4 tabs exist and can be tapped between
@@ -21,8 +15,71 @@ void main() {
     await tester.tap(find.byIcon(Icons.card_membership_sharp));
     await tester.tap(find.byIcon(Icons.waves_rounded));
     await tester.tap(find.byIcon(Icons.settings_sharp));
+  });
 
-    //await tester.enterText(find.byType(TextField), '18');
+  // this test navigates to the select workout page and tests the workout selector
+  testWidgets('Select workout dropdown', (tester) async {
+    await tester.pumpWidget(const SelectWorkout());
+
+    expect(find.byType(DropdownButton<String>),
+        findsOneWidget); // assure that the dropdown for gender exists
+
+    final workout =
+        find.byType(DropdownButton<String>); //select the workout dropdown
+
+    //tap the workout dropdown and select 5K
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    final fiveK = find.text('5K').last;
+    await tester.tap(fiveK);
+    await tester.pumpAndSettle();
+
+    //tap the workout dropdown and select Half Marathon
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    final halfMarathon = find.text('Half Marathon').last;
+    await tester.tap(halfMarathon);
+    await tester.pumpAndSettle();
+
+    //tap the workout dropdown and select Marathon
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    final marathon = find.text('Marathon').last;
+    await tester.tap(marathon);
+    await tester.pumpAndSettle();
+  });
+
+  // this test navigates to the select workout page and tests the next button
+  testWidgets('Select workout next button navigates to input page',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const SelectWorkout());
+
+    // find the next button
+    final Finder buttonFinder = find.byType(ElevatedButton);
+
+    // press the button with no workout selected
+    await tester.tap(buttonFinder);
+    await tester.pump();
+
+    // check that the SnackBar is displayed
+    expect(find.byType(SnackBar), findsOneWidget);
+
+    // check the content of the SnackBar
+    expect(find.text('Please select a workout type'), findsOneWidget);
+
+    // select a 5K workout
+    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.pumpAndSettle();
+    final fiveK = find.text('5K').last;
+    await tester.tap(fiveK);
+    await tester.pumpAndSettle();
+
+    // Press the next button
+    await tester.tap(buttonFinder);
+    await tester.pumpAndSettle();
+
+    // check that the input page is displayed
+    expect(find.byType(InputPage), findsOneWidget);
   });
 
   //this test navigates to the input tab and checks that all the input messages are correct
@@ -39,9 +96,14 @@ void main() {
     expect(find.text('How old are you?'), findsOneWidget);
     expect(find.text('How much experience do you have?'), findsOneWidget);
     expect(find.text('What is your resting heart rate?'), findsOneWidget);
+    expect(find.text('How long do you want your workout plan to be?'),
+        findsOneWidget);
+    expect(
+        find.text('What days can you workout on? - please select at least 3'),
+        findsOneWidget);
   });
 
-  //this tests the gender dropdown widget
+  // this tests the gender dropdown widget
   testWidgets('Gender dropdown', (tester) async {
     WorkoutProperties workoutProperties = WorkoutProperties();
     await tester
@@ -74,6 +136,28 @@ void main() {
     await tester.pumpAndSettle();
     final other = find.text('Prefer not to answer').last;
     await tester.tap(other);
+    await tester.pumpAndSettle();
+  });
+
+  // this tests the generate workout button
+  testWidgets('Generate Workout', (tester) async {
+    WorkoutProperties workoutProperties = WorkoutProperties();
+    await tester
+        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
+      return InputPage(workoutProperties: workoutProperties);
+    }))); //go to settings page
+
+    expect(find.byType(DropdownButton<String>),
+        findsOneWidget); //asser that the dropdown for gender exists
+
+    final gender =
+        find.byType(DropdownButton<String>); //select the gender dropdown
+
+    //tap the gender dropdown and select male
+    await tester.tap(gender);
+    await tester.pumpAndSettle();
+    final male = find.text('Male').last;
+    await tester.tap(male);
     await tester.pumpAndSettle();
   });
 }

@@ -9,6 +9,12 @@ import 'package:flutter/material.dart';
 import 'base_plan_files/5K.dart';
 import 'base_plan_files/marathon.dart';
 
+class Plan {
+  List<Week> plan;
+  double totalChange;
+  Plan(this.plan, this.totalChange);
+}
+
 class RunWorkout {
   String type; //run, workout, rest
   String version; //time or distance
@@ -55,13 +61,13 @@ class RunPlanInput {
 }
 
 //this increases the volume of a plan by a certain percentage
-List<Week> increasePlanVolume(List<Week> plan, double percent) {
+Plan increasePlanVolume(Plan planStruct, double percent) {
   //create new plan to return
-  List<Week> newPlan = plan;
+  Plan newPlan = planStruct;
 
   //for every week in the plan
-  for (var i = 0; i < plan.length; i++) {
-    newPlan[i] = increaseWeekVolume(plan[i], percent); //increase the week volume
+  for (var i = 0; i < newPlan.plan.length; i++) {
+    newPlan.plan[i] = increaseWeekVolume(newPlan.plan[i], percent); //increase the week volume
   }
 
   //return the new plan
@@ -69,13 +75,13 @@ List<Week> increasePlanVolume(List<Week> plan, double percent) {
 }
 
 //this decreases the volume of a plan by a certain percentage
-List<Week> decreasePlanVolume(List<Week> plan, double percent) {
+Plan decreasePlanVolume(Plan planStruct, double percent) {
   //create new plan to return
-  List<Week> newPlan = plan;
+  Plan newPlan = planStruct;
 
   //for every week in the plan
-  for (var i = 0; i < plan.length; i++) {
-    newPlan[i] = decreaseWeekVolume(plan[i], percent); //decrease the week volume
+  for (var i = 0; i < newPlan.plan.length; i++) {
+    newPlan.plan[i] = decreaseWeekVolume(newPlan.plan[i], percent); //decrease the week volume
   }
 
   //return the new plan
@@ -238,14 +244,14 @@ Week deleteLowestImportanceDay(Week origWeek) {
 }
 
 //deletes the day of lowest importance from each week if the week is over the users desire
-List<Week> deleteADay(List<Week> origPlan, int desired) {
-  List<Week> newPlan = origPlan;
+Plan deleteADay(Plan origPlan, int desired) {
+  Plan newPlan = origPlan;
 
   //go through all the weeks, and if the week has a higher number of days than desired, delete one
-  for (var i = 0; i < origPlan.length; i++) {
-    if (getDaysInWeek(origPlan[i]) > desired) {
+  for (var i = 0; i < origPlan.plan.length; i++) {
+    if (getDaysInWeek(origPlan.plan[i]) > desired) {
       print("deleting a day from a week");
-      newPlan[i] = deleteLowestImportanceDay(newPlan[i]);
+      newPlan.plan[i] = deleteLowestImportanceDay(newPlan.plan[i]);
     }
   }
 
@@ -316,12 +322,19 @@ Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
     temp.add(origWeek.day7);
   }
 
-  //put these days into the newWeek at the appropriate location
   late RunWorkout dayToInsert;
-  for (var i = 0; i < indexes.length; i++) {
-    dayToInsert = temp[i];
-    newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
+  if (indexes.length <= temp.length) {
+    for (var i = 0; i < indexes.length; i++) {
+      dayToInsert = temp[i];
+      newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
+    }
+  } else {
+    for (var i = 0; i < temp.length; i++) {
+      dayToInsert = temp[i];
+      newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
+    }
   }
+  //put these days into the newWeek at the appropriate location
 
   //fill in the gaps with rest days
   for (var j = 0; j < 7; j++) {
@@ -335,20 +348,20 @@ Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
 }
 
 //shuffle the days to fit the user schedule (this is assuming that the # of days has been appropriately changed)
-List<Week> arrangeDaysOfPlan(List<Week> origPlan, RunPlanInput userIn) {
-  List<Week> newPlan = origPlan;
+Plan arrangeDaysOfPlan(Plan origPlan, RunPlanInput userIn) {
+  Plan newPlan = origPlan;
 
   //loop through each week in the plan and shuffle the days appropriately
-  for (var i = 0; i < origPlan.length; i++) {
-    newPlan[i] = arrangeDaysOfWeek(origPlan[i], userIn.schedule);
+  for (var i = 0; i < origPlan.plan.length; i++) {
+    newPlan.plan[i] = arrangeDaysOfWeek(origPlan.plan[i], userIn.schedule);
   }
 
   return newPlan;
 }
 
 //this function customizes the days of the week based on the user input
-List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
-  List<Week> newPlan = origPlan;
+Plan customizeSchedule(Plan origPlan, RunPlanInput userIn) {
+  Plan newPlan = origPlan;
 
   //count the users number of days per week available
   var userDaysPerWeek = 0;
@@ -361,8 +374,8 @@ List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
   //get the number of days in the busiest week of the plan
   var maxPlanDaysPerWeek = 0;
   var temp = 0;
-  for (var i = 0; i < origPlan.length; i++) {
-    temp = getDaysInWeek(origPlan[i]);
+  for (var i = 0; i < origPlan.plan.length; i++) {
+    temp = getDaysInWeek(origPlan.plan[i]);
     if (temp > maxPlanDaysPerWeek) {
       maxPlanDaysPerWeek = temp;
     }
@@ -371,6 +384,7 @@ List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
   //for every day they are lower than the base plan, delete the lowest importance day from the plan
   int idx = userDaysPerWeek;
   while (idx < maxPlanDaysPerWeek) {
+    print("here1");
     newPlan = deleteADay(newPlan, userDaysPerWeek);
     idx += 1;
   }
@@ -382,7 +396,7 @@ List<Week> customizeSchedule(List<Week> origPlan, RunPlanInput userIn) {
 }
 
 //this function takes a plan in and removes the lowest priority week
-List<Week> deleteLowestImportanceWeek(origPlan) {
+List<Week> deleteLowestImportanceWeek(List<Week> origPlan) {
   List<Week> newPlan = origPlan;
 
   //go through list and find the week with the least importance
@@ -402,29 +416,30 @@ List<Week> deleteLowestImportanceWeek(origPlan) {
 }
 
 //this takes a plan and a week and adds the week to the front of the plan
-List<Week> addWeekToFrontOfPlan(origPlan, weekToAdd) {
-  List<Week> newPlan = origPlan;
+Plan addWeekToFrontOfPlan(origPlan, weekToAdd) {
+  Plan newPlan = origPlan;
 
   //insert the week
-  newPlan.insert(0, weekToAdd);
+  newPlan.plan.insert(0, weekToAdd);
 
   return newPlan;
 }
 
 //this function takes a plan and adjusts its length in weeks to match the user input
-List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
-  List<Week> newPlan = origPlan;
+Plan customizeLength(Plan origPlan, RunPlanInput userIn) {
+  Plan newPlan = origPlan;
 
   //get length of original plan in weeks
-  int origLength = origPlan.length;
+  int origLength = origPlan.plan.length;
   int inputLen = userIn.weeks;
 
   //if the user wants a shorter plan
   if (userIn.weeks < origLength) {
     //for every week below the original plan, add 8% volume and remove lowest priority
     while (inputLen < origLength) {
-      newPlan = deleteLowestImportanceWeek(newPlan);
-      newPlan = increasePlanVolume(newPlan, 8);
+      print("here2");
+      newPlan.plan = deleteLowestImportanceWeek(newPlan.plan);
+      // newPlan = increasePlanVolume(newPlan, 8);
       inputLen += 1;
     }
   }
@@ -434,7 +449,8 @@ List<Week> customizeLength(List<Week> origPlan, RunPlanInput userIn) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
     late Week temp;
     while (inputLen > origLength) {
-      temp = decreaseWeekVolume(newPlan[0], 3); //decrease the first week by 3% volume and save in temp
+      print("here3");
+      temp = decreaseWeekVolume(newPlan.plan[0], 3); //decrease the first week by 3% volume and save in temp
       newPlan = addWeekToFrontOfPlan(newPlan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
@@ -455,11 +471,11 @@ int getDaysAvailable(RunPlanInput userIn) {
 }
 
 //find the longest week in the plan
-int getLongestPlanWeek(List<Week> plan) {
+int getLongestPlanWeek(Plan planStruct) {
   int curMax = 0;
   int temp = 0;
-  for (var x = 0; x < plan.length; x++) {
-    temp = getDaysInWeek(plan[x]);
+  for (var x = 0; x < planStruct.plan.length; x++) {
+    temp = getDaysInWeek(planStruct.plan[x]);
     if (temp > curMax) {
       curMax = temp;
     }
@@ -467,8 +483,8 @@ int getLongestPlanWeek(List<Week> plan) {
   return curMax;
 }
 
-List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
-  List<Week> newPlan = origPlan;
+Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
+  Plan newPlan = origPlan;
 
   //if they werent available every day, customize the weekly schedule
   if (getDaysAvailable(userIn) != 7) {
@@ -481,7 +497,8 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
 
   //decrase volume by 10 percent if female
   if (userIn.gender == "female") {
-    newPlan = decreasePlanVolume(newPlan, 10.0);
+    //newPlan = decreasePlanVolume(newPlan, 10.0);
+    newPlan.totalChange -= 10;
   }
 
   //height and weight conversions
@@ -492,22 +509,29 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   //if their bmi is over 25, decrease volume by 2 percent for every point above
   if (bmi > 25) {
     while (bmi > 25) {
-      newPlan = decreasePlanVolume(newPlan, 1);
+      print("here4");
+      //newPlan = decreasePlanVolume(newPlan, 1);
+      newPlan.totalChange -= 2;
       bmi -= 1;
     }
   }
 
   //adjust volume based on age
   if (userIn.age < 18) {
-    newPlan = decreasePlanVolume(newPlan, 10);
+    //newPlan = decreasePlanVolume(newPlan, 10);
+    newPlan.totalChange -= 10;
   } else if ((40 <= userIn.age) && (userIn.age < 50)) {
-    newPlan = decreasePlanVolume(newPlan, 5);
+    //newPlan = decreasePlanVolume(newPlan, 5);
+    newPlan.totalChange -= 5;
   } else if ((50 <= userIn.age) && (userIn.age < 60)) {
-    newPlan = decreasePlanVolume(newPlan, 8);
+    //newPlan = decreasePlanVolume(newPlan, 8);
+    newPlan.totalChange -= 8;
   } else if ((60 <= userIn.age) && (userIn.age < 70)) {
-    newPlan = decreasePlanVolume(newPlan, 10);
+    //newPlan = decreasePlanVolume(newPlan, 10);
+    newPlan.totalChange -= 10;
   } else if (70 <= userIn.age) {
-    newPlan = decreasePlanVolume(newPlan, 15);
+    //newPlan = decreasePlanVolume(newPlan, 15);
+    newPlan.totalChange -= 15;
   }
 
   //if experience level is above 5, increase by 5% for every point above
@@ -515,12 +539,16 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   int tempExp = userIn.experienceLevel;
   if (userIn.experienceLevel > 5) {
     while (tempExp > 5) {
-      newPlan = increasePlanVolume(newPlan, 3);
+      print("here5");
+      //newPlan = increasePlanVolume(newPlan, 3);
+      newPlan.totalChange += 3;
       tempExp -= 1;
     }
   } else if (userIn.experienceLevel < 5) {
     while (tempExp < 5) {
-      newPlan = decreasePlanVolume(newPlan, 7);
+      print("here6");
+      //newPlan = decreasePlanVolume(newPlan, 7);
+      newPlan.totalChange -= 7;
       tempExp += 1;
     }
   }
@@ -531,12 +559,16 @@ List<Week> customizePlan(List<Week> origPlan, RunPlanInput userIn) {
   if (userIn.rhr != 0) {
     if (userIn.rhr > 100) {
       while (tempRHR > 100) {
-        newPlan = decreasePlanVolume(newPlan, 1);
+        print("here7");
+        //newPlan = decreasePlanVolume(newPlan, 1);
+        newPlan.totalChange -= 1;
         tempRHR -= 1;
       }
     } else if (userIn.rhr < 100) {
       while (tempRHR > 100) {
-        newPlan = decreasePlanVolume(newPlan, 1);
+        print("here8");
+        //newPlan = decreasePlanVolume(newPlan, 1);
+        newPlan.totalChange -= 1;
         tempRHR -= 1;
       }
     }
@@ -580,10 +612,10 @@ Week roundWeek(Week origWeek) {
 }
 
 //rounds a whole list of weeks (plan)
-List<Week> roundPlan(List<Week> origPlan) {
-  List<Week> newPlan = origPlan;
-  for (var i = 0; i < origPlan.length; i++) {
-    newPlan[i] = roundWeek(origPlan[i]);
+Plan roundPlan(Plan origPlan) {
+  Plan newPlan = origPlan;
+  for (var i = 0; i < origPlan.plan.length; i++) {
+    newPlan.plan[i] = roundWeek(origPlan.plan[i]);
   }
   return newPlan;
 }
@@ -594,22 +626,38 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule, weeks);
 
   //this will be set to the chosen activity base plan
-  List<Week> initialPlan = [];
+  List<Week> initialPlanList = [];
 
   //choose base activity based on activity chosen
   if (activity == "5K") {
-    initialPlan = base5kPlan;
+    initialPlanList = base5kPlan;
   } else if (activity == "Marathon") {
-    initialPlan = baseMarathonPlan;
+    initialPlanList = baseMarathonPlan;
   }
 
-  //pass in the initial plan and the user input to customize final plan
-  List<Week> finalPlan = customizePlan(initialPlan, userInput);
+  //put plan into class
+  Plan initialPlanStruct = Plan(initialPlanList, 0.0);
 
+  //pass in the initial plan and the user input to customize final plan
+  //print("cusotmizing");
+  Plan finalPlan = customizePlan(initialPlanStruct, userInput);
+
+  //print("total change:");
+  //print(finalPlan.totalChange);
+
+  //apply percentage change
+  if (finalPlan.totalChange > 0) {
+    finalPlan = increasePlanVolume(finalPlan, finalPlan.totalChange);
+  } else if (finalPlan.totalChange < 0) {
+    finalPlan.totalChange *= -1;
+    finalPlan = decreasePlanVolume(finalPlan, finalPlan.totalChange);
+  }
+
+  //print("roudning");
   finalPlan = roundPlan(finalPlan);
 
-  print(finalPlan.length);
-  print(jsonEncode(finalPlan));
+  //print("exit");
+  //print(jsonEncode(finalPlan.plan));
 
-  return finalPlan;
+  return finalPlan.plan;
 }

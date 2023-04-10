@@ -305,11 +305,19 @@ Week insertDayAtIndex(Week origWeek, int idx, RunWorkout dayToInsert) {
 
 //takes a week and a schedule of the same length and returns a shuffled version that matches
 Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
-  Week newWeek = origWeek;
+  //create a new week with all rest days
+  RunWorkout day1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day2 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day3 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day4 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day6 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day7 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  Week newWeek = Week(day1, day2, day3, day4, day5, day6, day7, origWeek.importance);
 
   //mark the days of the week we want
   List<int> indexes = [];
-  for (var j = 0; j < 7; j++) {
+  for (var j = 0; j < schedule.length; j++) {
     if (schedule[j] == true) {
       indexes.add(j);
     }
@@ -340,28 +348,40 @@ Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
   }
 
   late RunWorkout dayToInsert;
+
   if (indexes.length <= temp.length) {
+    //if the user wants less days, delete the difference from temp
+    for (var i = indexes.length; i < temp.length; i++) {
+      temp = deleteLowestImportanceDayTemp(temp);
+    }
+
+    //go through the list of user indexes and put the highest importance
     for (var i = 0; i < indexes.length; i++) {
       dayToInsert = temp[i];
+      //dayToInsert = getHighestImportanceDay(temp);
       newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
     }
   } else {
+    //if the user wants more days, just add the temp into spots
     for (var i = 0; i < temp.length; i++) {
       dayToInsert = temp[i];
+      //dayToInsert = getHighestImportanceDay(temp);
       newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
-    }
-  }
-  //put these days into the newWeek at the appropriate location
-
-  //fill in the gaps with rest days
-  for (var j = 0; j < 7; j++) {
-    if (!indexes.contains(j)) {
-      dayToInsert = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
-      newWeek = insertDayAtIndex(newWeek, j, dayToInsert);
     }
   }
 
   return newWeek;
+}
+
+List<RunWorkout> deleteLowestImportanceDayTemp(List<RunWorkout> list) {
+  RunWorkout lowest = list[0];
+  for (var i = 1; i < list.length; i++) {
+    if (list[i].importance < lowest.importance) {
+      lowest = list[i];
+    }
+  }
+  list.remove(lowest);
+  return list;
 }
 
 //shuffle the days to fit the user schedule (this is assuming that the # of days has been appropriately changed)

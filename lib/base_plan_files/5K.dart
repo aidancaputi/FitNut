@@ -4,10 +4,10 @@ var raceDistance = 3.1;
 
 var day1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
 var day2 = RunWorkout("run", "distance", 3.0, "easy", 0.0, 2);
-var day3 = RunWorkout("workout", "distance", 400, "hard", 5.0, 4);
+var day3 = RunWorkout("workout", "distance", 400, "hard", 5.0, 3);
 var day4 = RunWorkout("run", "distance", 3.0, "easy", 0.0, 2);
 var day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
-var day6 = RunWorkout("run", "distance", 3.0, "easy", 0.0, 3);
+var day6 = RunWorkout("run", "distance", 3.0, "easy", 0.0, 2);
 var day7 = RunWorkout("run", "distance", 5.0, "easy", 0.0, 5);
 
 var day8 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);

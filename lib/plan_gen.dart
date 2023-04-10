@@ -2,12 +2,14 @@
 
 //class to represent a workout for the running activity
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:math';
 import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
 
 import 'base_plan_files/5K.dart';
 import 'base_plan_files/marathon.dart';
+import 'base_plan_files/half-marathon.dart';
 
 class Plan {
   List<Week> plan;
@@ -81,10 +83,17 @@ Plan decreasePlanVolume(Plan planStruct, double percent) {
 
   //for every week in the plan
   for (var i = 0; i < newPlan.plan.length; i++) {
+    //print("week $i before change");
+    //print(jsonEncode(newPlan.plan[i]));
     newPlan.plan[i] = decreaseWeekVolume(newPlan.plan[i], percent); //decrease the week volume
+    //print("week after change");
+    //print(jsonEncode(newPlan.plan[i]));
   }
 
   //return the new plan
+  //print("plan being returned from decreasevoluem");
+  //print(jsonEncode(newPlan.plan));
+
   return newPlan;
 }
 
@@ -93,13 +102,13 @@ Week increaseWeekVolume(Week weekToChange, double percent) {
   Week newWeek = weekToChange;
 
   //change each day of the new week
-  weekToChange.day1 = increaseDayVolume(weekToChange.day1, percent);
-  weekToChange.day2 = increaseDayVolume(weekToChange.day2, percent);
-  weekToChange.day3 = increaseDayVolume(weekToChange.day3, percent);
-  weekToChange.day4 = increaseDayVolume(weekToChange.day4, percent);
-  weekToChange.day5 = increaseDayVolume(weekToChange.day5, percent);
-  weekToChange.day6 = increaseDayVolume(weekToChange.day6, percent);
-  weekToChange.day7 = increaseDayVolume(weekToChange.day7, percent);
+  newWeek.day1 = increaseDayVolume(weekToChange.day1, percent);
+  newWeek.day2 = increaseDayVolume(weekToChange.day2, percent);
+  newWeek.day3 = increaseDayVolume(weekToChange.day3, percent);
+  newWeek.day4 = increaseDayVolume(weekToChange.day4, percent);
+  newWeek.day5 = increaseDayVolume(weekToChange.day5, percent);
+  newWeek.day6 = increaseDayVolume(weekToChange.day6, percent);
+  newWeek.day7 = increaseDayVolume(weekToChange.day7, percent);
 
   //return the new week
   return newWeek;
@@ -111,13 +120,13 @@ Week decreaseWeekVolume(Week weekToChange, double percent) {
   Week newWeek = weekToChange;
 
   //change each day of the new week
-  weekToChange.day1 = decreaseDayVolume(weekToChange.day1, percent);
-  weekToChange.day2 = decreaseDayVolume(weekToChange.day2, percent);
-  weekToChange.day3 = decreaseDayVolume(weekToChange.day3, percent);
-  weekToChange.day4 = decreaseDayVolume(weekToChange.day4, percent);
-  weekToChange.day5 = decreaseDayVolume(weekToChange.day5, percent);
-  weekToChange.day6 = decreaseDayVolume(weekToChange.day6, percent);
-  weekToChange.day7 = decreaseDayVolume(weekToChange.day7, percent);
+  newWeek.day1 = decreaseDayVolume(weekToChange.day1, percent);
+  newWeek.day2 = decreaseDayVolume(weekToChange.day2, percent);
+  newWeek.day3 = decreaseDayVolume(weekToChange.day3, percent);
+  newWeek.day4 = decreaseDayVolume(weekToChange.day4, percent);
+  newWeek.day5 = decreaseDayVolume(weekToChange.day5, percent);
+  newWeek.day6 = decreaseDayVolume(weekToChange.day6, percent);
+  newWeek.day7 = decreaseDayVolume(weekToChange.day7, percent);
 
   //return the new week
   return newWeek;
@@ -150,6 +159,9 @@ RunWorkout decreaseDayVolume(RunWorkout dayToChange, double percent) {
   //create the new workout to return
   RunWorkout newWorkout = dayToChange;
 
+  //print("day volume before");
+  //print(newWorkout.volume);
+
   //if it was a rest day, do nothing
   if (dayToChange.type == "rest") {
     return newWorkout;
@@ -162,6 +174,9 @@ RunWorkout decreaseDayVolume(RunWorkout dayToChange, double percent) {
     newWorkout.volume *= (1.0 - (percent / 100.0));
     //newWorkout.volume = newWorkout.volume.roundToDouble();
   }
+
+  //print("day volume after");
+  //print(newWorkout.volume);
 
   //return the new workout
   return newWorkout;
@@ -209,7 +224,7 @@ Week deleteLowestImportanceDay(Week origWeek) {
   ];
 
   //find the index of the lowest importance day
-  int min = 100;
+  int min = origWeek.day1.importance;
   int minIdx = 0;
   for (var i = 1; i < 7; i++) {
     if ((importances[i] < min) && (importances[i] > 0)) {
@@ -219,26 +234,28 @@ Week deleteLowestImportanceDay(Week origWeek) {
   }
 
   if (minIdx == 0) {
-    newWeek.day1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 1) {
-    newWeek.day2 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day2 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 2) {
-    newWeek.day3 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day3 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 3) {
-    newWeek.day4 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day4 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 4) {
-    newWeek.day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 5) {
-    newWeek.day6 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day6 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
   if (minIdx == 6) {
-    newWeek.day7 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 1);
+    newWeek.day7 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   }
+
+  print("removed day $minIdx");
 
   return newWeek;
 }
@@ -250,7 +267,7 @@ Plan deleteADay(Plan origPlan, int desired) {
   //go through all the weeks, and if the week has a higher number of days than desired, delete one
   for (var i = 0; i < origPlan.plan.length; i++) {
     if (getDaysInWeek(origPlan.plan[i]) > desired) {
-      print("deleting a day from a week");
+      //print("deleting a day from a week");
       newPlan.plan[i] = deleteLowestImportanceDay(newPlan.plan[i]);
     }
   }
@@ -288,11 +305,19 @@ Week insertDayAtIndex(Week origWeek, int idx, RunWorkout dayToInsert) {
 
 //takes a week and a schedule of the same length and returns a shuffled version that matches
 Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
-  Week newWeek = origWeek;
+  //create a new week with all rest days
+  RunWorkout day1 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day2 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day3 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day4 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day6 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  RunWorkout day7 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
+  Week newWeek = Week(day1, day2, day3, day4, day5, day6, day7, origWeek.importance);
 
   //mark the days of the week we want
   List<int> indexes = [];
-  for (var j = 0; j < 7; j++) {
+  for (var j = 0; j < schedule.length; j++) {
     if (schedule[j] == true) {
       indexes.add(j);
     }
@@ -323,28 +348,40 @@ Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
   }
 
   late RunWorkout dayToInsert;
+
   if (indexes.length <= temp.length) {
+    //if the user wants less days, delete the difference from temp
+    for (var i = indexes.length; i < temp.length; i++) {
+      temp = deleteLowestImportanceDayTemp(temp);
+    }
+
+    //go through the list of user indexes and put the highest importance
     for (var i = 0; i < indexes.length; i++) {
       dayToInsert = temp[i];
+      //dayToInsert = getHighestImportanceDay(temp);
       newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
     }
   } else {
+    //if the user wants more days, just add the temp into spots
     for (var i = 0; i < temp.length; i++) {
       dayToInsert = temp[i];
+      //dayToInsert = getHighestImportanceDay(temp);
       newWeek = insertDayAtIndex(newWeek, indexes[i], dayToInsert);
-    }
-  }
-  //put these days into the newWeek at the appropriate location
-
-  //fill in the gaps with rest days
-  for (var j = 0; j < 7; j++) {
-    if (!indexes.contains(j)) {
-      dayToInsert = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
-      newWeek = insertDayAtIndex(newWeek, j, dayToInsert);
     }
   }
 
   return newWeek;
+}
+
+List<RunWorkout> deleteLowestImportanceDayTemp(List<RunWorkout> list) {
+  RunWorkout lowest = list[0];
+  for (var i = 1; i < list.length; i++) {
+    if (list[i].importance < lowest.importance) {
+      lowest = list[i];
+    }
+  }
+  list.remove(lowest);
+  return list;
 }
 
 //shuffle the days to fit the user schedule (this is assuming that the # of days has been appropriately changed)
@@ -384,7 +421,7 @@ Plan customizeSchedule(Plan origPlan, RunPlanInput userIn) {
   //for every day they are lower than the base plan, delete the lowest importance day from the plan
   int idx = userDaysPerWeek;
   while (idx < maxPlanDaysPerWeek) {
-    print("here1");
+    //print("here1");
     newPlan = deleteADay(newPlan, userDaysPerWeek);
     idx += 1;
   }
@@ -410,17 +447,18 @@ List<Week> deleteLowestImportanceWeek(List<Week> origPlan) {
   }
 
   //delete the week found with the lowest importance
+  //print("removing week $curMinIdx");
   newPlan.removeAt(curMinIdx);
 
   return newPlan;
 }
 
 //this takes a plan and a week and adds the week to the front of the plan
-Plan addWeekToFrontOfPlan(origPlan, weekToAdd) {
-  Plan newPlan = origPlan;
+List<Week> addWeekToFrontOfPlan(List<Week> origPlan, Week weekToAdd) {
+  List<Week> newPlan = origPlan;
 
   //insert the week
-  newPlan.plan.insert(0, weekToAdd);
+  newPlan.insert(0, weekToAdd);
 
   return newPlan;
 }
@@ -437,26 +475,39 @@ Plan customizeLength(Plan origPlan, RunPlanInput userIn) {
   if (userIn.weeks < origLength) {
     //for every week below the original plan, add 8% volume and remove lowest priority
     while (inputLen < origLength) {
-      print("here2");
+      //print("here2");
       newPlan.plan = deleteLowestImportanceWeek(newPlan.plan);
       // newPlan = increasePlanVolume(newPlan, 8);
       inputLen += 1;
     }
   }
 
+  //WHY IS THIS MAKING THE ADDED WEEKS ALL THE SAME
   //if the user wants a longer plan
   if (userIn.weeks > origLength) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
-    late Week temp;
     while (inputLen > origLength) {
-      print("here3");
-      temp = decreaseWeekVolume(newPlan.plan[0], 3); //decrease the first week by 3% volume and save in temp
-      newPlan = addWeekToFrontOfPlan(newPlan, temp); //add this new week to the front of the plan
+      Week temp = copyWeek(newPlan.plan[0]);
+      temp = decreaseWeekVolume(temp, 3.0); //decrease the first week by 3% volume and save in temp
+
+      newPlan.plan = addWeekToFrontOfPlan(newPlan.plan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
   }
 
   return newPlan;
+}
+
+Week copyWeek(Week origWeek) {
+  RunWorkout day1copy = RunWorkout(origWeek.day1.type, origWeek.day1.version, origWeek.day1.volume, origWeek.day1.intensity, origWeek.day1.reps, origWeek.day1.importance);
+  RunWorkout day2copy = RunWorkout(origWeek.day2.type, origWeek.day2.version, origWeek.day2.volume, origWeek.day2.intensity, origWeek.day2.reps, origWeek.day2.importance);
+  RunWorkout day3copy = RunWorkout(origWeek.day3.type, origWeek.day3.version, origWeek.day3.volume, origWeek.day3.intensity, origWeek.day3.reps, origWeek.day3.importance);
+  RunWorkout day4copy = RunWorkout(origWeek.day4.type, origWeek.day4.version, origWeek.day4.volume, origWeek.day4.intensity, origWeek.day4.reps, origWeek.day4.importance);
+  RunWorkout day5copy = RunWorkout(origWeek.day5.type, origWeek.day5.version, origWeek.day5.volume, origWeek.day5.intensity, origWeek.day5.reps, origWeek.day5.importance);
+  RunWorkout day6copy = RunWorkout(origWeek.day6.type, origWeek.day6.version, origWeek.day6.volume, origWeek.day6.intensity, origWeek.day6.reps, origWeek.day6.importance);
+  RunWorkout day7copy = RunWorkout(origWeek.day7.type, origWeek.day7.version, origWeek.day7.volume, origWeek.day7.intensity, origWeek.day7.reps, origWeek.day7.importance);
+  Week newWeek = Week(day1copy, day2copy, day3copy, day4copy, day5copy, day6copy, day7copy, origWeek.importance);
+  return newWeek;
 }
 
 //take in user input and return how many days per week they are available
@@ -498,7 +549,7 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
   //decrase volume by 10 percent if female
   if (userIn.gender == "female") {
     //newPlan = decreasePlanVolume(newPlan, 10.0);
-    newPlan.totalChange -= 10;
+    newPlan.totalChange -= 5;
   }
 
   //height and weight conversions
@@ -509,9 +560,9 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
   //if their bmi is over 25, decrease volume by 2 percent for every point above
   if (bmi > 25) {
     while (bmi > 25) {
-      print("here4");
+      //print("here4");
       //newPlan = decreasePlanVolume(newPlan, 1);
-      newPlan.totalChange -= 2;
+      newPlan.totalChange -= 1;
       bmi -= 1;
     }
   }
@@ -519,7 +570,7 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
   //adjust volume based on age
   if (userIn.age < 18) {
     //newPlan = decreasePlanVolume(newPlan, 10);
-    newPlan.totalChange -= 10;
+    newPlan.totalChange -= 8;
   } else if ((40 <= userIn.age) && (userIn.age < 50)) {
     //newPlan = decreasePlanVolume(newPlan, 5);
     newPlan.totalChange -= 5;
@@ -531,7 +582,7 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
     newPlan.totalChange -= 10;
   } else if (70 <= userIn.age) {
     //newPlan = decreasePlanVolume(newPlan, 15);
-    newPlan.totalChange -= 15;
+    newPlan.totalChange -= 12;
   }
 
   //if experience level is above 5, increase by 5% for every point above
@@ -539,16 +590,16 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
   int tempExp = userIn.experienceLevel;
   if (userIn.experienceLevel > 5) {
     while (tempExp > 5) {
-      print("here5");
+      //print("here5");
       //newPlan = increasePlanVolume(newPlan, 3);
       newPlan.totalChange += 3;
       tempExp -= 1;
     }
   } else if (userIn.experienceLevel < 5) {
     while (tempExp < 5) {
-      print("here6");
+      //print("here6");
       //newPlan = decreasePlanVolume(newPlan, 7);
-      newPlan.totalChange -= 7;
+      newPlan.totalChange -= 5;
       tempExp += 1;
     }
   }
@@ -559,14 +610,14 @@ Plan customizePlan(Plan origPlan, RunPlanInput userIn) {
   if (userIn.rhr != 0) {
     if (userIn.rhr > 100) {
       while (tempRHR > 100) {
-        print("here7");
+        //print("here7");
         //newPlan = decreasePlanVolume(newPlan, 1);
         newPlan.totalChange -= 1;
         tempRHR -= 1;
       }
     } else if (userIn.rhr < 100) {
       while (tempRHR > 100) {
-        print("here8");
+        //print("here8");
         //newPlan = decreasePlanVolume(newPlan, 1);
         newPlan.totalChange -= 1;
         tempRHR -= 1;
@@ -633,6 +684,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
     initialPlanList = base5kPlan;
   } else if (activity == "Marathon") {
     initialPlanList = baseMarathonPlan;
+  } else if (activity == "Half Marathon") {
+    initialPlanList = baseHalfMarathonPlan;
   }
 
   //put plan into class
@@ -642,14 +695,15 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   //print("cusotmizing");
   Plan finalPlan = customizePlan(initialPlanStruct, userInput);
 
-  //print("total change:");
-  //print(finalPlan.totalChange);
+  print("total change:");
+  print(finalPlan.totalChange);
 
   //apply percentage change
   if (finalPlan.totalChange > 0) {
     finalPlan = increasePlanVolume(finalPlan, finalPlan.totalChange);
   } else if (finalPlan.totalChange < 0) {
     finalPlan.totalChange *= -1;
+    //print("calling decrease volume");
     finalPlan = decreasePlanVolume(finalPlan, finalPlan.totalChange);
   }
 
@@ -657,7 +711,7 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   finalPlan = roundPlan(finalPlan);
 
   //print("exit");
-  //print(jsonEncode(finalPlan.plan));
+  print(jsonEncode(finalPlan.plan));
 
   return finalPlan.plan;
 }

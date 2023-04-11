@@ -20,7 +20,7 @@ class CalendarApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       home: CalPage(),
     );
@@ -38,7 +38,8 @@ class _CalState extends State<CalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TableCalendar'),
+        title:
+            const Text('TableCalendar', style: TextStyle(color: Colors.white)),
       ),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -54,7 +55,8 @@ class _CalState extends State<CalPage> {
                     children: [
                       const SizedBox(height: 20.0),
                       ElevatedButton(
-                        child: const Text('See Plan'),
+                        child: const Text('See Plan',
+                            style: TextStyle(color: Colors.white)),
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(

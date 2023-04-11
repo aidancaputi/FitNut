@@ -10,7 +10,7 @@ class SelectWorkout extends StatelessWidget {
     return MaterialApp(
       title: 'User Input',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       home: const SelectWorkoutPage(),
     );
@@ -40,7 +40,8 @@ class Select extends State<SelectWorkoutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Select A Workout'),
+          title: const Text('Select A Workout',
+              style: TextStyle(color: Colors.white)),
         ),
         body: ListView(children: <Widget>[
           Padding(
@@ -49,6 +50,7 @@ class Select extends State<SelectWorkoutPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
+                    const SizedBox(height: 32.0),
                     // GENDER INPUT
                     WorkoutInput(
                       workout: workout,

@@ -88,7 +88,9 @@ class _TableEventsState extends State<TableEvents> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TableCalendar - Events'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('TableCalendar - Events',
+            style: TextStyle(color: Colors.white)),
       ),
       body: Column(
         children: [

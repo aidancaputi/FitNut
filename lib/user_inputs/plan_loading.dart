@@ -16,7 +16,9 @@ class _loadPlanState extends State<loadPlan> {
         data: MediaQuery.of(context),
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Workout Generation'),
+              iconTheme: const IconThemeData(color: Colors.white),
+              title: const Text('Workout Generation',
+                  style: TextStyle(color: Colors.white)),
             ),
             body: Center(
                 child: SizedBox(

@@ -46,10 +46,10 @@ class _GenderInputState extends State<GenderInput> {
               value: widget.gender,
               icon: const Icon(Icons.arrow_downward),
               elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
+              style: Theme.of(context).textTheme.bodyMedium,
               underline: Container(
                 height: 2,
-                color: Colors.deepPurpleAccent,
+                color: widget.borderProperties.dropDownColor,
               ),
               onChanged: (String? value) {
                 setState(() {

@@ -1,4 +1,4 @@
-package com.example.demo_flutter
+package com.example.FitNut
 
 import io.flutter.embedding.android.FlutterActivity
 

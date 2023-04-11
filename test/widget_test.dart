@@ -4,17 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:FitNut/select_workout.dart';
 import 'package:FitNut/main.dart';
-import 'package:flutter/cupertino.dart';
 
 void main() {
-  //this test makes sure that the 4 tabs exist and can be tapped between
+  //this test makes sure that the 3 tabs exist and can be tapped between
   testWidgets('Tab bars can be navigated between', (tester) async {
-    // Test code goes here.
-    await tester.pumpWidget(const TabBarField());
-    await tester.tap(find.byIcon(Icons.calendar_today));
-    await tester.tap(find.byIcon(Icons.card_membership_sharp));
-    await tester.tap(find.byIcon(Icons.waves_rounded));
-    await tester.tap(find.byIcon(Icons.settings_sharp));
+    // create tab bar
+    await tester.pumpWidget(const MaterialApp(home: MyTabBar()));
+
+    // tap on the second tab (Search)
+    await tester.tap(find.text('Current Workout'));
+    await tester.pumpAndSettle();
+
+    // verify that the second tab is selected
+    expect(find.text('Next'), findsNothing);
+    expect(find.byIcon(Icons.directions_car), findsOneWidget);
+    expect(find.text('See Plan'), findsNothing);
+
+    // tap on the third tab (create new workout)
+    await tester.tap(find.text('Create New Workout'));
+    await tester.pumpAndSettle();
+
+    // verify that the third tab is selected
+    expect(find.text('Next'), findsOneWidget);
+    expect(find.byIcon(Icons.directions_car), findsNothing);
+    expect(find.text('See Plan'), findsNothing);
   });
 
   // this test navigates to the select workout page and tests the workout selector

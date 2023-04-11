@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'workoutButton.dart';
 import 'utils.dart';
 import 'dart:collection';
 
@@ -62,6 +63,10 @@ class _TableEventsState extends State<TableEvents> {
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
+      // enable the load workout button to be pressed
+      final currEvent = _getEventsForDay(selectedDay)[0];
+      WorkoutButton(currWorkout: currEvent.toString());
+      print('current day');
     }
   }
 
@@ -149,6 +154,7 @@ class _TableEventsState extends State<TableEvents> {
               },
             ),
           ),
+          WorkoutButton(currWorkout: _getEventsForDay(_focusedDay).toString())
         ],
       ),
     );

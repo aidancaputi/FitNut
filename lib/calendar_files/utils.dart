@@ -50,15 +50,11 @@ String prettifyWorkout(String dayWorkout) {
     finalStr += 'Run Day:\n';
 
     if (wkt[1] == 'time') {
-      finalStr += wkt[2].toString() + ' minutes';
+      finalStr +=
+          wkt[2].toString() + ' minutes at ' + wkt[3].toString() + ' pace';
     } else if (wkt[1] == 'distance') {
-      finalStr += wkt[2].toString() + ' miles';
-    }
-
-    if (wkt[3] == 'race') {
-      finalStr = 'Race Day - go out and do it';
-    } else {
-      finalStr += ' at ' + wkt[3].toString() + ' pace';
+      finalStr +=
+          wkt[2].toString() + ' miles at ' + wkt[3].toString() + ' pace';
     }
   } else if (wkt[0] == 'workout') {
     finalStr += 'Workout Day:\n';

@@ -37,7 +37,7 @@ Future<String> readPlan(String fileName) async {
     String contents = await file.readAsString();
 
     // optional 3 second delay to demonstrate loading indicator:
-    await Future.delayed(const Duration(seconds: 3));
+    //await Future.delayed(const Duration(seconds: 3));
 
     return contents;
   } catch (e) {

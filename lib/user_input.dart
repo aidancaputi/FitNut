@@ -20,6 +20,7 @@ class InputPage extends StatefulWidget {
 class InputBorderProperties {
   // establish all border properties
   final Color borderColor = Colors.grey.withOpacity(0.75);
+  final Color dropDownColor = Colors.orange;
   final double borderLineWidth = 2.0;
   final double borderHeight = 250;
   final double borderWidth = 500;
@@ -108,7 +109,9 @@ class UserInput extends State<InputPage> {
         data: MediaQuery.of(context),
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Input User Info'),
+              iconTheme: const IconThemeData(color: Colors.white),
+              title: const Text('Input User Info',
+                  style: TextStyle(color: Colors.white)),
             ),
             body: ListView(children: <Widget>[
               Padding(
@@ -117,6 +120,7 @@ class UserInput extends State<InputPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
+                      const SizedBox(height: 16.0),
                       // GENDER INPUT
                       GenderInput(
                         gender: gender,

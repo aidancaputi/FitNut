@@ -58,7 +58,7 @@ class _WorkoutButtonState extends State<WorkoutButton> {
         },
         child: const Text(
           'Next',
-          style: TextStyle(fontSize: 40),
+          style: TextStyle(fontSize: 40, color: Colors.white),
         ),
       ),
       const SizedBox(height: 32.0),

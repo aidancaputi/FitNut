@@ -81,7 +81,7 @@ class _GenerateButtonState extends State<GenerateButton> {
         },
         child: Text(
           'Generate ${widget.workoutProperties.workoutType} Workout',
-          style: const TextStyle(fontSize: 30),
+          style: const TextStyle(fontSize: 30, color: Colors.white),
         ),
       ),
       const SizedBox(height: 32.0),

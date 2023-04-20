@@ -6,7 +6,7 @@ var raceDistance = 3.1;
 
 var day1 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day2 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
-var day3 = [Workout("run", "workout", "distance", 400, "hard", 5.0, 3)];
+var day3 = [Workout("run", "workout", "distance", 400.0, "hard", 5.0, 3)];
 var day4 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
 var day5 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day6 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
@@ -22,7 +22,7 @@ var day14 = [Workout("run", "not workout", "distance", 5.0, "easy", 0.0, 5)];
 
 var day15 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day16 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
-var day17 = [Workout("run", "workout", "distance", 400, "hard", 6.0, 4)];
+var day17 = [Workout("run", "workout", "distance", 400.0, "hard", 6.0, 4)];
 var day18 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
 var day19 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day20 = [Workout("run", "not workout", "distance", 4.0, "easy", 0.0, 3)];
@@ -38,7 +38,7 @@ var day28 = [Workout("run", "not workout", "distance", raceDistance, "race", 0.0
 
 var day29 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day30 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
-var day31 = [Workout("run", "workout", "distance", 400, "hard", 7.0, 4)];
+var day31 = [Workout("run", "workout", "distance", 400.0, "hard", 7.0, 4)];
 var day32 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
 var day33 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day34 = [Workout("run", "not workout", "distance", 4.0, "tempo", 0.0, 3)];
@@ -54,7 +54,7 @@ var day42 = [Workout("run", "not workout", "distance", 7.0, "easy", 0.0, 5)];
 
 var day43 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day44 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
-var day45 = [Workout("run", "workout", "distance", 400, "hard", 8.0, 4)];
+var day45 = [Workout("run", "workout", "distance", 400.0, "hard", 8.0, 4)];
 var day46 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];
 var day47 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day48 = [Workout("run", "not workout", "distance", 5.0, "tempo", 0.0, 3)];

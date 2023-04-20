@@ -2,6 +2,8 @@ import 'package:FitNut/plan_gen.dart';
 
 var raceDistance = 26.2;
 
+//plan based from hal higdon plans
+
 //week 1
 var day1 = [Workout("cross", "cross", "cross", 0.0, "cross", 0.0, 1)];
 var day2 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2)];

@@ -1,5 +1,7 @@
 import 'package:FitNut/plan_gen.dart';
 
+//plan based from hal higdon plans
+
 var raceDistance = 3.1;
 
 var day1 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];

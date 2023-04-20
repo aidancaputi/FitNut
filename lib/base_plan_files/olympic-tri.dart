@@ -4,6 +4,7 @@ var raceDistance = 32.0;
 
 //notes:
 
+//plan based from marathonhandbook.com
 //swim workouts are in meters for volume
 //bike workouts are in seconds for volume
 
@@ -92,7 +93,7 @@ var day57 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 1)]; //
 var day58 = [Workout("bike", "not workout", "distance", 15.0, "easy", 0.0, 1)]; //15 mile easy bike
 var day59 = [Workout("swim", "workout", "distance", 200.0, "hard", 4.0, 2)]; //4 x 200m swim workout
 var day60 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)]; //rest
-var day61 = [Workout("bike", "not workout", "distance", 16.0, "tempo", 0.0, 2)]; //16 mile tempo bike
+var day61 = [Workout("bike", "not workout", "distance", 16.0, "easy", 0.0, 2)]; //16 mile easy bike
 var day62 = [Workout("swim", "not workout", "distance", 600.0, "easy", 0.0, 1)]; //600m easy swim
 var day63 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)]; //rest
 
@@ -157,7 +158,7 @@ var day105 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)]; //rest
 //week 16
 var day106 = [Workout("run", "not workout", "distance", 3.0, "easy", 0.0, 2), Workout("run", "workout", "distance", 75.0, "hard", 4.0, 2)]; //3 mile run and 4 x 75m workout
 var day107 = [Workout("bike", "not workout", "time", 30.0, "easy", 0.0, 1)]; //30 minute easy bike
-var day108 = [Workout("swim", "not workout", "time", 15.0, "easy", 4.0, 1)]; //15 minute easy swim
+var day108 = [Workout("swim", "not workout", "time", 15.0, "easy", 0.0, 1)]; //15 minute easy swim
 var day109 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)]; //rest
 var day110 = [Workout("run", "not workout", "time", 20.0, "easy", 0.0, 2)]; //20 min easy run
 var day111 = [Workout("bike", "not workout", "time", 20.0, "easy", 0.0, 2)]; //20 min easy bike
@@ -167,9 +168,17 @@ List<Week> baseOlympicPlan = [
   Week(day1, day2, day3, day4, day5, day6, day7, 1),
   Week(day8, day9, day10, day11, day12, day13, day14, 2),
   Week(day15, day16, day17, day18, day19, day20, day21, 3),
-  Week(day22, day23, day24, day25, day26, day27, day28, 50),
-  Week(day29, day30, day31, day32, day33, day34, day35, 4),
-  Week(day36, day37, day38, day39, day40, day41, day42, 5),
-  Week(day43, day44, day45, day46, day47, day48, day49, 6),
-  Week(day50, day51, day52, day53, day54, day55, day56, 100),
+  Week(day22, day23, day24, day25, day26, day27, day28, 20),
+  Week(day29, day30, day31, day32, day33, day34, day35, 30),
+  Week(day36, day37, day38, day39, day40, day41, day42, 40),
+  Week(day43, day44, day45, day46, day47, day48, day49, 4),
+  Week(day50, day51, day52, day53, day54, day55, day56, 50),
+  Week(day57, day58, day59, day60, day61, day62, day63, 5),
+  Week(day64, day65, day66, day67, day68, day69, day70, 6),
+  Week(day71, day72, day73, day74, day75, day76, day77, 7),
+  Week(day78, day79, day80, day81, day82, day83, day84, 60),
+  Week(day85, day86, day87, day88, day89, day90, day91, 8),
+  Week(day92, day93, day94, day95, day96, day97, day98, 9),
+  Week(day99, day100, day101, day102, day103, day104, day105, 10),
+  Week(day106, day107, day108, day109, day110, day111, day112, 100),
 ];

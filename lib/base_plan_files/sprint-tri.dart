@@ -4,6 +4,7 @@ var raceDistance = 16.0;
 
 //notes:
 
+//plan based from marathonhandbook.com
 //swim workouts are in meters for volume
 //bike workouts are in seconds for volume
 

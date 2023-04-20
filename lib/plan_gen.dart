@@ -4,6 +4,11 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:math';
+import 'package:FitNut/base_plan_files/10K.dart';
+import 'package:FitNut/base_plan_files/full-IM.dart';
+import 'package:FitNut/base_plan_files/half-IM.dart';
+import 'package:FitNut/base_plan_files/olympic-tri.dart';
+import 'package:FitNut/base_plan_files/sprint-tri.dart';
 import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
 
@@ -758,6 +763,16 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
     initialPlanList = baseMarathonPlan;
   } else if (activity == "Half Marathon") {
     initialPlanList = baseHalfMarathonPlan;
+  } else if (activity == "10K") {
+    initialPlanList = base10kPlan;
+  } else if (activity == "Sprint Triathlon") {
+    initialPlanList = baseSprintPlan;
+  } else if (activity == "Olympic Triathlon") {
+    initialPlanList = baseOlympicPlan;
+  } else if (activity == "Half Ironman") {
+    initialPlanList = baseHalfIMPlan;
+  } else if (activity == "Full Ironman") {
+    initialPlanList = baseFullIMPlan;
   }
 
   //put plan into class
@@ -767,8 +782,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   //print("cusotmizing");
   Plan finalPlan = customizePlan(initialPlanStruct, userInput);
 
-  print("total change:");
-  print(finalPlan.totalChange);
+  //print("total change:");
+  //print(finalPlan.totalChange);
 
   //apply percentage change
   if (finalPlan.totalChange > 0) {
@@ -782,7 +797,7 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
   finalPlan = roundPlan(finalPlan);
 
   for (var i = 0; i < finalPlan.plan.length; i++) {
-    print(jsonEncode(finalPlan.plan[i].day7));
+    //print(jsonEncode(finalPlan.plan[i].day7));
   }
 
   return finalPlan.plan;

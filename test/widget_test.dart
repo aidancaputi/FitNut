@@ -1,8 +1,9 @@
-import 'package:FitNut/user_input.dart';
-import 'package:FitNut/user_inputs/workout_button.dart';
+import 'package:FitNut/new_workout_files/user_input.dart';
+import 'package:FitNut/new_workout_files/user_inputs/workout_length_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:FitNut/select_workout.dart';
+import 'package:FitNut/new_workout_files/select_workout.dart';
+import 'package:FitNut/new_workout_files/select_length.dart';
 import 'package:FitNut/main.dart';
 
 void main() {
@@ -35,35 +36,26 @@ void main() {
     await tester.pumpWidget(const SelectWorkout());
 
     expect(find.byType(DropdownButton<String>),
-        findsOneWidget); // assure that the dropdown for gender exists
+        findsOneWidget); // assure that the dropdown for workout type exists
 
     final workout =
-        find.byType(DropdownButton<String>); //select the workout dropdown
+        find.byType(DropdownButton<String>); // select the workout dropdown
 
-    //tap the workout dropdown and select 5K
+    //tap the workout dropdown and select run
     await tester.tap(workout);
     await tester.pumpAndSettle();
-    final fiveK = find.text('5K').last;
-    await tester.tap(fiveK);
+    await tester.tap(find.text('Run').last);
     await tester.pumpAndSettle();
 
-    //tap the workout dropdown and select Half Marathon
+    //tap the workout dropdown and select triathlon
     await tester.tap(workout);
     await tester.pumpAndSettle();
-    final halfMarathon = find.text('Half Marathon').last;
-    await tester.tap(halfMarathon);
-    await tester.pumpAndSettle();
-
-    //tap the workout dropdown and select Marathon
-    await tester.tap(workout);
-    await tester.pumpAndSettle();
-    final marathon = find.text('Marathon').last;
-    await tester.tap(marathon);
+    await tester.tap(find.text('Triathlon').last);
     await tester.pumpAndSettle();
   });
 
   // this test navigates to the select workout page and tests the next button
-  testWidgets('Select workout next button navigates to input page',
+  testWidgets('Select workout next button navigates to select length page',
       (WidgetTester tester) async {
     await tester.pumpWidget(const SelectWorkout());
 
@@ -80,15 +72,98 @@ void main() {
     // check the content of the SnackBar
     expect(find.text('Please select a workout type'), findsOneWidget);
 
-    // select a 5K workout
+    // select a run workout
     await tester.tap(find.byType(DropdownButton<String>));
     await tester.pumpAndSettle();
-    final fiveK = find.text('5K').last;
-    await tester.tap(fiveK);
+    await tester.tap(find.text('Run').last);
     await tester.pumpAndSettle();
 
     // Press the next button
     await tester.tap(buttonFinder);
+    await tester.pumpAndSettle();
+
+    // check that the select workout length page is displayed
+    expect(find.byType(SelectWorkoutLength), findsOneWidget);
+  });
+
+  // this test navigates to the select workout length page and tests the workout length selector
+  testWidgets('Select workout next button navigates to select length page',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const SelectWorkout());
+
+    // select a run workout
+    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Run').last);
+    await tester.pumpAndSettle();
+
+    // find and press the next button
+    final Finder buttonFinder = find.byType(ElevatedButton);
+    await tester.tap(buttonFinder);
+    await tester.pumpAndSettle();
+
+    // check that the select workout length page is displayed
+    expect(find.byType(SelectWorkoutLength), findsOneWidget);
+
+    expect(find.byType(DropdownButton<String>),
+        findsOneWidget); // assure that the dropdown for workout length exists
+
+    final workout = find
+        .byType(DropdownButton<String>); // select the workout length dropdown
+
+    //tap the workout length dropdown and select 5K
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('5K').last);
+    await tester.pumpAndSettle();
+
+    //tap the workout dropdown and select 10K
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('10K').last);
+    await tester.pumpAndSettle();
+
+    //tap the workout dropdown and select half marathon
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Half Marathon').last);
+    await tester.pumpAndSettle();
+
+    //tap the workout dropdown and select marathon
+    await tester.tap(workout);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Marathon').last);
+    await tester.pumpAndSettle();
+  });
+
+  // this test navigates to the select workout length page and tests the next button
+  testWidgets('Select workout length next button navigates to user info page',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const SelectWorkout());
+
+    // select a run workout
+    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Run').last);
+    await tester.pumpAndSettle();
+
+    // find and press the next button
+    final Finder buttonFinder = find.byType(ElevatedButton);
+    await tester.tap(buttonFinder);
+    await tester.pumpAndSettle();
+
+    // check that the select workout length page is displayed
+    expect(find.byType(SelectWorkoutLength), findsOneWidget);
+
+    // select a 5K workout
+    await tester.tap(find.byType(DropdownButton<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('5K').last);
+    await tester.pumpAndSettle();
+
+    // find and press the next button
+    final Finder newbuttonFinder = find.byType(ElevatedButton);
+    await tester.tap(newbuttonFinder);
     await tester.pumpAndSettle();
 
     // check that the input page is displayed

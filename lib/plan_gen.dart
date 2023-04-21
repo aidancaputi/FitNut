@@ -2,7 +2,6 @@
 
 //class to represent a workout for the running activity
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:math';
 import 'package:FitNut/base_plan_files/10K.dart';
 import 'package:FitNut/base_plan_files/full-IM.dart';
@@ -11,7 +10,6 @@ import 'package:FitNut/base_plan_files/olympic-tri.dart';
 import 'package:FitNut/base_plan_files/sprint-tri.dart';
 import 'package:FitNut/user_input.dart';
 import 'package:flutter/material.dart';
-
 import 'base_plan_files/5K.dart';
 import 'base_plan_files/marathon.dart';
 import 'base_plan_files/half-marathon.dart';
@@ -30,11 +28,18 @@ class Workout {
   String intensity; //easy, hard, tempo, etc. ('none' if not applicable)
   double reps; //how many reps of the workout (0 if not applicable)
   int importance;
-
+  
   Workout(this.sport, this.type, this.version, this.volume, this.intensity, this.reps, this.importance);
 
   //this is just so that I can dump the workouts as json..will be removed
-  Map toJson() => {'type': type, 'version': version, 'volume': volume, 'intensity': intensity, 'reps': reps, 'importance': importance};
+  Map toJson() => {
+        'type': type,
+        'version': version,
+        'volume': volume,
+        'intensity': intensity,
+        'reps': reps,
+        'importance': importance
+      };
 }
 
 //class to represent a week of a training plan (i.e. 7 workouts)
@@ -48,11 +53,19 @@ class Week {
   late List<Workout> day6;
   late List<Workout> day7;
   late int importance;
-  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7, this.importance);
+  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6,
+      this.day7, this.importance);
 
   //this is just so that i can dump the week as json..will be removed
-  Map toJson() =>
-      {'day1': jsonEncode(day1), 'day2': jsonEncode(day2), 'day3': jsonEncode(day3), 'day4': jsonEncode(day4), 'day5': jsonEncode(day5), 'day6': jsonEncode(day6), 'day7': jsonEncode(day7)};
+  Map toJson() => {
+        'day1': jsonEncode(day1),
+        'day2': jsonEncode(day2),
+        'day3': jsonEncode(day3),
+        'day4': jsonEncode(day4),
+        'day5': jsonEncode(day5),
+        'day6': jsonEncode(day6),
+        'day7': jsonEncode(day7)
+      };
 }
 
 //class to represent a user input for a running plan
@@ -76,7 +89,8 @@ Plan increasePlanVolume(Plan planStruct, double percent) {
 
   //for every week in the plan
   for (var i = 0; i < newPlan.plan.length; i++) {
-    newPlan.plan[i] = increaseWeekVolume(newPlan.plan[i], percent); //increase the week volume
+    newPlan.plan[i] =
+        increaseWeekVolume(newPlan.plan[i], percent); //increase the week volume
   }
 
   //return the new plan
@@ -479,9 +493,11 @@ Plan customizeLength(Plan origPlan, PlanInput userIn) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
     while (inputLen > origLength) {
       Week temp = copyWeek(newPlan.plan[0]);
-      temp = decreaseWeekVolume(temp, 3.0); //decrease the first week by 3% volume and save in temp
+      temp = decreaseWeekVolume(
+          temp, 3.0); //decrease the first week by 3% volume and save in temp
 
-      newPlan.plan = addWeekToFrontOfPlan(newPlan.plan, temp); //add this new week to the front of the plan
+      newPlan.plan = addWeekToFrontOfPlan(
+          newPlan.plan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
   }
@@ -576,6 +592,7 @@ Week copyWeek(Week origWeek) {
   }
 
   Week newWeek = Week(day1copy, day2copy, day3copy, day4copy, day5copy, day6copy, day7copy, origWeek.importance);
+
   return newWeek;
 }
 
@@ -749,7 +766,16 @@ Plan roundPlan(Plan origPlan) {
 }
 
 //caller function for generating plan
-List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule, int weeks) {
+List<Week> generatePlan(
+    String activity,
+    String gender,
+    int heightIN,
+    int weightLBS,
+    int age,
+    int experience,
+    int rhr,
+    List<bool> schedule,
+    int weeks) {
   //gather user input
   PlanInput userInput = PlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule, weeks);
 

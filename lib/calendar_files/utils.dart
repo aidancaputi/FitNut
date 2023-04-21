@@ -89,6 +89,7 @@ LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
   //decode the json from the plan file
   List<dynamic> fileSourceList = jsonDecode(fileSourceStr);
 
+  print(fileSourceStr);
   //find the number of weeks the plan lasts
   int numWeeks = fileSourceList.length;
   List dayArr = [];

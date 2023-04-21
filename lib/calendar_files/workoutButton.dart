@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 class WorkoutButton extends StatefulWidget {
-  final String currWorkout;
+  static String? getCurrWorkout() {
+    return tempWkt;
+  }
+
+  final String? currWorkout;
+  static String? tempWkt = 'currWorkout';
+
   WorkoutButton({
     required this.currWorkout,
-  });
+  }) {
+    tempWkt = currWorkout;
+  }
+
   @override
   _WorkoutButtonState createState() => _WorkoutButtonState();
 }
@@ -16,7 +26,7 @@ class _WorkoutButtonState extends State<WorkoutButton> {
       const SizedBox(height: 32.0),
       ElevatedButton(
         onPressed: () {
-          print('pressed workout button');
+          openWorkout(WorkoutButton.getCurrWorkout());
         },
         child: Text(
           'Start Workout',
@@ -25,5 +35,17 @@ class _WorkoutButtonState extends State<WorkoutButton> {
       ),
       const SizedBox(height: 32.0),
     ]);
+  }
+}
+
+void openWorkout(String? message) {
+  GlobalKey<MyTabBarState> key = TabBarField.getKey();
+  PageController? pageCont = key.currentState?.getPageController();
+  int activityPageIdx = 1;
+
+  if (pageCont != null) {
+    pageCont.animateToPage(activityPageIdx,
+        duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    print(message);
   }
 }

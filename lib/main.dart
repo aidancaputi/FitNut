@@ -3,18 +3,25 @@ import 'calendar_files/calendarOps.dart';
 import 'select_workout.dart';
 
 void main() {
-  runApp(const TabBarField());
+  runApp(TabBarField());
 }
 
 class TabBarField extends StatelessWidget {
-  const TabBarField({super.key});
+  static final _myTabbedPageKey = GlobalKey<MyTabBarState>();
+
+  static GlobalKey<MyTabBarState> getKey() {
+    return _myTabbedPageKey;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.orange,
         ),
-        home: const MyTabBar());
+        home: MyTabBar(
+          key: _myTabbedPageKey,
+        ));
   }
 }
 
@@ -22,17 +29,28 @@ class MyTabBar extends StatefulWidget {
   const MyTabBar({Key? key}) : super(key: key);
 
   @override
-  _MyTabBarState createState() => _MyTabBarState();
+  MyTabBarState createState() => MyTabBarState();
 }
 
-class _MyTabBarState extends State<MyTabBar> {
+class MyTabBarState extends State<MyTabBar> {
   int _selectedIndex = 0;
-  final PageController _pageController = PageController(initialPage: 0);
+  static final PageController _pageController = PageController(initialPage: 0);
   static const List<Widget> _widgetOptions = <Widget>[
     CalendarApp(),
     Icon(Icons.directions_car, size: 350),
     SelectWorkout(),
   ];
+
+  PageController getPageController() {
+    return _pageController;
+  }
+
+  void moveToPage2() {
+    setState(() {
+      _pageController.animateToPage(2,
+          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    });
+  }
 
   void _onPageChanged(int index) {
     setState(() {

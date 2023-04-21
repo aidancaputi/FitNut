@@ -2,10 +2,7 @@
 
 //class to represent a workout for the running activity
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:math';
-import 'package:FitNut/user_input.dart';
-import 'package:flutter/material.dart';
 
 import 'base_plan_files/5K.dart';
 import 'base_plan_files/marathon.dart';
@@ -24,10 +21,18 @@ class RunWorkout {
   String intensity; //easy, hard, tempo, etc. ('none' if not applicable)
   double reps; //how many reps of the workout (0 if not applicable)
   int importance;
-  RunWorkout(this.type, this.version, this.volume, this.intensity, this.reps, this.importance);
+  RunWorkout(this.type, this.version, this.volume, this.intensity, this.reps,
+      this.importance);
 
   //this is just so that I can dump the workouts as json..will be removed
-  Map toJson() => {'type': type, 'version': version, 'volume': volume, 'intensity': intensity, 'reps': reps, 'importance': importance};
+  Map toJson() => {
+        'type': type,
+        'version': version,
+        'volume': volume,
+        'intensity': intensity,
+        'reps': reps,
+        'importance': importance
+      };
 }
 
 //class to represent a week of a training plan (i.e. 7 workouts)
@@ -41,11 +46,19 @@ class Week {
   late RunWorkout day6;
   late RunWorkout day7;
   late int importance;
-  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6, this.day7, this.importance);
+  Week(this.day1, this.day2, this.day3, this.day4, this.day5, this.day6,
+      this.day7, this.importance);
 
   //this is just so that i can dump the week as json..will be removed
-  Map toJson() =>
-      {'day1': jsonEncode(day1), 'day2': jsonEncode(day2), 'day3': jsonEncode(day3), 'day4': jsonEncode(day4), 'day5': jsonEncode(day5), 'day6': jsonEncode(day6), 'day7': jsonEncode(day7)};
+  Map toJson() => {
+        'day1': jsonEncode(day1),
+        'day2': jsonEncode(day2),
+        'day3': jsonEncode(day3),
+        'day4': jsonEncode(day4),
+        'day5': jsonEncode(day5),
+        'day6': jsonEncode(day6),
+        'day7': jsonEncode(day7)
+      };
 }
 
 //class to represent a user input for a running plan
@@ -59,7 +72,8 @@ class RunPlanInput {
   late int rhr;
   late List<bool> schedule;
   late int weeks;
-  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age, this.experienceLevel, this.rhr, this.schedule, this.weeks);
+  RunPlanInput(this.gender, this.heightIn, this.weightLbs, this.age,
+      this.experienceLevel, this.rhr, this.schedule, this.weeks);
 }
 
 //this increases the volume of a plan by a certain percentage
@@ -69,7 +83,8 @@ Plan increasePlanVolume(Plan planStruct, double percent) {
 
   //for every week in the plan
   for (var i = 0; i < newPlan.plan.length; i++) {
-    newPlan.plan[i] = increaseWeekVolume(newPlan.plan[i], percent); //increase the week volume
+    newPlan.plan[i] =
+        increaseWeekVolume(newPlan.plan[i], percent); //increase the week volume
   }
 
   //return the new plan
@@ -85,7 +100,8 @@ Plan decreasePlanVolume(Plan planStruct, double percent) {
   for (var i = 0; i < newPlan.plan.length; i++) {
     //print("week $i before change");
     //print(jsonEncode(newPlan.plan[i]));
-    newPlan.plan[i] = decreaseWeekVolume(newPlan.plan[i], percent); //decrease the week volume
+    newPlan.plan[i] =
+        decreaseWeekVolume(newPlan.plan[i], percent); //decrease the week volume
     //print("week after change");
     //print(jsonEncode(newPlan.plan[i]));
   }
@@ -313,7 +329,8 @@ Week arrangeDaysOfWeek(Week origWeek, List<bool> schedule) {
   RunWorkout day5 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   RunWorkout day6 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
   RunWorkout day7 = RunWorkout("rest", "rest", 0.0, "rest", 0.0, 0);
-  Week newWeek = Week(day1, day2, day3, day4, day5, day6, day7, origWeek.importance);
+  Week newWeek =
+      Week(day1, day2, day3, day4, day5, day6, day7, origWeek.importance);
 
   //mark the days of the week we want
   List<int> indexes = [];
@@ -488,9 +505,11 @@ Plan customizeLength(Plan origPlan, RunPlanInput userIn) {
     //for every week above the original length, add a week to the front of the plan that is 3% less volume than the first
     while (inputLen > origLength) {
       Week temp = copyWeek(newPlan.plan[0]);
-      temp = decreaseWeekVolume(temp, 3.0); //decrease the first week by 3% volume and save in temp
+      temp = decreaseWeekVolume(
+          temp, 3.0); //decrease the first week by 3% volume and save in temp
 
-      newPlan.plan = addWeekToFrontOfPlan(newPlan.plan, temp); //add this new week to the front of the plan
+      newPlan.plan = addWeekToFrontOfPlan(
+          newPlan.plan, temp); //add this new week to the front of the plan
       inputLen -= 1;
     }
   }
@@ -499,14 +518,57 @@ Plan customizeLength(Plan origPlan, RunPlanInput userIn) {
 }
 
 Week copyWeek(Week origWeek) {
-  RunWorkout day1copy = RunWorkout(origWeek.day1.type, origWeek.day1.version, origWeek.day1.volume, origWeek.day1.intensity, origWeek.day1.reps, origWeek.day1.importance);
-  RunWorkout day2copy = RunWorkout(origWeek.day2.type, origWeek.day2.version, origWeek.day2.volume, origWeek.day2.intensity, origWeek.day2.reps, origWeek.day2.importance);
-  RunWorkout day3copy = RunWorkout(origWeek.day3.type, origWeek.day3.version, origWeek.day3.volume, origWeek.day3.intensity, origWeek.day3.reps, origWeek.day3.importance);
-  RunWorkout day4copy = RunWorkout(origWeek.day4.type, origWeek.day4.version, origWeek.day4.volume, origWeek.day4.intensity, origWeek.day4.reps, origWeek.day4.importance);
-  RunWorkout day5copy = RunWorkout(origWeek.day5.type, origWeek.day5.version, origWeek.day5.volume, origWeek.day5.intensity, origWeek.day5.reps, origWeek.day5.importance);
-  RunWorkout day6copy = RunWorkout(origWeek.day6.type, origWeek.day6.version, origWeek.day6.volume, origWeek.day6.intensity, origWeek.day6.reps, origWeek.day6.importance);
-  RunWorkout day7copy = RunWorkout(origWeek.day7.type, origWeek.day7.version, origWeek.day7.volume, origWeek.day7.intensity, origWeek.day7.reps, origWeek.day7.importance);
-  Week newWeek = Week(day1copy, day2copy, day3copy, day4copy, day5copy, day6copy, day7copy, origWeek.importance);
+  RunWorkout day1copy = RunWorkout(
+      origWeek.day1.type,
+      origWeek.day1.version,
+      origWeek.day1.volume,
+      origWeek.day1.intensity,
+      origWeek.day1.reps,
+      origWeek.day1.importance);
+  RunWorkout day2copy = RunWorkout(
+      origWeek.day2.type,
+      origWeek.day2.version,
+      origWeek.day2.volume,
+      origWeek.day2.intensity,
+      origWeek.day2.reps,
+      origWeek.day2.importance);
+  RunWorkout day3copy = RunWorkout(
+      origWeek.day3.type,
+      origWeek.day3.version,
+      origWeek.day3.volume,
+      origWeek.day3.intensity,
+      origWeek.day3.reps,
+      origWeek.day3.importance);
+  RunWorkout day4copy = RunWorkout(
+      origWeek.day4.type,
+      origWeek.day4.version,
+      origWeek.day4.volume,
+      origWeek.day4.intensity,
+      origWeek.day4.reps,
+      origWeek.day4.importance);
+  RunWorkout day5copy = RunWorkout(
+      origWeek.day5.type,
+      origWeek.day5.version,
+      origWeek.day5.volume,
+      origWeek.day5.intensity,
+      origWeek.day5.reps,
+      origWeek.day5.importance);
+  RunWorkout day6copy = RunWorkout(
+      origWeek.day6.type,
+      origWeek.day6.version,
+      origWeek.day6.volume,
+      origWeek.day6.intensity,
+      origWeek.day6.reps,
+      origWeek.day6.importance);
+  RunWorkout day7copy = RunWorkout(
+      origWeek.day7.type,
+      origWeek.day7.version,
+      origWeek.day7.volume,
+      origWeek.day7.intensity,
+      origWeek.day7.reps,
+      origWeek.day7.importance);
+  Week newWeek = Week(day1copy, day2copy, day3copy, day4copy, day5copy,
+      day6copy, day7copy, origWeek.importance);
   return newWeek;
 }
 
@@ -640,11 +702,23 @@ RunWorkout roundRunWorkout(RunWorkout origWorkout) {
 
   //distance run = round volume to nearest tenth
   if ((origWorkout.type == "run") && (origWorkout.version == "distance")) {
-    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, roundDouble(origWorkout.volume, 1), origWorkout.intensity, origWorkout.reps, origWorkout.importance);
+    newWorkout = RunWorkout(
+        origWorkout.type,
+        origWorkout.version,
+        roundDouble(origWorkout.volume, 1),
+        origWorkout.intensity,
+        origWorkout.reps,
+        origWorkout.importance);
   }
   //any other thing = round volume to whole number and reps to whole number
   else {
-    newWorkout = RunWorkout(origWorkout.type, origWorkout.version, origWorkout.volume.roundToDouble(), origWorkout.intensity, origWorkout.reps.roundToDouble(), origWorkout.importance);
+    newWorkout = RunWorkout(
+        origWorkout.type,
+        origWorkout.version,
+        origWorkout.volume.roundToDouble(),
+        origWorkout.intensity,
+        origWorkout.reps.roundToDouble(),
+        origWorkout.importance);
   }
   return newWorkout;
 }
@@ -672,9 +746,19 @@ Plan roundPlan(Plan origPlan) {
 }
 
 //caller function for generating plan
-List<Week> generatePlan(String activity, String gender, int heightIN, int weightLBS, int age, int experience, int rhr, List<bool> schedule, int weeks) {
+List<Week> generatePlan(
+    String activity,
+    String gender,
+    int heightIN,
+    int weightLBS,
+    int age,
+    int experience,
+    int rhr,
+    List<bool> schedule,
+    int weeks) {
   //gather user input
-  RunPlanInput userInput = RunPlanInput(gender, heightIN, weightLBS, age, experience, rhr, schedule, weeks);
+  RunPlanInput userInput = RunPlanInput(
+      gender, heightIN, weightLBS, age, experience, rhr, schedule, weeks);
 
   //this will be set to the chosen activity base plan
   List<Week> initialPlanList = [];

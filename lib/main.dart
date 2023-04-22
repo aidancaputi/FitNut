@@ -37,7 +37,14 @@ class MyTabBarState extends State<MyTabBar> {
   static final PageController _pageController = PageController(initialPage: 0);
   static const List<Widget> _widgetOptions = <Widget>[
     CalendarApp(),
-    Icon(Icons.directions_car, size: 350),
+    Align(
+      alignment: Alignment
+          .center, // Align however you like (i.e .centerRight, centerLeft)
+      child: Text(
+        "Coming Soon...",
+        textScaleFactor: 3.0,
+      ),
+    ),
     SelectWorkout(),
   ];
 

@@ -46,6 +46,5 @@ void openWorkout(String? message) {
   if (pageCont != null) {
     pageCont.animateToPage(activityPageIdx,
         duration: const Duration(milliseconds: 200), curve: Curves.ease);
-    print(message);
   }
 }

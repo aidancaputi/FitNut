@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:FitNut/new_workout_files/select_workout.dart';
 import 'package:FitNut/new_workout_files/select_length.dart';
 import 'package:FitNut/main.dart';
+import 'package:FitNut/plan_gen.dart';
 
 void main() {
   //this test makes sure that the 3 tabs exist and can be tapped between
@@ -18,7 +19,7 @@ void main() {
 
     // verify that the second tab is selected
     expect(find.text('Next'), findsNothing);
-    expect(find.byIcon(Icons.directions_car), findsOneWidget);
+    expect(find.text('Coming Soon...'), findsOneWidget);
     expect(find.text('See Plan'), findsNothing);
 
     // tap on the third tab (create new workout)
@@ -27,7 +28,7 @@ void main() {
 
     // verify that the third tab is selected
     expect(find.text('Next'), findsOneWidget);
-    expect(find.byIcon(Icons.directions_car), findsNothing);
+    expect(find.text('Coming Soon...'), findsNothing);
     expect(find.text('See Plan'), findsNothing);
   });
 
@@ -227,25 +228,35 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  // this tests the generate workout button
-  testWidgets('Generate Workout', (tester) async {
-    WorkoutProperties workoutProperties = WorkoutProperties();
-    await tester
-        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
-      return InputPage(workoutProperties: workoutProperties);
-    }))); //go to settings page
+  // this tests the generate run workout function
+  testWidgets('Generate Running Workouts', (tester) async {
+    // generate 5K
+    generatePlan("5K", "Male", 63, 185, 25, 4, 60,
+        [true, false, false, false, true, false, true], 8);
+    // generate 10K
+    generatePlan("10K", "Female", 53, 145, 25, 6, 62,
+        [true, false, false, true, true, false, false], 10);
+    // generate Half Marathon
+    generatePlan("Half Marathon", "Female", 58, 163, 21, 2, 68,
+        [false, true, false, true, false, true, false], 14);
+    // generate Marathon
+    generatePlan("Marathon", "Male", 68, 160, 28, 8, 52,
+        [false, true, true, true, false, false, true], 18);
+  });
 
-    expect(find.byType(DropdownButton<String>),
-        findsOneWidget); //asser that the dropdown for gender exists
-
-    final gender =
-        find.byType(DropdownButton<String>); //select the gender dropdown
-
-    //tap the gender dropdown and select male
-    await tester.tap(gender);
-    await tester.pumpAndSettle();
-    final male = find.text('Male').last;
-    await tester.tap(male);
-    await tester.pumpAndSettle();
+  // this tests the generate triathlon workout function
+  testWidgets('Generate Triathlon Workouts', (tester) async {
+    // generate 5K
+    generatePlan("Sprint", "Male", 63, 185, 25, 4, 60,
+        [true, false, false, false, true, false, true], 8);
+    // generate 10K
+    generatePlan("Olympic", "Female", 53, 145, 25, 6, 62,
+        [true, false, false, true, true, false, false], 12);
+    // generate Half Marathon
+    generatePlan("Half Ironman", "Female", 58, 163, 21, 2, 68,
+        [false, true, false, true, false, true, true], 18);
+    // generate Marathon
+    generatePlan("Ironman", "Male", 68, 160, 28, 8, 52,
+        [false, true, true, true, false, false, true], 25);
   });
 }

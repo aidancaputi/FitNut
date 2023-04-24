@@ -8,8 +8,6 @@ import 'package:FitNut/base_plan_files/full-IM.dart';
 import 'package:FitNut/base_plan_files/half-IM.dart';
 import 'package:FitNut/base_plan_files/olympic-tri.dart';
 import 'package:FitNut/base_plan_files/sprint-tri.dart';
-import 'package:FitNut/user_input.dart';
-import 'package:flutter/material.dart';
 import 'base_plan_files/5K.dart';
 import 'base_plan_files/marathon.dart';
 import 'base_plan_files/half-marathon.dart';
@@ -960,9 +958,9 @@ List<Week> generatePlan(
     initialPlanList = baseHalfMarathonPlan;
   } else if (activity == "10K") {
     initialPlanList = base10kPlan;
-  } else if (activity == "Sprint Triathlon") {
+  } else if (activity == "Sprint") {
     initialPlanList = baseSprintPlan;
-  } else if (activity == "Olympic Triathlon") {
+  } else if (activity == "Olympic") {
     initialPlanList = baseOlympicPlan;
   } else if (activity == "Half Ironman") {
     initialPlanList = baseHalfIMPlan;

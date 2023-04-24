@@ -26,6 +26,9 @@ class _WorkoutLengthButtonState extends State<WorkoutLengthButton> {
     return Column(children: <Widget>[
       const SizedBox(height: 32.0),
       ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),
         onPressed: () {
           // input verification
           if (widget.workoutLength == "Select") {
@@ -118,7 +121,8 @@ class _WorkoutLengthButtonState extends State<WorkoutLengthButton> {
         },
         child: const Text(
           'Next',
-          style: TextStyle(fontSize: 40, color: Colors.white),
+          style: TextStyle(
+              fontSize: 40, color: Colors.white, fontWeight: FontWeight.w400),
         ),
       ),
       const SizedBox(height: 32.0),

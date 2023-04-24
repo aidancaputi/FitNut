@@ -35,6 +35,9 @@ class _GenerateButtonState extends State<GenerateButton> {
     return Column(children: <Widget>[
       const SizedBox(height: 32.0),
       ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),
         onPressed: () {
           List<Week> newPlan;
           // input verification
@@ -81,7 +84,8 @@ class _GenerateButtonState extends State<GenerateButton> {
         },
         child: Text(
           'Generate a ${widget.workoutProperties.workoutType} Workout',
-          style: const TextStyle(fontSize: 30, color: Colors.white),
+          style: const TextStyle(
+              fontSize: 30, color: Colors.white, fontWeight: FontWeight.w400),
         ),
       ),
       const SizedBox(height: 32.0),

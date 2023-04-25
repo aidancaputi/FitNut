@@ -32,7 +32,7 @@ class _WorkoutLengthInputState extends State<WorkoutLengthInput> {
           width: widget.borderProperties.borderWidth,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'What workout length do you want to train for?',
+              'What race length do you want to train for?',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

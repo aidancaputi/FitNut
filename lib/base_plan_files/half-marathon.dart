@@ -110,7 +110,7 @@ var day80 = [Workout("run", "not workout", "distance", 4.0, "tempo", 0.0, 3)];
 var day81 = [Workout("run", "not workout", "distance", 2.0, "easy", 0.0, 2)];
 var day82 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
 var day83 = [Workout("rest", "rest", "rest", 0.0, "rest", 0.0, 0)];
-var day84 = [Workout("run", "not workout", "distance", raceDistance, "race", 0.0, 5)];
+var day84 = [Workout("race", "race", "race", raceDistance, "race", 0.0, 10)];
 
 List<Week> baseHalfMarathonPlan = [
   Week(day1, day2, day3, day4, day5, day6, day7, 1), //week 1

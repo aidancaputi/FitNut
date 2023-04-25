@@ -785,13 +785,13 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
 
   //pass in the initial plan and the user input to customize final plan
   //print("cusotmizing");
-  print("plan before customization");
-  print(jsonEncode(initialPlanStruct.plan));
+  //print("plan before customization");
+  //print(jsonEncode(initialPlanStruct.plan));
 
   Plan finalPlan = customizePlan(initialPlanStruct, userInput);
 
-  print("plan after customization");
-  print(jsonEncode(finalPlan.plan));
+  //print("plan after customization");
+  //print(jsonEncode(finalPlan.plan));
 
   if (finalPlan.totalChange < -50.0) {
     finalPlan.totalChange = -50.0;
@@ -799,8 +799,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
     finalPlan.totalChange = 50.0;
   }
 
-  print("total change:");
-  print(finalPlan.totalChange);
+  //print("total change:");
+  //print(finalPlan.totalChange);
 
   //apply percentage change
   if (finalPlan.totalChange > 0) {
@@ -813,7 +813,7 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
 
   finalPlan = roundPlan(finalPlan);
 
-  print(jsonEncode(finalPlan.plan));
+  //print(jsonEncode(finalPlan.plan));
 
   return finalPlan.plan;
 }

@@ -18,7 +18,7 @@ void main() {
 
     // verify that the second tab is selected
     expect(find.text('Next'), findsNothing);
-    expect(find.byIcon(Icons.directions_car), findsOneWidget);
+    expect(find.text('Coming Soon...'), findsOneWidget);
     expect(find.text('See Plan'), findsNothing);
 
     // tap on the third tab (create new workout)
@@ -27,7 +27,7 @@ void main() {
 
     // verify that the third tab is selected
     expect(find.text('Next'), findsOneWidget);
-    expect(find.byIcon(Icons.directions_car), findsNothing);
+    expect(find.text('Coming Soon...'), findsNothing);
     expect(find.text('See Plan'), findsNothing);
   });
 

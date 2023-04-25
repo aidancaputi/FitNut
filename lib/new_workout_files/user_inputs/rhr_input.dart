@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:FitNut/new_workout_files/user_input.dart';
-import 'input_widgets/number_input.dart';
+import 'input_widgets/scroll_wheel.dart';
 
 class RHRInput extends StatefulWidget {
   int rhr;
@@ -44,8 +44,12 @@ class _RHRInputState extends State<RHRInput> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Flexible(
-                child: NumericTextInput(onInputValueChange: _onRHRValueChange),
-              ),
+                  child: ScrollingWheelInput(
+                minValue: 40,
+                maxValue: 100,
+                initialValue: 70,
+                onChanged: _onRHRValueChange,
+              )),
               const SizedBox(
                   width: 50.0,
                   height: 50,

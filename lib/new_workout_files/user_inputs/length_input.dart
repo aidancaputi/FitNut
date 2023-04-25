@@ -50,6 +50,7 @@ class _LengthInputState extends State<LengthInput> {
                   child: ScrollingWheelInput(
                 minValue: widget.workoutProperties.minLength,
                 maxValue: widget.workoutProperties.maxLength,
+                initialValue: widget.workoutProperties.minLength,
                 onChanged: _onLengthValueChange,
               )),
               const SizedBox(

@@ -59,6 +59,7 @@ class _HeightInputState extends State<HeightInput> {
                   child: ScrollingWheelInput(
                 minValue: 3,
                 maxValue: 7,
+                initialValue: 5,
                 onChanged: _onHeightFtValueChange,
               )),
               const SizedBox(
@@ -71,6 +72,7 @@ class _HeightInputState extends State<HeightInput> {
                   child: ScrollingWheelInput(
                 minValue: 0,
                 maxValue: 11,
+                initialValue: 9,
                 onChanged: _onHeightInValueChange,
               )),
               const SizedBox(

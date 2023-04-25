@@ -23,17 +23,17 @@ class _WorkoutButtonState extends State<WorkoutButton> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      const SizedBox(height: 32.0),
+      const SizedBox(height: 24.0),
       ElevatedButton(
         onPressed: () {
           openWorkout(WorkoutButton.getCurrWorkout());
         },
         child: Text(
-          'Start Workout',
-          style: const TextStyle(fontSize: 30),
+          'Workout Details',
+          style: const TextStyle(fontSize: 20),
         ),
       ),
-      const SizedBox(height: 32.0),
+      const SizedBox(height: 24.0),
     ]);
   }
 }

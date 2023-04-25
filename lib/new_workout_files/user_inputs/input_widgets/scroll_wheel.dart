@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 class ScrollingWheelInput extends StatefulWidget {
   final int minValue;
   final int maxValue;
+  final int initialValue;
   final ValueChanged<int> onChanged;
 
   const ScrollingWheelInput({
     Key? key,
     required this.minValue,
     required this.maxValue,
+    required this.initialValue,
     required this.onChanged,
   }) : super(key: key);
 
@@ -23,7 +25,7 @@ class _ScrollingWheelInputState extends State<ScrollingWheelInput> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = widget.minValue;
+    _selectedValue = widget.initialValue;
     _scrollController = FixedExtentScrollController(
         initialItem: _selectedValue - widget.minValue);
   }

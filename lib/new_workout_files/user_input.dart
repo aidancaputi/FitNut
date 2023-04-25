@@ -38,7 +38,7 @@ class UserInput extends State<InputPage> {
   }
 
   // height
-  int totalHeight = 36;
+  int totalHeight = 69;
   void _onTotalHeightValueChange(int value) {
     setState(() {
       totalHeight = value;
@@ -70,7 +70,7 @@ class UserInput extends State<InputPage> {
   }
 
   // resting heart rate
-  int rhr = 0;
+  int rhr = 70;
   void _onrhrValueChange(int rhrValue) {
     setState(() {
       rhr = rhrValue;

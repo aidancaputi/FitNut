@@ -10,7 +10,7 @@ class GenerateButton extends StatefulWidget {
   final int age;
   final int experienceLevel;
   final int rhr;
-  final int workoutLength;
+  int workoutLength;
   final List<bool> days;
   final int totalDays;
   final WorkoutProperties workoutProperties;
@@ -64,6 +64,9 @@ class _GenerateButtonState extends State<GenerateButton> {
                   content: Text(
                       'Please select at least ${widget.workoutProperties.daysLength} days to workout on')),
             );
+          } else if (widget.workoutLength <
+              widget.workoutProperties.minLength) {
+            widget.workoutLength = widget.workoutProperties.minLength;
           } else {
             newPlan = generatePlan(
                 widget.workoutProperties.workoutLength,

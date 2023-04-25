@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -99,6 +107,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  formatted_text:
+    dependency: "direct main"
+    description:
+      name: formatted_text
+      sha256: e876d0917b85fb2701fdcc553223b18b203b6695cf547d32f0e9fb493f4411d3
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   intl:
     dependency: transitive
     description:

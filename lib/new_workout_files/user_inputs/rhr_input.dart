@@ -35,7 +35,7 @@ class _RHRInputState extends State<RHRInput> {
           width: widget.borderProperties.borderWidth,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'What is your resting heart rate?\n',
+              'What is your resting heart rate?',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

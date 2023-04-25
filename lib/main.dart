@@ -103,58 +103,66 @@ class MyTabBarState extends State<MyTabBar> {
 }
 
 Widget makeText() {
-  return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const <Widget>[
-        FormattedText(
-          '*Workout Guide*',
-          textAlign: TextAlign.center,
-          textScaleFactor: 5.0,
-        ),
-        FormattedText(
-          '#Paces:#',
-          textAlign: TextAlign.center,
-          textScaleFactor: 2.3,
-        ),
-        FormattedText(
-          '\n_Easy Pace_:',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.5,
-        ),
-        FormattedText(
-          'You should be able to hold a conversation for the duration of the activity without losing your breath. It should be embarrassingly slow!',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.2,
-        ),
-        FormattedText(
-          '\n_Tempo Pace_:',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.5,
-        ),
-        FormattedText(
-          'You should be on the border of discomfort, but you should still be able to hold the pace for the duration of the activity. If you have to stop and rest, you’re going too fast, and if you could hold a conversation without being out of breath, you\'re going too slow.',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.2,
-        ),
-        FormattedText(
-          '\n_Hard Pace_:',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.5,
-        ),
-        FormattedText(
-          'You shouldn’t be able to hold this pace for very long. You should be panting, sweating, and pushing yourself!',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.2,
-        ),
-        FormattedText(
-          '\n_Race Pace_:',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.5,
-        ),
-        FormattedText(
-          'This one is exactly what it sounds like. You should be running as if you’re in a race and everybody you know is cheering you on. Don’t push too hard, though, you don’t want to collapse in front of them!',
-          textAlign: TextAlign.center,
-          textScaleFactor: 1.2,
-        ),
-      ]);
+  return ListView(children: <Widget>[
+    Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const <Widget>[
+              FormattedText(
+                '*Workout Guide*',
+                textAlign: TextAlign.center,
+                textScaleFactor: 5.0,
+              ),
+              FormattedText(
+                '#Paces:#',
+                textAlign: TextAlign.center,
+                textScaleFactor: 2.3,
+              ),
+              FormattedText(''),
+              FormattedText(
+                '_Easy Pace_:',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.5,
+              ),
+              FormattedText(
+                'You should be able to hold a conversation for the duration of the activity without losing your breath. It should be embarrassingly slow!',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.2,
+              ),
+              FormattedText(''),
+              FormattedText(
+                '_Tempo Pace_:',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.5,
+              ),
+              FormattedText(
+                'You should be on the border of discomfort, but you should still be able to hold the pace for the duration of the activity. If you have to stop and rest, you’re going too fast, and if you could hold a conversation without being out of breath, you\'re going too slow.',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.2,
+              ),
+              FormattedText(''),
+              FormattedText(
+                'Hard Pace_:',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.5,
+              ),
+              FormattedText(
+                'You shouldn’t be able to hold this pace for very long. You should be panting, sweating, and pushing yourself!',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.2,
+              ),
+              FormattedText(''),
+              FormattedText(
+                '_Race Pace_:',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.5,
+              ),
+              FormattedText(
+                'This one is exactly what it sounds like. You should be running as if you’re in a race and everybody you know is cheering you on. Don’t push too hard, though, you don’t want to collapse in front of them!',
+                textAlign: TextAlign.center,
+                textScaleFactor: 1.2,
+              ),
+            ]))
+  ]);
 }

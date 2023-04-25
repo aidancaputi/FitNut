@@ -30,6 +30,11 @@ Developed by Aidan Caputi, Josh Christian, and Zane Middaugh
 
 Special thanks to Santiago Torres-Arias for providing additional help
 
+Our base plans were structured from the following sources:
+https://marathonhandbook.com/
+https://www.ironman.com/
+https://www.halhigdon.com/
+
 ## Licensing
 FitNut is licensed by GNU GPLv3.09
 

@@ -36,11 +36,9 @@ void main() {
   testWidgets('Select workout dropdown', (tester) async {
     await tester.pumpWidget(const SelectWorkout());
 
-    expect(find.byType(DropdownButton<String>),
-        findsOneWidget); // assure that the dropdown for workout type exists
+    expect(find.byType(DropdownButton<String>), findsOneWidget); // assure that the dropdown for workout type exists
 
-    final workout =
-        find.byType(DropdownButton<String>); // select the workout dropdown
+    final workout = find.byType(DropdownButton<String>); // select the workout dropdown
 
     //tap the workout dropdown and select run
     await tester.tap(workout);
@@ -56,8 +54,7 @@ void main() {
   });
 
   // this test navigates to the select workout page and tests the next button
-  testWidgets('Select workout next button navigates to select length page',
-      (WidgetTester tester) async {
+  testWidgets('Select workout next button navigates to select length page', (WidgetTester tester) async {
     await tester.pumpWidget(const SelectWorkout());
 
     // find the next button
@@ -88,8 +85,7 @@ void main() {
   });
 
   // this test navigates to the select workout length page and tests the workout length selector
-  testWidgets('Select workout next button navigates to select length page',
-      (WidgetTester tester) async {
+  testWidgets('Select workout next button navigates to select length page', (WidgetTester tester) async {
     await tester.pumpWidget(const SelectWorkout());
 
     // select a run workout
@@ -106,11 +102,9 @@ void main() {
     // check that the select workout length page is displayed
     expect(find.byType(SelectWorkoutLength), findsOneWidget);
 
-    expect(find.byType(DropdownButton<String>),
-        findsOneWidget); // assure that the dropdown for workout length exists
+    expect(find.byType(DropdownButton<String>), findsOneWidget); // assure that the dropdown for workout length exists
 
-    final workout = find
-        .byType(DropdownButton<String>); // select the workout length dropdown
+    final workout = find.byType(DropdownButton<String>); // select the workout length dropdown
 
     //tap the workout length dropdown and select 5K
     await tester.tap(workout);
@@ -138,8 +132,7 @@ void main() {
   });
 
   // this test navigates to the select workout length page and tests the next button
-  testWidgets('Select workout length next button navigates to user info page',
-      (WidgetTester tester) async {
+  testWidgets('Select workout length next button navigates to user info page', (WidgetTester tester) async {
     await tester.pumpWidget(const SelectWorkout());
 
     // select a run workout
@@ -174,8 +167,7 @@ void main() {
   //this test navigates to the input tab and checks that all the input messages are correct
   testWidgets('Input page has correct questions', (tester) async {
     WorkoutProperties workoutProperties = WorkoutProperties();
-    await tester
-        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
+    await tester.pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
       return InputPage(workoutProperties: workoutProperties);
     })));
 
@@ -185,26 +177,20 @@ void main() {
     expect(find.text('How old are you?'), findsOneWidget);
     expect(find.text('How much experience do you have?'), findsOneWidget);
     expect(find.text('What is your resting heart rate?'), findsOneWidget);
-    expect(find.text('How long do you want your workout plan to be?'),
-        findsOneWidget);
-    expect(
-        find.text('What days can you workout on? - please select at least 3'),
-        findsOneWidget);
+    expect(find.text('How long do you want your workout plan to be?'), findsOneWidget);
+    expect(find.text('What days can you workout on? - please select at least 3'), findsOneWidget);
   });
 
   // this tests the gender dropdown widget
   testWidgets('Gender dropdown', (tester) async {
     WorkoutProperties workoutProperties = WorkoutProperties();
-    await tester
-        .pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
+    await tester.pumpWidget(MaterialApp(home: Builder(builder: (BuildContext context) {
       return InputPage(workoutProperties: workoutProperties);
     }))); //go to settings page
 
-    expect(find.byType(DropdownButton<String>),
-        findsOneWidget); //asser that the dropdown for gender exists
+    expect(find.byType(DropdownButton<String>), findsOneWidget); //asser that the dropdown for gender exists
 
-    final gender =
-        find.byType(DropdownButton<String>); //select the gender dropdown
+    final gender = find.byType(DropdownButton<String>); //select the gender dropdown
 
     //tap the gender dropdown and select male
     await tester.tap(gender);
@@ -231,32 +217,32 @@ void main() {
   // this tests the generate run workout function
   testWidgets('Generate Running Workouts', (tester) async {
     // generate 5K
-    generatePlan("5K", "Male", 63, 185, 25, 4, 60,
-        [true, false, false, false, true, false, true], 8);
+    generatePlan("5K", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 4);
+    generatePlan("5K", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 12);
     // generate 10K
-    generatePlan("10K", "Female", 53, 145, 25, 6, 62,
-        [true, false, false, true, true, false, false], 10);
+    generatePlan("10K", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 4);
+    generatePlan("10K", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 12);
     // generate Half Marathon
-    generatePlan("Half Marathon", "Female", 58, 163, 21, 2, 68,
-        [false, true, false, true, false, true, false], 14);
+    generatePlan("Half Marathon", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 8);
+    generatePlan("Half Marathon", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 16);
     // generate Marathon
-    generatePlan("Marathon", "Male", 68, 160, 28, 8, 52,
-        [false, true, true, true, false, false, true], 18);
+    generatePlan("Marathon", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 14);
+    generatePlan("Marathon", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 22);
   });
 
   // this tests the generate triathlon workout function
   testWidgets('Generate Triathlon Workouts', (tester) async {
-    // generate 5K
-    generatePlan("Sprint", "Male", 63, 185, 25, 4, 60,
-        [true, false, false, false, true, false, true], 8);
-    // generate 10K
-    generatePlan("Olympic", "Female", 53, 145, 25, 6, 62,
-        [true, false, false, true, true, false, false], 12);
-    // generate Half Marathon
-    generatePlan("Half Ironman", "Female", 58, 163, 21, 2, 68,
-        [false, true, false, true, false, true, true], 18);
-    // generate Marathon
-    generatePlan("Ironman", "Male", 68, 160, 28, 8, 52,
-        [false, true, true, true, false, false, true], 25);
+    // generate sprint
+    generatePlan("Sprint", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 4);
+    generatePlan("Sprint", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 12);
+    // generate olympoic
+    generatePlan("Olympic", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 4);
+    generatePlan("Olympic", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 12);
+    // generate half ironman
+    generatePlan("Half Ironman", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 8);
+    generatePlan("Half Ironman", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 16);
+    // generate ironoman
+    generatePlan("Ironman", "Male", 72, 185, 25, 10, 45, [false, false, false, false, true, true, true], 14);
+    generatePlan("Ironman", "Female", 42, 600, 100, 1, 95, [true, true, true, true, true, true, true], 22);
   });
 }

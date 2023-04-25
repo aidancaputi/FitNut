@@ -140,44 +140,50 @@ List<Event> prettifyWorkout(String dayWorkout) {
 /// Using a [LinkedHashMap] is highly recommended if you decide to use a map.
 
 LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
-  //print('\n\n\ninside the event class\n\n\n\n\n');
-  //print(fileSourceStr);
-  //decode the json from the plan file
-  List<dynamic> fileSourceList = jsonDecode(fileSourceStr);
-
-  //find the number of weeks the plan lasts
-  int numWeeks = fileSourceList.length;
-  List dayArr = [];
-
-  //declare a week json to iterate the file json
-  Map<String, dynamic> week;
-
-  for (week in fileSourceList) {
-    week.forEach((key, value) {
-      //append each day of the workout plan to an array of subsequent days
-      dayArr.add(value);
-      //print('$key : $value');
-    });
-  }
-
   // create a map, setting each day from today onwards to correspond to the array
   // of days, so that any utc date in the workout plan range points to the appropriate
   // workout for that day
   // today has to be set seperately
 
-  final Map<DateTime, List<Event>> _kEventSource = Map.fromIterable(
-      List.generate(numWeeks * 7, (index) => index),
-      key: (item) => DateTime.utc(
-          kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()),
-      value: (item) => prettifyWorkout(dayArr[item]))
-    ..addAll({
-      kToday: prettifyWorkout(dayArr[0]),
-    });
+  Map<DateTime, List<Event>> kEventSource =
+      Map.fromIterable(List.generate(0, (index) => null));
+
+  if (fileSourceStr != 'FILE NOT FOUND') {
+    // If the file was read properly
+
+    // decode the json from the plan file
+    List<dynamic> fileSourceList = jsonDecode(fileSourceStr);
+
+    // find the number of weeks the plan lasts
+    int numWeeks = fileSourceList.length;
+    List dayArr = [];
+
+    // declare a week json to iterate the file json
+    Map<String, dynamic> week;
+
+    for (week in fileSourceList) {
+      week.forEach((key, value) {
+        // append each day of the workout plan to an array of subsequent days
+        dayArr.add(value);
+      });
+    }
+
+    kEventSource = Map.fromIterable(
+        List.generate(numWeeks * 7, (index) => index),
+        key: (item) => DateTime.utc(
+            kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()),
+        value: (item) => prettifyWorkout(dayArr[item]))
+      ..addAll({
+        kToday: prettifyWorkout(dayArr[0]),
+      });
+  } else {
+    kEventSource = Map.fromIterable(List.generate(0, (index) => null));
+  }
 
   final kEvents = LinkedHashMap<DateTime, List<Event>>(
     equals: isSameDay,
     hashCode: getHashCode,
-  )..addAll(_kEventSource);
+  )..addAll(kEventSource);
 
   return kEvents;
 }

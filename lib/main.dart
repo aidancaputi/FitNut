@@ -36,6 +36,7 @@ class MyTabBarState extends State<MyTabBar> {
   int _selectedIndex = 0;
   static final PageController _pageController = PageController(initialPage: 0);
   static const List<Widget> _widgetOptions = <Widget>[
+    SelectWorkout(),
     CalendarApp(),
     Align(
       alignment: Alignment
@@ -45,7 +46,6 @@ class MyTabBarState extends State<MyTabBar> {
         textScaleFactor: 3.0,
       ),
     ),
-    SelectWorkout(),
   ];
 
   PageController getPageController() {
@@ -84,16 +84,16 @@ class MyTabBarState extends State<MyTabBar> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_add),
+            label: 'Create New Workout',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Calendar View',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_run),
             label: 'Current Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_add),
-            label: 'Create New Workout',
           ),
         ],
         currentIndex: _selectedIndex,

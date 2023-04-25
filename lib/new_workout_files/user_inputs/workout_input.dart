@@ -36,7 +36,7 @@ class _WorkoutInputState extends State<WorkoutInput> {
           width: widget.borderProperties.borderWidth,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'What type of workout do you want?',
+              'What type of workout do you want to train for?',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

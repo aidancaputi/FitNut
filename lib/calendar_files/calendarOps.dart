@@ -38,8 +38,8 @@ class _CalState extends State<CalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('TableCalendar', style: TextStyle(color: Colors.white)),
+        title: const Text('FitNut Calendar',
+            style: TextStyle(color: Colors.white)),
       ),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -55,7 +55,7 @@ class _CalState extends State<CalPage> {
                     children: [
                       const SizedBox(height: 20.0),
                       ElevatedButton(
-                        child: const Text('See Plan',
+                        child: const Text('View Workout Calendar!',
                             style: TextStyle(color: Colors.white)),
                         onPressed: () => Navigator.push(
                           context,

@@ -93,7 +93,7 @@ class _TableEventsState extends State<TableEvents> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('TableCalendar - Events',
+        title: const Text('Calendar Workouts',
             style: TextStyle(color: Colors.white)),
       ),
       body: Column(

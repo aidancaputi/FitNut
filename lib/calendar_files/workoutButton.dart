@@ -41,7 +41,7 @@ class _WorkoutButtonState extends State<WorkoutButton> {
 void openWorkout(String? message) {
   GlobalKey<MyTabBarState> key = TabBarField.getKey();
   PageController? pageCont = key.currentState?.getPageController();
-  int activityPageIdx = 1;
+  int activityPageIdx = 2;
 
   if (pageCont != null) {
     pageCont.animateToPage(activityPageIdx,

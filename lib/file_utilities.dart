@@ -41,6 +41,6 @@ Future<String> readPlan(String fileName) async {
 
     return contents;
   } catch (e) {
-    return '0';
+    return 'FILE NOT FOUND';
   }
 }

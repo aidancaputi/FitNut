@@ -80,9 +80,9 @@ List<Week> base10kPlan = [
   Week(day1, day2, day3, day4, day5, day6, day7, 1),
   Week(day8, day9, day10, day11, day12, day13, day14, 2),
   Week(day15, day16, day17, day18, day19, day20, day21, 3),
-  Week(day22, day23, day24, day25, day26, day27, day28, 50),
-  Week(day29, day30, day31, day32, day33, day34, day35, 4),
-  Week(day36, day37, day38, day39, day40, day41, day42, 5),
-  Week(day43, day44, day45, day46, day47, day48, day49, 6),
+  Week(day22, day23, day24, day25, day26, day27, day28, 4),
+  Week(day29, day30, day31, day32, day33, day34, day35, 5),
+  Week(day36, day37, day38, day39, day40, day41, day42, 6),
+  Week(day43, day44, day45, day46, day47, day48, day49, 7),
   Week(day50, day51, day52, day53, day54, day55, day56, 100),
 ];

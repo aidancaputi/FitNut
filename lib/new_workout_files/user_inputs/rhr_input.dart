@@ -6,10 +6,7 @@ class RHRInput extends StatefulWidget {
   int rhr;
   final InputBorderProperties borderProperties;
   final ValueChanged<int> onChanged;
-  RHRInput(
-      {required this.rhr,
-      required this.onChanged,
-      required this.borderProperties});
+  RHRInput({required this.rhr, required this.onChanged, required this.borderProperties});
   @override
   _RHRInputState createState() => _RHRInputState();
 }
@@ -38,7 +35,7 @@ class _RHRInputState extends State<RHRInput> {
           width: widget.borderProperties.borderWidth,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
-              'What is your resting heart rate?',
+              'What is your resting heart rate?\n(optional)',
               style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),

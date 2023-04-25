@@ -127,6 +127,10 @@ Week decreaseWeekVolume(Week weekToChange, double percent) {
   return newWeek;
 }
 
+double sigmoid(double input) {
+  return 2.5 / (1.0 + exp(-1.0 * input));
+}
+
 //takes a run workout and increases its volume by a percentage
 List<Workout> increaseDayVolume(List<Workout> dayToChange, double percent) {
   //create the new workout to return
@@ -138,10 +142,12 @@ List<Workout> increaseDayVolume(List<Workout> dayToChange, double percent) {
       return newDay;
     } else if (dayToChange[i].type == "workout") {
       //if it was a workout, increase reps
-      newDay[i].reps *= (1.0 + (percent / 100.0));
+      //newDay[i].reps *= (1.0 + (percent / 100.0));
+      newDay[i].reps *= (1.0 + (percent / sigmoid(newDay[i].reps) / 100.0));
     } else if (dayToChange[i].type == "not workout") {
       // if it was a time run, increase the time or distance
-      newDay[i].volume *= (1.0 + (percent / 100.0));
+      //newDay[i].volume *= (1.0 + (percent / 100.0));
+      newDay[i].volume *= (1.0 + (percent / sigmoid(newDay[i].volume) / 100.0));
     }
   }
 
@@ -610,25 +616,35 @@ int getLongestPlanWeek(Plan planStruct) {
 Plan customizePlan(Plan origPlan, PlanInput userIn) {
   Plan newPlan = origPlan;
 
+  // print("initial change");
+  //print(newPlan.totalChange);
+
   //if they werent available every day, customize the weekly schedule
   if (getDaysAvailable(userIn) != 7) {
     //using the schedule, customize the days per week
     newPlan = customizeSchedule(origPlan, userIn);
   }
 
+  //print("initial change 1./5");
+  // print(newPlan.totalChange);
+
   //using the length, customize the length of the plan in weeks
   newPlan = customizeLength(newPlan, userIn);
 
-  //decrase volume by 10 percent if female
   if (userIn.gender == "female") {
-    //newPlan = decreasePlanVolume(newPlan, 10.0);
     newPlan.totalChange -= 5;
   }
+
+  //print("initial change 1");
+  // print(newPlan.totalChange);
 
   //height and weight conversions
   double weight_kg = userIn.weightLbs * 0.453592;
   double height_m = userIn.heightIn * 0.0254;
   double bmi = weight_kg / pow(height_m, 2);
+  //print(weight_kg);
+  // print(height_m);
+  // print(bmi);
 
   //if their bmi is over 25, decrease volume by 2 percent for every point above
   if (bmi > 25) {
@@ -639,6 +655,17 @@ Plan customizePlan(Plan origPlan, PlanInput userIn) {
       bmi -= 1;
     }
   }
+  if (bmi < 25) {
+    while (bmi < 25) {
+      //print("here4");
+      //newPlan = decreasePlanVolume(newPlan, 1);
+      newPlan.totalChange += 1;
+      bmi += 1;
+    }
+  }
+
+//print("initial change 2");
+  // print(newPlan.totalChange);
 
   //adjust volume based on age
   if (userIn.age < 18) {
@@ -657,6 +684,9 @@ Plan customizePlan(Plan origPlan, PlanInput userIn) {
     //newPlan = decreasePlanVolume(newPlan, 15);
     newPlan.totalChange -= 12;
   }
+
+  // print("initial change 3");
+  // print(newPlan.totalChange);
 
   //if experience level is above 5, increase by 5% for every point above
   //if it is below 5, decrease by 5% for every point below
@@ -677,6 +707,9 @@ Plan customizePlan(Plan origPlan, PlanInput userIn) {
     }
   }
 
+  // print("initial change 4");
+  // print(newPlan.totalChange);
+
   //for every rhr point above 100, decrease by 1% volume
   //for every rhr point below 60, increase by 1% volume
   int tempRHR = userIn.rhr;
@@ -688,17 +721,19 @@ Plan customizePlan(Plan origPlan, PlanInput userIn) {
         newPlan.totalChange -= 1;
         tempRHR -= 1;
       }
-    } else if (userIn.rhr < 100) {
-      while (tempRHR > 100) {
+    } else if (userIn.rhr < 60) {
+      while (tempRHR < 60) {
         //print("here8");
         //newPlan = decreasePlanVolume(newPlan, 1);
-        newPlan.totalChange -= 1;
-        tempRHR -= 1;
+        newPlan.totalChange += 1;
+        tempRHR += 1;
       }
     }
   }
 
   //return the changed plan
+  // print("customized change");
+  // print(newPlan.totalChange);
 
   return newPlan;
 }
@@ -799,8 +834,8 @@ List<Week> generatePlan(String activity, String gender, int heightIN, int weight
     finalPlan.totalChange = 50.0;
   }
 
-  //print("total change:");
-  //print(finalPlan.totalChange);
+  print("total change:");
+  print(finalPlan.totalChange);
 
   //apply percentage change
   if (finalPlan.totalChange > 0) {

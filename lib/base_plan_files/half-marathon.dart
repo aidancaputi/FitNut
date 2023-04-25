@@ -118,11 +118,11 @@ List<Week> baseHalfMarathonPlan = [
   Week(day15, day16, day17, day18, day19, day20, day21, 3), //week 3
   Week(day22, day23, day24, day25, day26, day27, day28, 4), //week 4
   Week(day29, day30, day31, day32, day33, day34, day35, 5), //week 5
-  Week(day36, day37, day38, day39, day40, day41, day42, 25), //week 6
-  Week(day43, day44, day45, day46, day47, day48, day49, 6), //week 7
-  Week(day50, day51, day52, day53, day54, day55, day56, 7), //week 8
-  Week(day57, day58, day59, day60, day61, day62, day63, 50), //week 9
-  Week(day64, day65, day66, day67, day68, day69, day70, 8), //week 10
-  Week(day71, day72, day73, day74, day75, day76, day77, 9), //week 11
+  Week(day36, day37, day38, day39, day40, day41, day42, 6), //week 6
+  Week(day43, day44, day45, day46, day47, day48, day49, 7), //week 7
+  Week(day50, day51, day52, day53, day54, day55, day56, 8), //week 8
+  Week(day57, day58, day59, day60, day61, day62, day63, 9), //week 9
+  Week(day64, day65, day66, day67, day68, day69, day70, 10), //week 10
+  Week(day71, day72, day73, day74, day75, day76, day77, 11), //week 11
   Week(day78, day79, day80, day81, day82, day83, day84, 100), //week 12
 ];

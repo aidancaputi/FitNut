@@ -47,8 +47,7 @@ List<Event> prettifyWorkout(String dayWorkout) {
   List<String> strArray = [];
 
   for (var i = 0; i < listWorkout.length; i++) {
-    List<String> str =
-        listWorkout[i].replaceAll("{", "").replaceAll("}", "").split(",");
+    List<String> str = listWorkout[i].replaceAll("{", "").replaceAll("}", "").split(",");
     Map<String, dynamic> result = {};
     for (int i = 0; i < str.length; i++) {
       List<String> s = str[i].split(":");
@@ -69,19 +68,15 @@ List<Event> prettifyWorkout(String dayWorkout) {
       finalStr += 'Run Day:';
       if (wkt[1] == 'not workout') {
         if (wkt[2] == 'time') {
-          finalStr +=
-              '\n- Run for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
+          finalStr += '\n- Run for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
         } else if (wkt[2] == 'distance') {
-          finalStr +=
-              '\n- Run for ${double.parse(wkt[3]).toInt()} miles at ${wkt[4]} pace';
+          finalStr += '\n- Run for ${double.parse(wkt[3])} miles at ${wkt[4]} pace';
         }
       } else if (wkt[1] == 'workout') {
         if (wkt[2] == 'time') {
-          finalStr +=
-              '\n- Run ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} seconds (hard pace)';
+          finalStr += '\n- Run ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} seconds (hard pace)';
         } else if (wkt[2] == 'distance') {
-          finalStr +=
-              '\n- Run ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} meters (hard pace)';
+          finalStr += '\n- Run ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} meters (hard pace)';
         }
       }
     } else if (wkt[0] == 'bike') {
@@ -89,39 +84,32 @@ List<Event> prettifyWorkout(String dayWorkout) {
 
       if (wkt[1] == 'not workout') {
         if (wkt[2] == 'time') {
-          finalStr +=
-              '\n- Bike for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
+          finalStr += '\n- Bike for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
         } else if (wkt[2] == 'distance') {
-          finalStr +=
-              '\n- Bike for ${double.parse(wkt[3]).toInt()} miles at ${wkt[4]} pace';
+          finalStr += '\n- Bike for ${double.parse(wkt[3])} miles at ${wkt[4]} pace';
         }
       } else if (wkt[1] == 'workout') {
         if (wkt[2] == 'time') {
-          finalStr +=
-              '\n- Bike ${double.parse(wkt[5]).toInt()} sets of ${(double.parse(wkt[3]) ~/ 60.0)} minutes (hard pace)';
+          finalStr += '\n- Bike ${double.parse(wkt[5]).toInt()} sets of ${(double.parse(wkt[3]) ~/ 60.0)} minutes (hard pace)';
         }
       }
     } else if (wkt[0] == 'swim') {
       finalStr += 'Swim Day:';
       if (wkt[1] == 'not workout') {
         if (wkt[2] == 'time') {
-          finalStr +=
-              '\n- Swim for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
+          finalStr += '\n- Swim for ${double.parse(wkt[3]).toInt()} minutes at ${wkt[4]} pace';
         } else if (wkt[2] == 'distance') {
-          finalStr +=
-              '\n- Swim for ${double.parse(wkt[3]).toInt()} meters at ${wkt[4]} pace';
+          finalStr += '\n- Swim for ${double.parse(wkt[3]).toInt()} meters at ${wkt[4]} pace';
         }
       } else if (wkt[1] == 'workout') {
         if (wkt[2] == 'distance') {
-          finalStr +=
-              '\n- Swim ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} meters (hard pace)';
+          finalStr += '\n- Swim ${double.parse(wkt[5]).toInt()} reps of ${double.parse(wkt[3]).toInt()} meters (hard pace)';
         }
       }
     } else if (wkt[0] == 'rest') {
       finalStr += 'Rest Day!';
     } else if (wkt[0] == 'cross') {
-      finalStr +=
-          'Cross Day - find a different way to exercise, like weightlifting or sports!';
+      finalStr += 'Cross Day - find a different way to exercise, like weightlifting or sports!';
     } else if (wkt[0] == 'race') {
       finalStr += 'Race Day\nYou got this!\nYour hard work WILL pay off!';
     }
@@ -129,8 +117,7 @@ List<Event> prettifyWorkout(String dayWorkout) {
     strArray.add(finalStr);
   }
 
-  List<Event> eventArray =
-      List.generate(strArray.length, (index) => Event(strArray[index]));
+  List<Event> eventArray = List.generate(strArray.length, (index) => Event(strArray[index]));
 
   return eventArray;
 }
@@ -145,8 +132,7 @@ LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
   // workout for that day
   // today has to be set seperately
 
-  Map<DateTime, List<Event>> kEventSource =
-      Map.fromIterable(List.generate(0, (index) => null));
+  Map<DateTime, List<Event>> kEventSource = Map.fromIterable(List.generate(0, (index) => null));
 
   if (fileSourceStr != 'FILE NOT FOUND') {
     // If the file was read properly
@@ -168,11 +154,8 @@ LinkedHashMap<DateTime, List<Event>> getkEvents(fileSourceStr) {
       });
     }
 
-    kEventSource = Map.fromIterable(
-        List.generate(numWeeks * 7, (index) => index),
-        key: (item) => DateTime.utc(
-            kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()),
-        value: (item) => prettifyWorkout(dayArr[item]))
+    kEventSource = Map.fromIterable(List.generate(numWeeks * 7, (index) => index),
+        key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, (kFirstDay.day + item).toInt()), value: (item) => prettifyWorkout(dayArr[item]))
       ..addAll({
         kToday: prettifyWorkout(dayArr[0]),
       });
@@ -209,8 +192,7 @@ final kFirstDay = DateTime(kToday.year, kToday.month, kToday.day + offsetDay);
 // assuming that the longest workout plan is 6 months
 int longestPlanMonths = 8;
 
-final kLastDay =
-    DateTime(kToday.year, kToday.month + longestPlanMonths, kToday.day);
+final kLastDay = DateTime(kToday.year, kToday.month + longestPlanMonths, kToday.day);
 
 int extractOffsetDay() {
   var dayofWeek = kToday.weekday;

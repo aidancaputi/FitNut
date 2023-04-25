@@ -66,7 +66,6 @@ class _TableEventsState extends State<TableEvents> {
       // enable the load workout button to be pressed
       final currEvent = _getEventsForDay(selectedDay)[0];
       WorkoutButton(currWorkout: currEvent.toString());
-      print('current day');
     }
   }
 
@@ -145,7 +144,6 @@ class _TableEventsState extends State<TableEvents> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
                         title: Text('${value[index]}'),
                       ),
                     );

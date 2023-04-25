@@ -457,7 +457,6 @@ List<Week> deleteLowestImportanceWeek(List<Week> origPlan) {
   }
 
   //delete the week found with the lowest importance
-  //print("removing week $curMinIdx");
   newPlan.removeAt(curMinIdx);
 
   return newPlan;
@@ -865,6 +864,7 @@ Plan customizePlan(Plan origPlan, PlanInput userIn) {
   }
 
   //return the changed plan
+
   return newPlan;
 }
 
@@ -960,9 +960,9 @@ List<Week> generatePlan(
     initialPlanList = baseHalfMarathonPlan;
   } else if (activity == "10K") {
     initialPlanList = base10kPlan;
-  } else if (activity == "Sprint Triathlon") {
+  } else if (activity == "Sprint") {
     initialPlanList = baseSprintPlan;
-  } else if (activity == "Olympic Triathlon") {
+  } else if (activity == "Olympic") {
     initialPlanList = baseOlympicPlan;
   } else if (activity == "Half Ironman") {
     initialPlanList = baseHalfIMPlan;
@@ -975,6 +975,7 @@ List<Week> generatePlan(
 
   //pass in the initial plan and the user input to customize final plan
   //print("cusotmizing");
+
   Plan finalPlan = customizePlan(initialPlanStruct, userInput);
 
   //print("total change:");
@@ -990,10 +991,6 @@ List<Week> generatePlan(
   }
 
   finalPlan = roundPlan(finalPlan);
-
-  for (var i = 0; i < finalPlan.plan.length; i++) {
-    //print(jsonEncode(finalPlan.plan[i].day7));
-  }
 
   return finalPlan.plan;
 }

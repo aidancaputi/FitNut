@@ -8,8 +8,6 @@ Future<String> getFilePath(String fileName) async {
   final directory = await getApplicationDocumentsDirectory();
   String path = directory.path;
 
-  print('$path / $fileName');
-
   return '$path/$fileName';
 }
 
